@@ -1,0 +1,2 @@
+class MonottoUsersController < ApplicationController
+end
