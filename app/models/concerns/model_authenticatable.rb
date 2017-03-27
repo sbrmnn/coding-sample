@@ -11,11 +11,12 @@ module ModelAuthenticatable
     touch(:token_created_at)
   end
 
-  def with_unexpired_token(token, period)
-    where(token: token).where('token_created_at >= ?', period).first
-  end
+  module ClassMethods	
+    
+    def with_unexpired_token(token, period)
+      where(token: token).where('token_created_at >= ?', period).first
+    end  
 
-  module ClassMethods	  
     def valid_login?(email, password)
       obj = find_by(email: email)
       if obj && obj.authenticate(password)

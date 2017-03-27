@@ -11,5 +11,6 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.integer :max_transfer_amount
       t.timestamps
     end
+    add_index :users, [:financial_institution_id, :bank_identifier], unique: true
   end
 end

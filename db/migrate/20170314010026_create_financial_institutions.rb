@@ -1,7 +1,7 @@
 class CreateFinancialInstitutions < ActiveRecord::Migration[5.0]
   def change
     create_table :financial_institutions do |t|
-      t.belongs_to :monotto_users
+      t.belongs_to :monotto_user
       t.string :name
       t.string :location
       t.string :core

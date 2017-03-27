@@ -16,7 +16,7 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
    end
 
    def update
-     @user = current_bank_admin.users.where(:id=> params[:id]).first
+     @user = current_bank_admin.users.find_by(:bank_identifier=> params[:bank_identifier])
      if @user
        @user.update_attributes(user_params) 
        status = :ok
@@ -27,7 +27,7 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
    end
 
    def destroy
-     @user = current_bank_admin.users.where(:id=> params[:id]).first
+     @user = current_bank_admin.users.find_by(:bank_identifier=> params[:bank_identifier])
      if @user
        @user.destroy
        status = :ok

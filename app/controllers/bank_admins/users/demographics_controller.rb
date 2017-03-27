@@ -1,37 +1,54 @@
-class BankAdmins::Users::DemographicsController < ApplicationController
+class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationController
    
    def index
-     @demographics = current_bank_admin.users.demographics
-     json_response(@demographics, :ok)
+     @user = current_bank_admin.users.find_by(:bank_identifier => params[:user_bank_identifier])
+     @demographics = @user.try(:demographics).select(:id, :key, :value)
+     record = @user.blank? ? "user not found" : @demographic
+     status = @user.blank? ? :not_found : :ok
+     json_response(record, status)
    end
 
    def create
-     @user_demographics = current_bank_admin.users.where(:id=> params[:user_id]).first.try(:demographics)
-     if @user_demographics
-        @demographic =  Demographic.new(demographic_params)
-        @user_demographics << @demographic
-        status = @demographic.errors.any? :unprocessable_entity :  :created
-        json_response(@demographic, status)
+     @user = current_bank_admin.users.find_by(:bank_identifier => params[:user_bank_identifier])
+     @demographics = @user.try(:demographics)
+     if @demographics
+       @demographic =  Demographic.new(demographic_params)
+       @demographics << @demographic
+       record = demographic
+       status = @demographic.errors.any? ? :unprocessable_entity :  :created
      else
-        json_response("user not found", :not_found)
+       record = @user.blank? ? "user not found" : @demographic
+       status = :not_found
      end
+     json_response(record, status)
    end
 
    def update
-     @demographic = current_bank_admin.users
-                   .where(:id => params[:user_id])
-                   .first.try(:demographics).try{ |obj| obj.where(:id=> params[:id]).first }
+     @user = current_bank_admin.users.find_by(:bank_identifier => params[:user_bank_identifier])
+     @demographic = @user.try(:demographics).try{ |obj| obj.find_by(:id=> params[:id])}
      if @demographic
        @demographic.update_attributes(user_params) 
-       status = @demographic.errors.any? :unprocessable_entity :  :ok
-       json_response(@demographic, status)
+       record = @demographic
+       status = @demographic.errors.any? ? :unprocessable_entity :  :ok
      else
-      json_response(@demographic, :not_found)
+      record = @user.blank? ? "user not found" : @demographic
+      status = :not_found
      end 
+      json_response(record, :not_found)
    end
 
    def destroy
-    
+     @user = current_bank_admin.users.find_by(:bank_identifier => params[:user_bank_identifier])
+     @demographic = @user.try(:demographics).try{ |obj| obj.where(:id=> params[:id]).first }
+     if @demographic
+       @demographic.destroy 
+       record = @demographic
+       status = :ok
+     else
+       record = @user.blank? ? "user not found" : @demographic
+       status = :not_found
+     end
+     json_response(record, status) 
    end
 
    protected
