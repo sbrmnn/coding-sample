@@ -1,7 +1,6 @@
 class BankAdmins::SessionsController < BankAdmins::ApplicationController 
+  skip_before_action :require_login, only: [:create], raise: false
   
-  before_action :require_bank_admin_login, only: [:destroy], raise: false
-
   def create
   	check_valid_login?(BankAdmin)
   end
