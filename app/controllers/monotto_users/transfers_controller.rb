@@ -17,26 +17,21 @@ class MonottoUsers::TransfersController < MonottoUsers::ApplicationController
      else
       status = :not_found
      end
-      json_response(@transfer, status)
+     json_response(@transfer, status)
    end
 
    def create
-     @user = current_bank_admin.users.find_by(:bank_identifier => params[:user_bank_identifier])
-     @transfers = @user.try(:transfers)
-     if @transfers.present?
-       @transfer =  Transfer.new(transfer_params)
-       @transfers << @transfer
-       record = @transfer
-       status = @transfer.errors.any? ? :unprocessable_entity :  :created
+     @transfer = Transfer.create(transfer_params)
+     if @transfer.errors.any?
+        status = :unprocessable_entity
      else
-       record = @user.blank? ? "user not found" : @transfer
-       status = :not_found
+        status = :created
      end
-     json_response(record, status)
+     json_response(@transfer, status)
    end
 
    def update
-      @transfer = Transfer.find_by(id: params[:id]).try{ |obj| obj.update_attributes(params[:transfer])}
+      @transfer = Transfer.find_by(id: params[:id]).try{ |obj| obj.update_attributes(transfer_params)}
       if @transfer.present?
         status = :ok
       else
@@ -58,6 +53,6 @@ class MonottoUsers::TransfersController < MonottoUsers::ApplicationController
    protected
 
    def transfer_params
-     params.require(:transfer).permit(:key, :value)
+     params.require(:transfer).permit(:user_id, :origin_account, :destination_account, :amount)
    end
 end

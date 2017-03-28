@@ -9,10 +9,11 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
      @user = User.new(user_params)
      current_bank_admin.financial_institution.users << @user
      if @user.errors.any?
-        json_response(@user, :unprocessable_entity)
+        status = :unprocessable_entity
      else
-        json_response(@user, :created)
+        status = :created
      end
+     json_response(@user, :created)
    end
 
    def update

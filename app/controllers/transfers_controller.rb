@@ -1,3 +1,0 @@
-class TransfersController < ApplicationController
-	
-end

@@ -1,12 +1,12 @@
 class BankAdmins::Users::TransfersController < BankAdmins::ApplicationController
    
-   def index
-     @user = current_bank_admin.users.find_by(:bank_identifier => params[:user_bank_identifier])
-     @transfers = @user.try(:transfers).select(:id, :key, :value)
-     record = @user.blank? ? "user not found" : @transfers
-     status = @user.blank? ? :not_found : :ok
-     json_response(record, status)
-   end
+  def index
+    @user = current_bank_admin.users.find_by(:bank_identifier => params[:user_bank_identifier])
+    @transfers = @user.try(:transfers).select(:id, :key, :value)
+    record = @user.blank? ? "user not found" : @transfers
+    status = @user.blank? ? :not_found : :ok
+    json_response(record, status)
+  end
 =begin   
    def create
      @user = current_bank_admin.users.find_by(:bank_identifier => params[:user_bank_identifier])

@@ -1,8 +1,7 @@
 class User < ApplicationRecord
   has_many :demographics, dependent: :destroy
   has_many :transfers, dependent: :destroy
-  belongs_to :financial_institution
+  has_many :goals, dependent: :destroy
   validates_presence_of :sequence
-  validates_presence_of :financial_institution_id
 end
 

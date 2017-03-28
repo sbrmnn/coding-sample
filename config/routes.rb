@@ -4,29 +4,24 @@ Rails.application.routes.draw do
     scope module: :monotto_users do
       post   "login"       => "sessions#create"
       delete "logout"      => "sessions#destroy"
-      resources :goals
-      resources :users, param: :bank_identifier do
-        scope module: :users do
-          resources :demographics
-          resources :transfers
-        end
-      end
+      resources :financial_institutions
+      resources :transfers
+      resources :users, param: :bank_identifier
+      resources :bank_admins
     end
   end
 
-  resource :bank_admins do
+  resource :bank_admins, except: [:show, :update, :destroy, :create] do
     scope module: :bank_admins do
       post   "login"       => "sessions#create"
       delete "logout"      => "sessions#destroy"
-      resources :goals
       resources :users, param: :bank_identifier do
         scope module: :users do
           resources :demographics
-          resources :transfers
+          resources :transfers, except: [:show, :update, :destroy, :create]
+          resources :goals
         end
       end
     end
   end
-
-  resources :financial_institutions
 end
