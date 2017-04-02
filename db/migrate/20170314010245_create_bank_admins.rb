@@ -6,7 +6,7 @@ class CreateBankAdmins < ActiveRecord::Migration[5.0]
       t.string :name, null: false
       t.string :title, null: false
       t.string :phone, null: false
-      t.text :notes, null: false
+      t.text :notes
       t.boolean :is_primary, default: false
       t.string :password_digest
       t.string :token, unique: true

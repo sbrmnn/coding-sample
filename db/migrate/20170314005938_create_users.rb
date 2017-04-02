@@ -8,7 +8,7 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string :checking_account_identifier, null: false
       t.boolean :transfers_active, default: true
       t.boolean :safety_net_active, default: true
-      t.integer :max_transfer_amount
+      t.decimal :max_transfer_amount, default: 0, precision: 10, scale: 2, null: false
       t.timestamps
     end
     add_index :users, [:financial_institution_id, :bank_identifier], unique: true

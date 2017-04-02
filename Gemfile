@@ -5,8 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-# Activerecord-import is a library for bulk inserting data using ActiveRecord.
-gem 'activerecord-import'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.1'
@@ -34,7 +32,11 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.5'
   gem 'sqlite3'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: :mri
+  gem 'byebug'
+  # factory_girl is a fixtures replacement with a straightforward definition syntax.
+  gem 'factory_girl_rails'
+  gem 'to_factory'
+  gem 'rails-controller-testing'
 end
 
 group :development do

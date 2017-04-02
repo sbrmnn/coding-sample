@@ -4,7 +4,7 @@ class CreateTransfers < ActiveRecord::Migration[5.0]
       t.belongs_to :user, null: false
       t.string :origin_account, null: false
       t.string :destination_account, null: false
-      t.integer :amount, null: false
+      t.decimal :amount, default: 0, precision: 10, scale: 2, null: false
       t.timestamps
     end
   end

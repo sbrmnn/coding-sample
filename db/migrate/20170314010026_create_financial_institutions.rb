@@ -8,7 +8,7 @@ class CreateFinancialInstitutions < ActiveRecord::Migration[5.0]
       t.string :mobile
       t.text :notes
       t.string :relationship_manager
-      t.integer :max_transfer
+      t.decimal :max_transfer_amount, default: 0, precision: 10, scale: 2, null: false
       t.boolean :transfers_active
       t.timestamps
     end

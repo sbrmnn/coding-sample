@@ -1,4 +1,5 @@
 class Goal < ApplicationRecord
   belongs_to :user
-  validates :user, :presence => true
+
+  validates_presence_of :user, :name, :amount, :completion, :priority
 end

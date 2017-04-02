@@ -5,6 +5,11 @@ module ModelAuthenticatable
     has_secure_password
     has_secure_token
   end
+
+  def allow_token_to_be_used_only_once
+    regenerate_token
+    touch(:token_created_at)
+  end
   
   def invalidate_token
     update_columns(token: nil)
