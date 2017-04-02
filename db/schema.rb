@@ -54,13 +54,14 @@ ActiveRecord::Schema.define(version: 20170319184311) do
   end
 
   create_table "goals", force: :cascade do |t|
-    t.integer  "user_id",    null: false
-    t.string   "name",       null: false
-    t.integer  "amount",     null: false
-    t.integer  "completion", null: false
-    t.integer  "priority",   null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "user_id",                      null: false
+    t.string   "name",                         null: false
+    t.string   "tag",        default: "Other"
+    t.integer  "amount",                       null: false
+    t.integer  "completion",                   null: false
+    t.integer  "priority",                     null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.index ["user_id"], name: "index_goals_on_user_id"
   end
 

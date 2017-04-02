@@ -49,6 +49,6 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
    protected
 
    def goal_params
-     params.require(:goal).permit(:name, :amount, :completion, :priority)
+     params.require(:goal).permit(:name, :amount, :completion, :priority, :tag)
    end
 end

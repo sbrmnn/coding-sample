@@ -5,5 +5,6 @@ FactoryGirl.define do
   	amount 100000
   	completion 10
   	priority 1
+  	tag "House"
   end
 end
