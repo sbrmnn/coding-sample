@@ -1,5 +1,6 @@
 class MonottoUsers::GoalsController < MonottoUsers::ApplicationController
-	  def index
+  
+  def index
     @goals = Goal.all.where(params[:goal])
     if @goals.present?
       status = :ok
