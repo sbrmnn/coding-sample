@@ -5,4 +5,9 @@ class CronController < ApplicationController
     User.where('max_transfer_amount > 0').map{ |u| send_to_wrapper(u.id, u.max_transfer_amount, u.checking_account_identifier, u.savings_account_identifier, u.financial_institution_id)}
     render :head => :ok
   end
+
+  # This is just an action where SQS can output messages.
+  def ground
+    render :head => :ok
+  end
 end

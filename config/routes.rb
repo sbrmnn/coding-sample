@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   end
 
   post '/cron/get_transfer_information_for_users' => 'cron#get_transfer_information_for_users'
+  post '/cron/ground' => 'cron#ground'
 
   resource :bank_admins, except: [:show, :update, :destroy, :create] do
     scope module: :bank_admins do
