@@ -18,7 +18,7 @@ gem 'puma', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
-group :production do
+group :production, :cron do # Cron env should have access to all production level gems.
   # Use PostgreSQL as the database for Active Record
   gem 'pg', '~> 0.18.1'
 end
