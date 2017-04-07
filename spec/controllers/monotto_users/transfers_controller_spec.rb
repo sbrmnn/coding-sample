@@ -49,8 +49,8 @@ RSpec.describe MonottoUsers::TransfersController, type: :controller do
       transfer
     end
     it "transfer amount" do
-      put :update, params: {id: transfer.id, transfer: {amount: 50.01}}
-      expect(JSON.parse(response.body)["amount"]).to eq("50.01")
+      put :update, params: {id: transfer.id, transfer: {amount: 50}}
+      expect(JSON.parse(response.body)["amount"]).to eq(50)
     end
   end
 

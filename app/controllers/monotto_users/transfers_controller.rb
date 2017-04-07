@@ -51,9 +51,9 @@ class MonottoUsers::TransfersController < MonottoUsers::ApplicationController
    json_response(@transfer, status) 
   end
 
-   protected
+  protected
 
   def transfer_params
-    params.require(:transfer).permit(:user_id, :origin_account, :destination_account, :amount)
+    params.require(:transfer).permit(:user_id, :origin_account, :destination_account, :amount, :transfer_amount_attempted, :transfer_successful, :next_transfer_datetime )
   end
 end

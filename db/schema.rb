@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170319184311) do
+ActiveRecord::Schema.define(version: 20170407045631) do
 
   create_table "bank_admins", force: :cascade do |t|
     t.integer  "financial_institution_id",                 null: false
@@ -47,10 +47,10 @@ ActiveRecord::Schema.define(version: 20170319184311) do
     t.string   "mobile"
     t.text     "notes"
     t.string   "relationship_manager"
-    t.decimal  "max_transfer_amount",  precision: 10, scale: 2, default: "0.0", null: false
+    t.integer  "max_transfer_amount",  default: 0, null: false
     t.boolean  "transfers_active"
-    t.datetime "created_at",                                                    null: false
-    t.datetime "updated_at",                                                    null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
   end
 
   create_table "goals", force: :cascade do |t|
@@ -78,26 +78,29 @@ ActiveRecord::Schema.define(version: 20170319184311) do
   end
 
   create_table "transfers", force: :cascade do |t|
-    t.integer  "user_id",                                                      null: false
-    t.string   "origin_account",                                               null: false
-    t.string   "destination_account",                                          null: false
-    t.decimal  "amount",              precision: 10, scale: 2, default: "0.0", null: false
-    t.datetime "created_at",                                                   null: false
-    t.datetime "updated_at",                                                   null: false
+    t.integer  "user_id",                               null: false
+    t.string   "origin_account",                        null: false
+    t.string   "destination_account",                   null: false
+    t.integer  "amount",                    default: 0, null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "transfer_amount_attempted"
+    t.boolean  "transfer_successful"
+    t.datetime "next_transfer_datetime"
     t.index ["user_id"], name: "index_transfers_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
-    t.integer  "financial_institution_id",                                             null: false
-    t.string   "sequence",                                                             null: false
-    t.string   "bank_identifier",                                                      null: false
-    t.string   "savings_account_identifier",                                           null: false
-    t.string   "checking_account_identifier",                                          null: false
-    t.boolean  "transfers_active",                                     default: true
-    t.boolean  "safety_net_active",                                    default: true
-    t.decimal  "max_transfer_amount",         precision: 10, scale: 2, default: "0.0", null: false
-    t.datetime "created_at",                                                           null: false
-    t.datetime "updated_at",                                                           null: false
+    t.integer  "financial_institution_id",                   null: false
+    t.string   "sequence",                                   null: false
+    t.string   "bank_identifier",                            null: false
+    t.string   "savings_account_identifier",                 null: false
+    t.string   "checking_account_identifier",                null: false
+    t.boolean  "transfers_active",            default: true
+    t.boolean  "safety_net_active",           default: true
+    t.integer  "max_transfer_amount",         default: 0,    null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.index ["financial_institution_id", "bank_identifier"], name: "index_users_on_financial_institution_id_and_bank_identifier", unique: true
     t.index ["financial_institution_id"], name: "index_users_on_financial_institution_id"
   end
