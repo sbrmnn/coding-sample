@@ -6,7 +6,7 @@ module Transferable
   extend ActiveSupport::Concern
 
   def send_to_wrapper(user_id, max_transfer_amount, origin_account, destination_account, financial_institution_id)
-    uri = URI.parse("http://wrapper.monotto.com/transfer")
+    uri = URI.parse("https://wrapper.monotto.com/transfer")
     request = Net::HTTP::Post.new(uri)
     request.content_type = "application/json"
     request.body = JSON.dump({
