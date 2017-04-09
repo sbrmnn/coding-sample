@@ -32,7 +32,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
     else
       status = :not_found
     end 
-    json_response(@demographic, :not_found)
+    json_response(@demographic, status)
   end
 
   def destroy
