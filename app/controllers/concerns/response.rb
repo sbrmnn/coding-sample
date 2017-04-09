@@ -4,7 +4,7 @@ module Response
   protected
 
   def json_response(record, status)
-    status = :not_found if record.blank?
+    status = :not_found if record.nil?
     case status
       when :unprocessable_entity
         object = record.errors
