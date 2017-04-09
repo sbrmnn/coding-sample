@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407045631) do
+ActiveRecord::Schema.define(version: 20170409193602) do
 
   create_table "bank_admins", force: :cascade do |t|
     t.integer  "financial_institution_id",                 null: false
@@ -58,10 +58,11 @@ ActiveRecord::Schema.define(version: 20170407045631) do
     t.string   "name",                         null: false
     t.string   "tag",        default: "Other"
     t.integer  "amount",                       null: false
-    t.integer  "completion",                   null: false
+    t.integer  "completion", default: 0,       null: false
     t.integer  "priority",                     null: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.index ["user_id", "name"], name: "index_goals_on_user_id_and_name", unique: true
     t.index ["user_id"], name: "index_goals_on_user_id"
   end
 
