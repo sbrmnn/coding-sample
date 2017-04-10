@@ -2,12 +2,12 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
   before_action :find_user
 
   def index
-    @demographics = @user.try(:demographics).where(params[:demographic])
+    @demographics = @user.try(:demographics).select(:id, :key, :value, :created_at, :updated_at).where(params[:demographic])
     json_response(@demographics, :ok)
   end
 
   def show
-    @demographic = @user.try(:demographics).find_by(id: params[:id])
+    @demographic = @user.try(:demographics).select(:id, :key, :value, :created_at, :updated_at).find_by(id: params[:id])
     if @demographic
       status = :ok
     else
