@@ -1,5 +1,7 @@
 class MonottoUsers::TransfersController < MonottoUsers::ApplicationController
 
+  before_action :convert_next_transfer_datetime_to_datetime
+
   def index
     @transfers = Transfer.all.where(params[:transfer])
     if @transfers.present?
@@ -55,5 +57,11 @@ class MonottoUsers::TransfersController < MonottoUsers::ApplicationController
 
   def transfer_params
     params.require(:transfer).permit(:user_id, :origin_account, :destination_account, :amount, :transfer_amount_attempted, :transfer_successful, :next_transfer_datetime )
+  end
+
+  def convert_next_transfer_datetime_to_datetime
+    if params[:transfer] && params[:transfer][:next_transfer_datetime].present?
+      params[:transfer][:next_transfer_datetime] = DateTime.strptime(params[:transfer][:next_transfer_datetime], "%m/%d/%Y")
+    end
   end
 end
