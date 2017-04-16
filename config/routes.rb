@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :swaggers, :only => [:index]
   resource :monotto_users do
     scope module: :monotto_users do
       post   "login"  => "sessions#create"
