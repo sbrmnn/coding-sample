@@ -1,0 +1,226 @@
+swagger: '2.0'
+info:
+  title: API V1
+  version: v1
+schemes: ['https']
+paths:
+  '/users/{user_identifier}/demographics':
+    get:
+      summary: Gets all user demographic data.
+      tags:
+        - Demographics
+      parameters:
+        - name: demographic
+          description: "Filter user demographic by key and/or value"
+          in: body
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of demographic record.
+              key:
+                type: string
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+              value:
+                type: string
+                description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
+        - name: user_identifier
+          description: "Bank Id of user"
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type:application/json
+          in: header
+          required: true
+          type: string
+        - name: "Authorization: Token token={TOKEN}"
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: An array of user demographic data.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id: 
+                  type: integer
+                  description: Id of demographic record.
+                key:
+                  type: string
+                  description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+                value:
+                  type: string
+                  description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
+        '400':
+          description: Not found
+    post:
+      summary: Creates a user demographic record.
+      tags:
+        - Demographics
+      consumes:
+        - application/json
+      parameters:
+        - name: demographic
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+            - key
+            - value
+            properties:
+              id:
+                type: integer
+                description: Unique Id that references the Demographic record.
+              key:
+                type: string
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+              value:
+                type: string
+                description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
+        - name: user_identifier
+          description: "Bank Id for user"
+          in: path
+          required: true
+          type: integer
+        - name: "Authorization: Token token={TOKEN}"
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '201':
+          description: Demographic entry created.
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: Unique Id that references the Demographic record.
+              key:
+                type: string
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+              value:
+                type: string
+                description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
+        '422':
+          description: unprocessable entity
+  '/users/{user_identifier}/demographics/{id}':
+    get:
+      summary: Gets user demographic.
+      tags:
+        - Demographics
+      parameters:
+        - name: user_identifier
+          description: "Bank Id of user"
+          in: path
+          required: true
+          type: integer
+        - name: id
+          description: Id of demographic record for user.
+          in: path
+          required: true
+          type: integer
+        - name: "Authorization: Token token={TOKEN}"
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User demographic info returned.
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of demographic record.
+              key:
+                type: string
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+              value:
+                type: string
+                description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
+    patch:
+      summary: Updates user demographic record.
+      tags:
+        - Demographics
+      parameters:
+        - name: user_identifier
+          description: "Bank Id of user"
+          in: path
+          required: true
+          type: integer
+        - name: id
+          description: Id of demographic record for user.
+          in: path
+          required: true
+          type: integer
+        - name: demographic
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of demographic record.
+              key:
+                type: string
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+              value:
+                type: string
+                description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
+      responses:
+        '200':
+          description: User demographic updated.
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of demographic record.
+              key:
+                type: string
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+              value:
+                type: string
+                description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
+    delete:
+      summary: Deletes user demographic entry.
+      tags:
+        - Demographics
+      parameters:
+        - name: user_identifier
+          in: path
+          required: true
+          type: integer
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - name: "Authorization: Token token={TOKEN}"
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User demographic deleted.
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of demographic record.
+              key:
+                type: string
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+              value:
+                type: string
+                description: Demographic value in relation to the key (ie. Male, Asian, Doctor).

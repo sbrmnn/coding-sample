@@ -7,7 +7,7 @@ class CronController < ApplicationController
     render :head => :ok
   end
 
-  # This is just an action where SQS can output messages.
+  # This is just an empty action where SQS can output messages.
   def ground
     render :head => :ok
   end

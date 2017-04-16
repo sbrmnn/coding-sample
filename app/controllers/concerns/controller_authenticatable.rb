@@ -1,6 +1,8 @@
 module ControllerAuthenticatable
   extend ActiveSupport::Concern
   include ActionController::HttpAuthentication::Token::ControllerMethods
+  include Response
+
   TOKEN_EXPIRATION = 24.hours.ago
 
   def require_bank_admin_login
@@ -17,13 +19,6 @@ module ControllerAuthenticatable
 
   def current_monotto_user
     @current_monotto_user ||= authenticate_monotto_user_token
-  end
-
-  protected
-
-  def render_unauthorized(message)
-    errors = { errors: [ { detail: message } ] }
-    render json: errors, status: :unauthorized
   end
 
   protected

@@ -20,12 +20,16 @@ Rails.application.routes.draw do
     scope module: :bank_admins do
       post   "login"  => "sessions#create"
       delete "logout" => "sessions#destroy"
-      resources :users, param: :bank_identifier do
-        scope module: :users do
-          resources :demographics
-          resources :transfers, except: [:update, :destroy, :create]
-          resources :goals
-        end
+      resources :users, param: :bank_identifier 
+    end
+  end
+
+  resources :users, param: :bank_identifier, :only => [] do # We don't want unscoped user resource endpoints, hence the only hash points to no actions.
+    scope module: :bank_admins do
+      scope module: :users do
+        resources :demographics
+        resources :transfers, except: [:update, :destroy, :create]
+        resources :goals
       end
     end
   end
