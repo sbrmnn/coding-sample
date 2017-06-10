@@ -1,24 +1,46 @@
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Internal API's
+```
+POST   /monotto_users/login(.:format)                          
+DELETE /monotto_users/logout(.:format)                         
+GET    /monotto_users/financial_institutions(.:format)         
+POST   /monotto_users/financial_institutions(.:format)         
+GET    /monotto_users/financial_institutions/:id(.:format)     
+PATCH  /monotto_users/financial_institutions/:id(.:format)     
+PUT    /monotto_users/financial_institutions/:id(.:format)     
+DELETE /monotto_users/financial_institutions/:id(.:format)     
+GET    /monotto_users/transfers(.:format)                      
+POST   /monotto_users/transfers(.:format)                      
+GET    /monotto_users/transfers/:id(.:format)                  
+PATCH  /monotto_users/transfers/:id(.:format)                  
+PUT    /monotto_users/transfers/:id(.:format)                  
+DELETE /monotto_users/transfers/:id(.:format)                  
+GET    /monotto_users/users(.:format)                          
+POST   /monotto_users/users(.:format)                          
+GET    /monotto_users/users/:id(.:format)                      
+PATCH  /monotto_users/users/:id(.:format)                      
+PUT    /monotto_users/users/:id(.:format)                      
+DELETE /monotto_users/users/:id(.:format)                      
+GET    /monotto_users/goals(.:format)                          
+POST   /monotto_users/goals(.:format)                          
+GET    /monotto_users/goals/:id(.:format)                      
+PATCH  /monotto_users/goals/:id(.:format)                      
+PUT    /monotto_users/goals/:id(.:format)                      
+DELETE /monotto_users/goals/:id(.:format)                      
+GET    /monotto_users/demographics(.:format)                   
+POST   /monotto_users/demographics(.:format)                   
+GET    /monotto_users/demographics/:id(.:format)               
+PATCH  /monotto_users/demographics/:id(.:format)               
+PUT    /monotto_users/demographics/:id(.:format)               
+DELETE /monotto_users/demographics/:id(.:format)               
+GET    /monotto_users/bank_admins(.:format)                    
+POST   /monotto_users/bank_admins(.:format)                    
+GET    /monotto_users/bank_admins/:id(.:format)                
+PATCH  /monotto_users/bank_admins/:id(.:format)                
+PUT    /monotto_users/bank_admins/:id(.:format)                
+DELETE /monotto_users/bank_admins/:id(.:format)                
+GET    /monotto_users(.:format)                                
+PATCH  /monotto_users(.:format)                                
+PUT    /monotto_users(.:format)                                
+DELETE /monotto_users(.:format)                                
+POST   /monotto_users(.:format)                                
+```
