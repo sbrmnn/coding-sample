@@ -12,7 +12,7 @@ Login
 <br />
 > Request
 ``` 
-  curl -v https://api.monotto.com/login.json
+  curl -v https://api.monotto.com/monotto_users/login.json
   -H "Content-Type:application/json" 
   -d '{
      "email": STRING,
