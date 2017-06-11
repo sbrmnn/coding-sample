@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170409193602) do
+ActiveRecord::Schema.define(version: 20170610221559) do
 
   create_table "bank_admins", force: :cascade do |t|
     t.integer  "financial_institution_id",                 null: false
@@ -40,8 +40,8 @@ ActiveRecord::Schema.define(version: 20170409193602) do
   end
 
   create_table "financial_institutions", force: :cascade do |t|
-    t.string   "name"
-    t.string   "location"
+    t.string   "name",                             null: false
+    t.string   "location",                         null: false
     t.string   "core"
     t.string   "web"
     t.string   "mobile"
@@ -76,6 +76,11 @@ ActiveRecord::Schema.define(version: 20170409193602) do
     t.datetime "updated_at",       null: false
     t.index ["email"], name: "index_monotto_users_on_email", unique: true
     t.index ["token", "token_created_at"], name: "index_monotto_users_on_token_and_token_created_at"
+  end
+
+  create_table "swaggers", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "transfers", force: :cascade do |t|

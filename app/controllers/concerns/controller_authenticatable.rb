@@ -60,7 +60,7 @@ module ControllerAuthenticatable
   end
 
   def send_auth_token_for_valid_login_of(obj)
-    render json: { token: obj.token }
+    render json: { token: obj.token }, status: 200
   end
 
   def allow_token_to_be_used_only_once_for(obj)
