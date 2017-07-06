@@ -12,9 +12,17 @@ RSpec.describe FinancialInstitution, type: :model do
    end
 
    context "when user max transfer amount is less than the financial institution new max transfer amount" do
-      it "cascades max transfer amount of the financial institution to the users" do
+     it "cascades max transfer amount of the financial institution to the users" do
         financial_institution.update_attribute(:max_transfer_amount, 90)
         expect(user.max_transfer_amount).to eq(40)
+     end
+   end
+
+   context "when user max transfer amount negative" do
+     it "errors out" do
+        financial_institution.max_transfer_amount = -1
+        financial_institution.save
+        expect(financial_institution.errors[:max_transfer_amount][0]).to eq('must be greater than or equal to 0')
      end
    end
   end

@@ -1,7 +1,7 @@
 class BankAdmins::UsersController < BankAdmins::ApplicationController
    
    def index
-     @users = current_bank_admin.users.where(params[:user])
+     @users = current_bank_admin.users.where(user_params)
      json_response(@users, :ok)
    end
 
@@ -47,7 +47,11 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
    protected
    
    def user_params
-     params.require(:user).permit(:sequence, :bank_identifier, :savings_account_identifier, :checking_account_identifier,
+    if params[:user].nil?
+      {}
+    else
+      params.require(:user).permit(:sequence, :bank_identifier, :savings_account_identifier, :checking_account_identifier,
                                   :transfers_active, :safety_net_active, :max_transfer_amount)
+    end
    end
 end

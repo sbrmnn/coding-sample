@@ -2,7 +2,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
   before_action :find_user
 
   def index
-    @demographics = @user.try(:demographics).select(:id, :key, :value, :created_at, :updated_at).where(params[:demographic])
+    @demographics = @user.try(:demographics).select(:id, :key, :value, :created_at, :updated_at).where(demographic_params)
     json_response(@demographics, :ok)
   end
 
@@ -49,6 +49,10 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
   protected
 
   def demographic_params
-    params.require(:demographic).permit(:key, :value)
+    if params[:demographic].nil?
+      {}
+    else
+     params.require(:demographic).permit(:key, :value)
+    end
   end
 end

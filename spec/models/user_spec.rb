@@ -18,5 +18,12 @@ RSpec.describe User, type: :model do
        expect(user.max_transfer_amount).to eq(financial_institution.max_transfer_amount-1)
       end
     end
+    context "when user max transfer amount negative" do
+     it "errors out" do
+        user.max_transfer_amount = -1
+        user.save
+        expect(user.errors[:max_transfer_amount][0]).to eq('must be greater than or equal to 0')
+     end
+    end
   end
 end

@@ -1,7 +1,7 @@
 class MonottoUsers::FinancialInstitutionsController < MonottoUsers::ApplicationController
    
    def index
-     @financial_institutions = FinancialInstitution.all.where(params[:financial_institution])
+     @financial_institutions = FinancialInstitution.all.where(financial_institution_params)
      if @financial_institutions.present?
        status = :ok
      else
@@ -54,6 +54,10 @@ class MonottoUsers::FinancialInstitutionsController < MonottoUsers::ApplicationC
    protected
 
    def financial_institution_params
-     params.require(:financial_institution).permit(:name, :location, :core, :web, :mobile, :notes, :relationship_manager, :max_transfer, :transfers_active)
+     if params[:financial_institution].nil?
+      {}
+     else
+      params.require(:financial_institution).permit(:name, :location, :core, :web, :mobile, :notes, :relationship_manager, :max_transfer, :transfers_active)
+     end
    end
 end

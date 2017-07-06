@@ -42,20 +42,28 @@ module ControllerAuthenticatable
   end
 
   def authenticate_monotto_user_token
-    authenticate_with_http_token do |token, options|
-      if monotto_user = MonottoUser.with_unexpired_token(token, TOKEN_EXPIRATION)
-        analyze_token_safely(token, monotto_user)
-        monotto_user
+    begin
+      authenticate_with_http_token do |token, options|
+        if monotto_user = MonottoUser.with_unexpired_token(token, TOKEN_EXPIRATION)
+          analyze_token_safely(token, monotto_user)
+          monotto_user
+        end
       end
+    rescue
+      return nil
     end
   end
   
   def authenticate_bank_admin_token
-    authenticate_with_http_token do |token, options|
-      if bank_admin = BankAdmin.with_unexpired_token(token, TOKEN_EXPIRATION)
-        analyze_token_safely(token, bank_admin)
-        bank_admin
+    begin
+      authenticate_with_http_token do |token, options|
+        if bank_admin = BankAdmin.with_unexpired_token(token, TOKEN_EXPIRATION)
+          analyze_token_safely(token, bank_admin)
+          bank_admin
+        end
       end
+    rescue
+      return nil
     end
   end
 

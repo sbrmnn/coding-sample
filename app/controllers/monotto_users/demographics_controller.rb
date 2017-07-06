@@ -1,7 +1,7 @@
 class MonottoUsers::DemographicsController < MonottoUsers::ApplicationController
   
   def index
-    @demographics = Demographic.all.where(params[:demographic])
+    @demographics = Demographic.all.where(demographic_params)
     if @demographics.present?
       status = :ok
     else
@@ -54,6 +54,10 @@ class MonottoUsers::DemographicsController < MonottoUsers::ApplicationController
   protected
 
   def demographic_params
-    params.require(:demographic).permit(:user_id,:key, :value)
+    if params[:demographic].nil?
+      {}
+    else
+      params.require(:demographic).permit(:user_id,:key, :value)
+    end
   end
 end
