@@ -8,8 +8,8 @@ class User < ApplicationRecord
   before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
   
   validates :max_transfer_amount, numericality: { greater_than_or_equal_to: 0}
-  validates_presence_of :financial_institution, :sequence, :bank_identifier, :savings_account_identifier, :checking_account_identifier
-  validates :bank_identifier, uniqueness: { scope: :financial_institution_id }
+  validates_presence_of :financial_institution, :sequence, :bank_user_id, :savings_account_identifier, :checking_account_identifier
+  validates :bank_user_id, uniqueness: { scope: :financial_institution_id }
   
   protected
 

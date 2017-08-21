@@ -4,7 +4,7 @@ class BankAdmins::ApplicationController < ApplicationController
   protected
 
   def find_user
-    @user ||= current_bank_admin.users.find_by(:bank_identifier => params[:user_bank_identifier])
+    @user ||= current_bank_admin.users.find_by(:bank_user_id => params[:user_bank_user_id])
     if @user.blank?
       json_response("user not found", :not_found) and return
     end

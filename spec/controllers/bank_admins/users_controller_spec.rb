@@ -33,7 +33,7 @@ RSpec.describe BankAdmins::UsersController, type: :controller do
     end
 
     it "user" do
-      get :show, params: {bank_identifier: user.bank_identifier}
+      get :show, params: {bank_user_id: user.bank_user_id}
       expect(assigns(:user)).to eq (user)
     end
   end
@@ -45,24 +45,24 @@ RSpec.describe BankAdmins::UsersController, type: :controller do
 
     context "greater than financial institution max transfer rate" do     
       it "updates max transfer rate (one signficant digit)" do
-        put :update, params: {bank_identifier: user.bank_identifier, user: {max_transfer_amount: 5.00} }
+        put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: 5.00} }
         JSON.parse(response.body)["max_transfer_amount"].should == 5
       end
 
       it "updates max transfer rate (two signficant digits)" do
-        put :update, params: {bank_identifier: user.bank_identifier, user: {max_transfer_amount: 5.01} }
+        put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: 5.01} }
         JSON.parse(response.body)["max_transfer_amount"].should == 5
       end
 
       it "updates max transfer rate (two signficant digits)" do
-        put :update, params: {bank_identifier: user.bank_identifier, user: {max_transfer_amount: 5.21} }
+        put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: 5.21} }
         JSON.parse(response.body)["max_transfer_amount"].should == 5
       end
     end
 
     context "less or equal to than financial institution max transfer rate" do
       it "doesn't update max transfer rate" do
-        put :update, params: {bank_identifier: user.bank_identifier, user: {max_transfer_amount: user.financial_institution.max_transfer_amount + 1} }
+        put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: user.financial_institution.max_transfer_amount + 1} }
         JSON.parse(response.body)["max_transfer_amount"].should == user.financial_institution.max_transfer_amount
       end
     end
@@ -75,7 +75,7 @@ RSpec.describe BankAdmins::UsersController, type: :controller do
 
     it "user" do
       expect{ 
-        delete :destroy, params: {bank_identifier: user.bank_identifier}
+        delete :destroy, params: {bank_user_id: user.bank_user_id}
       }.to change(User, :count).by(-1)
     end
   end

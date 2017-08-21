@@ -659,7 +659,7 @@ paths:
               transfer_successful:
                 type: boolean
                 description: Boolean value indicating if transfer was successful.
-              next_transfer_datetime:
+              next_transfer_date:
                 type: string
                 description: Date for next transfer.
         - name: Content-Type
@@ -699,7 +699,7 @@ paths:
                 transfer_successful:
                   type: boolean
                   description: Boolean value indicating if transfer was successful.
-                next_transfer_datetime:
+                next_transfer_date:
                   type: string
                   description: Date for next transfer.
         '400':
@@ -756,7 +756,7 @@ paths:
               transfer_successful:
                 type: boolean
                 description: Boolean value indicating if transfer was successful.
-              next_transfer_datetime:
+              next_transfer_date:
                 type: string
                 description: Date for next transfer.
         '400':
@@ -789,7 +789,7 @@ paths:
                 sequence: 
                   type: integer
                   description: Customizable value to verify request value.
-                bank_identifier: 
+                bank_user_id: 
                   type: string
                   description: Bank Id of user.
                 savings_account_identifier:
@@ -835,7 +835,7 @@ paths:
                 sequence: 
                   type: integer
                   description: Customizable value to verify request value.
-                bank_identifier: 
+                bank_user_id: 
                   type: string
                   description: Bank Id of user.
                 savings_account_identifier:
@@ -885,7 +885,7 @@ paths:
               sequence: 
                 type: integer
                 description: Id of transfer record.
-              bank_identifier: 
+              bank_user_id: 
                 type: string
                 description: Origin Account that money was taken out of.
               savings_account_identifier:
@@ -936,7 +936,7 @@ paths:
               sequence: 
                 type: integer
                 description: Id of transfer record.
-              bank_identifier: 
+              bank_user_id: 
                 type: string
                 description: Origin Account that money was taken out of.
               savings_account_identifier:
@@ -963,7 +963,7 @@ paths:
               sequence: 
                 type: integer
                 description: Id of transfer record.
-              bank_identifier: 
+              bank_user_id: 
                 type: string
                 description: Origin Account that money was taken out of.
               savings_account_identifier:
@@ -1014,7 +1014,7 @@ paths:
               sequence: 
                 type: integer
                 description: Id of transfer record.
-              bank_identifier: 
+              bank_user_id: 
                 type: string
                 description: Origin Account that money was taken out of.
               savings_account_identifier:
@@ -1041,7 +1041,7 @@ paths:
               sequence: 
                 type: integer
                 description: Id of transfer record.
-              bank_identifier: 
+              bank_user_id: 
                 type: string
                 description: Origin Account that money was taken out of.
               savings_account_identifier:

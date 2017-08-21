@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170610221559) do
+ActiveRecord::Schema.define(version: 20170812012435) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "bank_admins", force: :cascade do |t|
     t.integer  "financial_institution_id",                 null: false
@@ -25,9 +28,9 @@ ActiveRecord::Schema.define(version: 20170610221559) do
     t.datetime "token_created_at"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
-    t.index ["financial_institution_id", "email"], name: "index_bank_admins_on_financial_institution_id_and_email", unique: true
-    t.index ["financial_institution_id"], name: "index_bank_admins_on_financial_institution_id"
-    t.index ["token", "token_created_at"], name: "index_bank_admins_on_token_and_token_created_at"
+    t.index ["financial_institution_id", "email"], name: "index_bank_admins_on_financial_institution_id_and_email", unique: true, using: :btree
+    t.index ["financial_institution_id"], name: "index_bank_admins_on_financial_institution_id", using: :btree
+    t.index ["token", "token_created_at"], name: "index_bank_admins_on_token_and_token_created_at", using: :btree
   end
 
   create_table "demographics", force: :cascade do |t|
@@ -36,21 +39,21 @@ ActiveRecord::Schema.define(version: 20170610221559) do
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_demographics_on_user_id"
+    t.index ["user_id"], name: "index_demographics_on_user_id", using: :btree
   end
 
   create_table "financial_institutions", force: :cascade do |t|
-    t.string   "name",                             null: false
-    t.string   "location",                         null: false
+    t.string   "name",                                                          null: false
+    t.string   "location",                                                      null: false
     t.string   "core"
     t.string   "web"
     t.string   "mobile"
     t.text     "notes"
     t.string   "relationship_manager"
-    t.integer  "max_transfer_amount",  default: 0, null: false
+    t.decimal  "max_transfer_amount",  precision: 10, scale: 2, default: "0.0", null: false
     t.boolean  "transfers_active"
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.datetime "created_at",                                                    null: false
+    t.datetime "updated_at",                                                    null: false
   end
 
   create_table "goals", force: :cascade do |t|
@@ -62,8 +65,8 @@ ActiveRecord::Schema.define(version: 20170610221559) do
     t.integer  "priority",                     null: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
-    t.index ["user_id", "name"], name: "index_goals_on_user_id_and_name", unique: true
-    t.index ["user_id"], name: "index_goals_on_user_id"
+    t.index ["user_id", "name"], name: "index_goals_on_user_id_and_name", unique: true, using: :btree
+    t.index ["user_id"], name: "index_goals_on_user_id", using: :btree
   end
 
   create_table "monotto_users", force: :cascade do |t|
@@ -74,41 +77,50 @@ ActiveRecord::Schema.define(version: 20170610221559) do
     t.datetime "token_created_at"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.index ["email"], name: "index_monotto_users_on_email", unique: true
-    t.index ["token", "token_created_at"], name: "index_monotto_users_on_token_and_token_created_at"
+    t.index ["email"], name: "index_monotto_users_on_email", unique: true, using: :btree
+    t.index ["token", "token_created_at"], name: "index_monotto_users_on_token_and_token_created_at", using: :btree
   end
 
-  create_table "swaggers", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "transactions", force: :cascade do |t|
+    t.text     "original_description"
+    t.text     "split_type"
+    t.text     "category"
+    t.string   "currency",             limit: 1
+    t.decimal  "amount",                         precision: 10, scale: 2, default: "0.0", null: false
+    t.text     "user_description"
+    t.text     "memo"
+    t.text     "classification"
+    t.text     "account_name"
+    t.text     "simple_description"
+    t.integer  "balance"
+    t.integer  "user_id"
+    t.datetime "created_at",                                                              null: false
+    t.datetime "updated_at",                                                              null: false
+    t.index ["user_id"], name: "index_transactions_on_user_id", using: :btree
   end
 
-  create_table "transfers", force: :cascade do |t|
-    t.integer  "user_id",                               null: false
-    t.string   "origin_account",                        null: false
-    t.string   "destination_account",                   null: false
-    t.integer  "amount",                    default: 0, null: false
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
-    t.integer  "transfer_amount_attempted"
-    t.boolean  "transfer_successful"
-    t.datetime "next_transfer_datetime"
-    t.index ["user_id"], name: "index_transfers_on_user_id"
-  end
+# Could not dump table "transfers" because of following StandardError
+#   Unknown type 'status' for column 'status'
 
   create_table "users", force: :cascade do |t|
-    t.integer  "financial_institution_id",                   null: false
-    t.string   "sequence",                                   null: false
-    t.string   "bank_identifier",                            null: false
-    t.string   "savings_account_identifier",                 null: false
-    t.string   "checking_account_identifier",                null: false
-    t.boolean  "transfers_active",            default: true
-    t.boolean  "safety_net_active",           default: true
-    t.integer  "max_transfer_amount",         default: 0,    null: false
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
-    t.index ["financial_institution_id", "bank_identifier"], name: "index_users_on_financial_institution_id_and_bank_identifier", unique: true
-    t.index ["financial_institution_id"], name: "index_users_on_financial_institution_id"
+    t.integer  "financial_institution_id",                                             null: false
+    t.string   "sequence",                                                             null: false
+    t.string   "bank_user_id",                                                         null: false
+    t.string   "savings_account_identifier",                                           null: false
+    t.string   "checking_account_identifier",                                          null: false
+    t.boolean  "transfers_active",                                     default: true
+    t.boolean  "safety_net_active",                                    default: true
+    t.decimal  "max_transfer_amount",         precision: 10, scale: 2, default: "0.0", null: false
+    t.datetime "created_at",                                                           null: false
+    t.datetime "updated_at",                                                           null: false
+    t.index ["financial_institution_id", "bank_user_id"], name: "index_users_on_financial_institution_id_and_bank_user_id", unique: true, using: :btree
+    t.index ["financial_institution_id"], name: "index_users_on_financial_institution_id", using: :btree
   end
 
+  add_foreign_key "bank_admins", "financial_institutions"
+  add_foreign_key "demographics", "users"
+  add_foreign_key "goals", "users"
+  add_foreign_key "transactions", "users"
+  add_foreign_key "transfers", "users"
+  add_foreign_key "users", "financial_institutions"
 end

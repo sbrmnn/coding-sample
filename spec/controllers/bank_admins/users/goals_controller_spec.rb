@@ -12,7 +12,7 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
   describe "index" do
     before do
       goal
-      get :index, params: {user_bank_identifier: user.bank_identifier}
+      get :index, params: {user_bank_user_id: user.bank_user_id}
     end
     
     it "gets a list of goals" do
@@ -22,7 +22,7 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
   describe "create" do
     it "goal" do
       expect {
-         post :create, params: {user_bank_identifier: user.bank_identifier, goal: FactoryGirl.attributes_for(:goal)}
+         post :create, params: {user_bank_user_id: user.bank_user_id, goal: FactoryGirl.attributes_for(:goal)}
       }.to change(Goal, :count).by(1)
     end
   end
@@ -32,14 +32,14 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
     end
 
     it "goal" do
-      get :show, params: {user_bank_identifier: user.bank_identifier, id: goal.id}
+      get :show, params: {user_bank_user_id: user.bank_user_id, id: goal.id}
       expect(JSON.parse(response.body)).to eq(JSON.parse(goal.to_json))
     end
   end
   describe "update" do
     before do
       goal
-      put :update, params: {user_bank_identifier: user.bank_identifier, id: goal.id, goal: {name: "Save for a Car", value: 10000}}
+      put :update, params: {user_bank_user_id: user.bank_user_id, id: goal.id, goal: {name: "Save for a Car", value: 10000}}
     end
 
     it "goal key" do
@@ -57,7 +57,7 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
     
     it "goal" do
       expect{ 
-        delete :destroy, params: {user_bank_identifier: user.bank_identifier, id: goal.id}
+        delete :destroy, params: {user_bank_user_id: user.bank_user_id, id: goal.id}
       }.to change(Goal, :count).by(-1)
     end
   end

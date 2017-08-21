@@ -17,7 +17,7 @@ RSpec.describe BankAdmins::Users::TransfersController, type: :controller do
 
   describe "index" do
     before do
-      get :index, params: {user_bank_identifier: user.bank_identifier}
+      get :index, params: {user_bank_user_id: user.bank_user_id}
     end
     
     it "gets a list of transfers" do
@@ -28,7 +28,7 @@ RSpec.describe BankAdmins::Users::TransfersController, type: :controller do
   describe "show" do
 
     it "transfer" do
-      get :show, params: {user_bank_identifier: user.bank_identifier, id: transfer.id}
+      get :show, params: {user_bank_user_id: user.bank_user_id, id: transfer.id}
       expect(JSON.parse(response.body)).to eq(JSON.parse(transfer.to_json))
     end
   end

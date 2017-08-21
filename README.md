@@ -232,7 +232,7 @@ response furthur by passing in optional parameter values.*
   -d '{
       "user": {
        "sequence": String (Optional),
-       "bank_identifier": String (Optional),
+       "bank_user_id": String (Optional),
        "savings_account_identifier": String (Optional),
        "checking_account_identifier": String (Optional),
        "transfers_active": Boolean (Optional), 
@@ -247,7 +247,7 @@ response furthur by passing in optional parameter values.*
    {
     "id": Integer,
     "sequence": String (Optional),
-    "bank_identifier": String (Optional),
+    "bank_user_id": String (Optional),
     "savings_account_identifier": String (Optional),
     "checking_account_identifier": String (Optional),
     "transfers_active": Boolean (Optional), 
@@ -272,7 +272,7 @@ response furthur by passing in optional parameter values.*
   -d '{
       "user": {
        "sequence": String (Required),
-       "bank_identifier": String (Required),
+       "bank_user_id": String (Required),
        "savings_account_identifier": String (Required),
        "checking_account_identifier": String (Required),
        "financial_institution_id": Integer (Required),
@@ -286,7 +286,7 @@ response furthur by passing in optional parameter values.*
      {
        "id": Integer,
        "sequence": String (Required),
-       "bank_identifier": String (Required),
+       "bank_user_id": String (Required),
        "savings_account_identifier": String (Required),
        "checking_account_identifier": String (Required),
        "financial_institution_id": Integer (Required),
@@ -311,7 +311,7 @@ response furthur by passing in optional parameter values.*
   {
    "id": Integer,
    "sequence": String (Required),
-   "bank_identifier": String (Required),
+   "bank_user_id": String (Required),
    "savings_account_identifier": String (Required),
    "checking_account_identifier": String (Required),
    "financial_institution_id": Integer (Required),
@@ -333,7 +333,7 @@ response furthur by passing in optional parameter values.*
   -d '{
       "user": {
        "sequence": String (Optional),
-       "bank_identifier": String (Optional),
+       "bank_user_id": String (Optional),
        "savings_account_identifier": String (Optional),
        "checking_account_identifier": String (Optional),
        "transfers_active": Boolean (Optional), 
@@ -347,7 +347,7 @@ response furthur by passing in optional parameter values.*
   {
    "id": Integer,
    "sequence": String (Required),
-   "bank_identifier": String (Required),
+   "bank_user_id": String (Required),
    "savings_account_identifier": String (Required),
    "checking_account_identifier": String (Required),
    "financial_institution_id": Integer (Required),
@@ -372,7 +372,7 @@ response furthur by passing in optional parameter values.*
    {
    "id": Integer,
    "sequence": String (Required),
-   "bank_identifier": String (Required),
+   "bank_user_id": String (Required),
    "savings_account_identifier": String (Required),
    "checking_account_identifier": String (Required),
    "financial_institution_id": Integer (Required),

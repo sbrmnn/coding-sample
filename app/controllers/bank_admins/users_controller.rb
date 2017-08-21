@@ -13,7 +13,7 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
    end
 
    def show
-     @user = current_bank_admin.users.find_by(bank_identifier:  params[:bank_identifier])
+     @user = current_bank_admin.users.find_by(bank_user_id:  params[:bank_user_id])
      if @user
        status = :ok
      else
@@ -23,7 +23,7 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
   end
 
    def update
-     @user = current_bank_admin.users.find_by(bank_identifier: params[:bank_identifier])
+     @user = current_bank_admin.users.find_by(bank_user_id: params[:bank_user_id])
      if @user
        @user.update_attributes(user_params) 
        status = @user.errors.any? ? :unprocessable_entity :  :ok
@@ -34,7 +34,7 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
    end
 
    def destroy
-     @user = current_bank_admin.users.find_by(bank_identifier: params[:bank_identifier])
+     @user = current_bank_admin.users.find_by(bank_user_id: params[:bank_user_id])
      if @user
        @user.destroy
        status = :ok
@@ -50,7 +50,7 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
     if params[:user].nil?
       {}
     else
-      params.require(:user).permit(:sequence, :bank_identifier, :savings_account_identifier, :checking_account_identifier,
+      params.require(:user).permit(:sequence, :bank_user_id, :savings_account_identifier, :checking_account_identifier,
                                   :transfers_active, :safety_net_active, :max_transfer_amount)
     end
    end

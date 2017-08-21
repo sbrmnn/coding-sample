@@ -892,7 +892,7 @@
                                     "type": "boolean",
                                     "description": "Boolean value indicating if transfer was successful."
                                 },
-                                "next_transfer_datetime": {
+                                "next_transfer_date": {
                                     "type": "string",
                                     "description": "Date for next transfer."
                                 }
@@ -945,7 +945,7 @@
                                         "type": "boolean",
                                         "description": "Boolean value indicating if transfer was successful."
                                     },
-                                    "next_transfer_datetime": {
+                                    "next_transfer_date": {
                                         "type": "string",
                                         "description": "Date for next transfer."
                                     }
@@ -1024,7 +1024,7 @@
                                     "type": "boolean",
                                     "description": "Boolean value indicating if transfer was successful."
                                 },
-                                "next_transfer_datetime": {
+                                "next_transfer_date": {
                                     "type": "string",
                                     "description": "Date for next transfer."
                                 }

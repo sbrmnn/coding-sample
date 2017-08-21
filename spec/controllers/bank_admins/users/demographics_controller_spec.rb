@@ -12,7 +12,7 @@ RSpec.describe BankAdmins::Users::DemographicsController, type: :controller do
   describe "index" do
     before do
       demographic
-      get :index, params: {user_bank_identifier: user.bank_identifier}
+      get :index, params: {user_bank_user_id: user.bank_user_id}
     end
     
     it "gets a list of demographics" do
@@ -22,7 +22,7 @@ RSpec.describe BankAdmins::Users::DemographicsController, type: :controller do
   describe "create" do
     it "creates demographic" do
       expect {
-         post :create, params: {user_bank_identifier: user.bank_identifier, demographic: FactoryGirl.attributes_for(:demographic)}
+         post :create, params: {user_bank_user_id: user.bank_user_id, demographic: FactoryGirl.attributes_for(:demographic)}
       }.to change(Demographic, :count).by(1)
     end
   end
@@ -32,14 +32,14 @@ RSpec.describe BankAdmins::Users::DemographicsController, type: :controller do
     end
 
     it "shows demographic" do
-      get :show, params: {user_bank_identifier: user.bank_identifier, id: demographic.id}
+      get :show, params: {user_bank_user_id: user.bank_user_id, id: demographic.id}
       expect(JSON.parse(response.body)).to eq(JSON.parse(demographic.to_json))
     end
   end
   describe "update" do
     before do
       demographic
-      put :update, params: {user_bank_identifier: user.bank_identifier, id: demographic.id, demographic: {key: "Edited Key", value: "Edited Value"}}
+      put :update, params: {user_bank_user_id: user.bank_user_id, id: demographic.id, demographic: {key: "Edited Key", value: "Edited Value"}}
     end
 
     it "updates demographic key" do
@@ -57,7 +57,7 @@ RSpec.describe BankAdmins::Users::DemographicsController, type: :controller do
     
     it "deletes demographic" do
       expect{ 
-        delete :destroy, params: {user_bank_identifier: user.bank_identifier, id: demographic.id}
+        delete :destroy, params: {user_bank_user_id: user.bank_user_id, id: demographic.id}
       }.to change(Demographic, :count).by(-1)
     end
   end
