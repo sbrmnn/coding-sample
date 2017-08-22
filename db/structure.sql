@@ -266,7 +266,6 @@ CREATE TABLE transactions (
     simple_description text,
     user_id integer,
     balance numeric(10,2) DEFAULT 0 NOT NULL,
-    end_date timestamp without time zone,
     date date
 );
 
@@ -295,7 +294,7 @@ ALTER SEQUENCE transactions_id_seq OWNED BY transactions.id;
 --
 
 CREATE TABLE transfers (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     user_id integer NOT NULL,
     origin_account character varying NOT NULL,
     destination_account character varying NOT NULL,
@@ -304,7 +303,8 @@ CREATE TABLE transfers (
     updated_at timestamp without time zone NOT NULL,
     transfer_amount_attempted integer,
     next_transfer_date date,
-    status status
+    status status,
+    end_date date
 );
 
 
@@ -664,6 +664,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170812011852'),
 ('20170812012435'),
 ('20170818203744'),
+('20170819030439'),
 ('20170819030722'),
 ('20170821031656'),
 ('20170821031905'),
