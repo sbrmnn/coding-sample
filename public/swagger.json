@@ -888,10 +888,6 @@
                                     "type": "integer",
                                     "description": "Amount of times transfer was attempted."
                                 },
-                                "transfer_successful": {
-                                    "type": "boolean",
-                                    "description": "Boolean value indicating if transfer was successful."
-                                },
                                 "next_transfer_date": {
                                     "type": "string",
                                     "description": "Date for next transfer."
@@ -940,10 +936,6 @@
                                     "transfer_amount_attempted": {
                                         "type": "integer",
                                         "description": "Amount of times transfer was attempted."
-                                    },
-                                    "transfer_successful": {
-                                        "type": "boolean",
-                                        "description": "Boolean value indicating if transfer was successful."
                                     },
                                     "next_transfer_date": {
                                         "type": "string",
@@ -1019,10 +1011,6 @@
                                 "transfer_amount_attempted": {
                                     "type": "integer",
                                     "description": "Amount of times transfer was attempted."
-                                },
-                                "transfer_successful": {
-                                    "type": "boolean",
-                                    "description": "Boolean value indicating if transfer was successful."
                                 },
                                 "next_transfer_date": {
                                     "type": "string",

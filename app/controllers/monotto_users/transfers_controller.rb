@@ -56,7 +56,7 @@ class MonottoUsers::TransfersController < MonottoUsers::ApplicationController
   protected
 
   def transfer_params
-    params.require(:transfer).permit(:user_id, :origin_account, :destination_account, :amount, :transfer_amount_attempted, :transfer_successful, :next_transfer_date )
+    params.require(:transfer).permit(:user_id, :origin_account, :destination_account, :amount, :transfer_amount_attempted, :next_transfer_date )
   end
 
   def convert_next_transfer_date_to_date

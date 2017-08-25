@@ -298,13 +298,13 @@ CREATE TABLE transfers (
     user_id integer NOT NULL,
     origin_account character varying NOT NULL,
     destination_account character varying NOT NULL,
-    amount integer DEFAULT 0 NOT NULL,
+    amount numeric(10,2) DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    transfer_amount_attempted integer,
+    transfer_amount_attempted numeric(10,2),
     next_transfer_date date,
     status status,
-    end_date date
+    end_date timestamp without time zone
 );
 
 
@@ -669,6 +669,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170821031656'),
 ('20170821031905'),
 ('20170821032204'),
-('20170821032510');
+('20170821032510'),
+('20170822164027'),
+('20170822164101'),
+('20170824212310');
 
 
