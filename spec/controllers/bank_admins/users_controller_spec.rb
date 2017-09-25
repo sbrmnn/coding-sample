@@ -45,25 +45,26 @@ RSpec.describe BankAdmins::UsersController, type: :controller do
 
     context "greater than financial institution max transfer rate" do     
       it "updates max transfer rate (one signficant digit)" do
+        byebug
         put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: 5.00} }
-        JSON.parse(response.body)["max_transfer_amount"].should == 5
+        JSON.parse(response.body)["max_transfer_amount"].should == 5.to_s
       end
 
       it "updates max transfer rate (two signficant digits)" do
         put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: 5.01} }
-        JSON.parse(response.body)["max_transfer_amount"].should == 5
+        JSON.parse(response.body)["max_transfer_amount"].should == 5.01.to_s
       end
 
       it "updates max transfer rate (two signficant digits)" do
         put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: 5.21} }
-        JSON.parse(response.body)["max_transfer_amount"].should == 5
+        JSON.parse(response.body)["max_transfer_amount"].should == 5.21.to_s
       end
     end
 
     context "less or equal to than financial institution max transfer rate" do
       it "doesn't update max transfer rate" do
         put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: user.financial_institution.max_transfer_amount + 1} }
-        JSON.parse(response.body)["max_transfer_amount"].should == user.financial_institution.max_transfer_amount
+        JSON.parse(response.body)["max_transfer_amount"].should == user.financial_institution.max_transfer_amount.to_s
       end
     end
   end
