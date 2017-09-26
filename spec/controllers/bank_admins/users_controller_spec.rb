@@ -44,20 +44,14 @@ RSpec.describe BankAdmins::UsersController, type: :controller do
     end
 
     context "greater than financial institution max transfer rate" do     
-      it "updates max transfer rate (one signficant digit)" do
-        byebug
+      it "updates max transfer rate" do
         put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: 5.00} }
-        JSON.parse(response.body)["max_transfer_amount"].should == 5.to_s
+        JSON.parse(response.body)["max_transfer_amount"].should == 5.0.to_s
       end
 
       it "updates max transfer rate (two signficant digits)" do
         put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: 5.01} }
         JSON.parse(response.body)["max_transfer_amount"].should == 5.01.to_s
-      end
-
-      it "updates max transfer rate (two signficant digits)" do
-        put :update, params: {bank_user_id: user.bank_user_id, user: {max_transfer_amount: 5.21} }
-        JSON.parse(response.body)["max_transfer_amount"].should == 5.21.to_s
       end
     end
 

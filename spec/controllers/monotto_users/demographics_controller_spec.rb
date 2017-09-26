@@ -16,7 +16,7 @@ RSpec.describe MonottoUsers::DemographicsController, type: :controller do
     end
 
     it "gets a list of demographics" do
-      expect(JSON.parse(response.body)).to eq(JSON.parse([demographic].to_json))
+      expect(JSON.parse(response.body)).to eq([JSON.parse(demographic.to_json)])
     end
   end
 

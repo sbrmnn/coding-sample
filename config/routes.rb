@@ -6,7 +6,6 @@ Rails.application.routes.draw do
       post   "login"  => "sessions#create"
       delete "logout" => "sessions#destroy"
       resources :financial_institutions
-      resources :transfers
       resources :users
       resources :goals
       resources :demographics
@@ -23,7 +22,6 @@ Rails.application.routes.draw do
     resources :users, param: :bank_user_id do
         scope module: :users do
           resources :demographics
-          resources :transfers, except: [:update, :destroy, :create]
           resources :goals
         end
     end
