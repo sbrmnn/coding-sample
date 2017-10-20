@@ -175,13 +175,13 @@ ALTER SEQUENCE financial_institutions_id_seq OWNED BY financial_institutions.id;
 CREATE TABLE goals (
     id integer NOT NULL,
     user_id integer NOT NULL,
-    name character varying NOT NULL,
+    type character varying NOT NULL,
     tag character varying DEFAULT 'Other'::character varying,
-    amount integer NOT NULL,
-    completion integer DEFAULT 0 NOT NULL,
     priority integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    target_amount numeric(10,2) DEFAULT 0 NOT NULL,
+    collection numeric(10,2) DEFAULT 0 NOT NULL
 );
 
 
@@ -537,10 +537,17 @@ CREATE INDEX index_goals_on_user_id ON goals USING btree (user_id);
 
 
 --
--- Name: index_goals_on_user_id_and_name; Type: INDEX; Schema: public; Owner: -
+-- Name: index_goals_on_user_id_and_priority; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_goals_on_user_id_and_name ON goals USING btree (user_id, name);
+CREATE UNIQUE INDEX index_goals_on_user_id_and_priority ON goals USING btree (user_id, priority);
+
+
+--
+-- Name: index_goals_on_user_id_and_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_goals_on_user_id_and_type ON goals USING btree (user_id, type);
 
 
 --
@@ -672,6 +679,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170821032510'),
 ('20170822164027'),
 ('20170822164101'),
-('20170824212310');
+('20170824212310'),
+('20171020075643'),
+('20171020075858'),
+('20171020075953'),
+('20171020080155'),
+('20171020080604'),
+('20171020080817');
 
 
