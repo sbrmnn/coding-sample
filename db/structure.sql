@@ -175,13 +175,13 @@ ALTER SEQUENCE financial_institutions_id_seq OWNED BY financial_institutions.id;
 CREATE TABLE goals (
     id integer NOT NULL,
     user_id integer NOT NULL,
-    type character varying NOT NULL,
     tag character varying DEFAULT 'Other'::character varying,
     priority integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     target_amount numeric(10,2) DEFAULT 0 NOT NULL,
-    collection numeric(10,2) DEFAULT 0 NOT NULL
+    collection numeric(10,2) DEFAULT 0 NOT NULL,
+    xref_goal_type_id integer
 );
 
 
@@ -366,6 +366,39 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
+-- Name: xref_goal_types; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE xref_goal_types (
+    id integer NOT NULL,
+    type character varying,
+    name character varying,
+    department character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: xref_goal_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE xref_goal_types_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: xref_goal_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE xref_goal_types_id_seq OWNED BY xref_goal_types.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -419,6 +452,13 @@ ALTER TABLE ONLY transfers ALTER COLUMN id SET DEFAULT nextval('transfers_id_seq
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY xref_goal_types ALTER COLUMN id SET DEFAULT nextval('xref_goal_types_id_seq'::regclass);
 
 
 --
@@ -502,6 +542,14 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: xref_goal_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY xref_goal_types
+    ADD CONSTRAINT xref_goal_types_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: index_bank_admins_on_financial_institution_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -541,13 +589,6 @@ CREATE INDEX index_goals_on_user_id ON goals USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX index_goals_on_user_id_and_priority ON goals USING btree (user_id, priority);
-
-
---
--- Name: index_goals_on_user_id_and_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_goals_on_user_id_and_type ON goals USING btree (user_id, type);
 
 
 --
@@ -641,6 +682,14 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: fk_rails_f2dc556d45; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY goals
+    ADD CONSTRAINT fk_rails_f2dc556d45 FOREIGN KEY (xref_goal_type_id) REFERENCES xref_goal_types(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -685,6 +734,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171020075953'),
 ('20171020080155'),
 ('20171020080604'),
-('20171020080817');
+('20171020080817'),
+('20171022195809'),
+('20171022195906'),
+('20171022200829');
 
 
