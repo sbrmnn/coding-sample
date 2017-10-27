@@ -1,9 +1,14 @@
 class FinancialInstitution < ApplicationRecord
+
   has_many :users, dependent: :destroy
+  has_many :offers, dependent: :destroy
+  has_many :products, dependent: :destroy
+  has_many :ads, dependent: :destroy
   has_many :bank_admins, dependent: :destroy
-  has_many :offers
+
   validates_presence_of :name, :location
   validates :max_transfer_amount, numericality: { greater_than_or_equal_to: 0}
+  
   before_save :cascade_down_max_transfer_price_to_users
 
   protected
