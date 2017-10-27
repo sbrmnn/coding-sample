@@ -50,7 +50,7 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
     if params[:ad].nil?
       {}
     else
-      params.require(:ad).permit(:header, :body, :link, :image_url)
+      params.require(:ad).permit(:header, :body, :link, :image)
     end
    end
 end
