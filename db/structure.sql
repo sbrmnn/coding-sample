@@ -45,6 +45,41 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: ads; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE ads (
+    id integer NOT NULL,
+    financial_institution_id integer,
+    header character varying NOT NULL,
+    body character varying NOT NULL,
+    link character varying NOT NULL,
+    image_url character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: ads_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE ads_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ads_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE ads_id_seq OWNED BY ads.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -240,6 +275,75 @@ ALTER SEQUENCE monotto_users_id_seq OWNED BY monotto_users.id;
 
 
 --
+-- Name: offers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE offers (
+    id integer NOT NULL,
+    xref_goal_type_id integer,
+    financial_institution_id integer,
+    ad_id integer,
+    name character varying NOT NULL,
+    condition character varying NOT NULL,
+    symbol character varying(2) NOT NULL,
+    value numeric(10,2) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: offers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE offers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: offers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE offers_id_seq OWNED BY offers.id;
+
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE products (
+    id integer NOT NULL,
+    financial_institution_id integer,
+    name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE products_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE products_id_seq OWNED BY products.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -402,6 +506,13 @@ ALTER SEQUENCE xref_goal_types_id_seq OWNED BY xref_goal_types.id;
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY ads ALTER COLUMN id SET DEFAULT nextval('ads_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY bank_admins ALTER COLUMN id SET DEFAULT nextval('bank_admins_id_seq'::regclass);
 
 
@@ -437,6 +548,20 @@ ALTER TABLE ONLY monotto_users ALTER COLUMN id SET DEFAULT nextval('monotto_user
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY offers ALTER COLUMN id SET DEFAULT nextval('offers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY transactions ALTER COLUMN id SET DEFAULT nextval('transactions_id_seq'::regclass);
 
 
@@ -459,6 +584,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 --
 
 ALTER TABLE ONLY xref_goal_types ALTER COLUMN id SET DEFAULT nextval('xref_goal_types_id_seq'::regclass);
+
+
+--
+-- Name: ads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ads
+    ADD CONSTRAINT ads_pkey PRIMARY KEY (id);
 
 
 --
@@ -510,6 +643,22 @@ ALTER TABLE ONLY monotto_users
 
 
 --
+-- Name: offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY offers
+    ADD CONSTRAINT offers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -547,6 +696,13 @@ ALTER TABLE ONLY users
 
 ALTER TABLE ONLY xref_goal_types
     ADD CONSTRAINT xref_goal_types_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_ads_on_financial_institution_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ads_on_financial_institution_id ON ads USING btree (financial_institution_id);
 
 
 --
@@ -606,6 +762,34 @@ CREATE INDEX index_monotto_users_on_token_and_token_created_at ON monotto_users 
 
 
 --
+-- Name: index_offers_on_ad_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_offers_on_ad_id ON offers USING btree (ad_id);
+
+
+--
+-- Name: index_offers_on_financial_institution_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_offers_on_financial_institution_id ON offers USING btree (financial_institution_id);
+
+
+--
+-- Name: index_offers_on_xref_goal_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_offers_on_xref_goal_type_id ON offers USING btree (xref_goal_type_id);
+
+
+--
+-- Name: index_products_on_financial_institution_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_products_on_financial_institution_id ON products USING btree (financial_institution_id);
+
+
+--
 -- Name: index_transactions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -634,6 +818,14 @@ CREATE UNIQUE INDEX index_users_on_financial_institution_id_and_bank_user_id ON 
 
 
 --
+-- Name: fk_rails_009136a4eb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY offers
+    ADD CONSTRAINT fk_rails_009136a4eb FOREIGN KEY (financial_institution_id) REFERENCES financial_institutions(id);
+
+
+--
 -- Name: fk_rails_2047acc645; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -647,6 +839,22 @@ ALTER TABLE ONLY bank_admins
 
 ALTER TABLE ONLY transfers
     ADD CONSTRAINT fk_rails_344b52b7fd FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_44583af250; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY offers
+    ADD CONSTRAINT fk_rails_44583af250 FOREIGN KEY (ad_id) REFERENCES ads(id);
+
+
+--
+-- Name: fk_rails_57a880a289; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY products
+    ADD CONSTRAINT fk_rails_57a880a289 FOREIGN KEY (financial_institution_id) REFERENCES financial_institutions(id);
 
 
 --
@@ -671,6 +879,14 @@ ALTER TABLE ONLY goals
 
 ALTER TABLE ONLY demographics
     ADD CONSTRAINT fk_rails_dd13be0cc8 FOREIGN KEY (user_id) REFERENCES users(id);
+
+
+--
+-- Name: fk_rails_ed15292327; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY ads
+    ADD CONSTRAINT fk_rails_ed15292327 FOREIGN KEY (financial_institution_id) REFERENCES financial_institutions(id);
 
 
 --
@@ -737,6 +953,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171020080817'),
 ('20171022195809'),
 ('20171022195906'),
-('20171022200829');
+('20171022200829'),
+('20171025042111'),
+('20171026154033'),
+('20171026154034');
 
 

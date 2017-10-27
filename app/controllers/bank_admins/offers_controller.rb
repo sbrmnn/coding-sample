@@ -1,56 +1,56 @@
 class BankAdmins::OffersController < BankAdmins::ApplicationController
+   
    def index
-     @users = current_bank_admin.users.where(user_params)
-     json_response(@users, :ok)
+     @offers = current_bank_admin.offers.where(offer_params)
+     json_response(@offers, :ok)
    end
 
    def create
-     @user = User.new(user_params)
-     current_bank_admin.financial_institution.users << @user
-     status = @user.errors.any? ? :unprocessable_entity : :created
-     json_response(@user, status)
+     @offer = Offer.new(offer_params)
+     current_bank_admin.financial_institution.offers << @offer
+     status = @offer.errors.any? ? :unprocessable_entity : :created
+     json_response(@offer, status)
    end
 
    def show
-     @user = current_bank_admin.users.find_by(bank_user_id:  params[:bank_user_id])
-     if @user
+     @offer = current_bank_admin.offers.find_by(id:  params[:id])
+     if @offer
        status = :ok
      else
        status = :not_found
      end
-     json_response(@user, status)
+     json_response(@offer, status)
   end
 
-   def update
-     @user = current_bank_admin.users.find_by(bank_user_id: params[:bank_user_id])
-     if @user
-       @user.update_attributes(user_params) 
-       status = @user.errors.any? ? :unprocessable_entity :  :ok
+  def update
+     @offer = current_bank_admin.offers.find_by(id: params[:id])
+     if @offer
+       @offer.update_attributes(offer_params) 
+       status = @offer.errors.any? ? :unprocessable_entity :  :ok
      else
        status = :not_found
      end 
-     json_response(@user, status)
+     json_response(@offer, status)
    end
 
    def destroy
-     @user = current_bank_admin.users.find_by(bank_user_id: params[:bank_user_id])
-     if @user
-       @user.destroy
+     @offer = current_bank_admin.offers.find_by(id: params[:id])
+     if @offer
+       @offer.destroy
        status = :ok
      else
       status = :not_found
      end
-     json_response(@user, status)
+     json_response(@offer, status)
    end
 
    protected
-   
-   def user_params
-    if params[:user].nil?
+  
+   def offer_params
+    if params[:offer].nil?
       {}
     else
-      params.require(:user).permit(:sequence, :bank_user_id, :savings_account_identifier, :checking_account_identifier,
-                                  :transfers_active, :safety_net_active, :max_transfer_amount)
+      params.require(:offer).permit(:name, :condition, :symbol, :value)
     end
    end 
 end
