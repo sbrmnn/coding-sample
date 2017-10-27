@@ -5,7 +5,7 @@ class CreateAds < ActiveRecord::Migration[5.0]
       t.string :header, null: false
       t.string :body, null: false
       t.string :link, null: false
-      t.string :image_url
+      t.string :image
       t.timestamps
     end
     add_foreign_key :ads, :financial_institutions

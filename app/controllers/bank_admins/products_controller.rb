@@ -1,4 +1,5 @@
 class BankAdmins::ProductsController < BankAdmins::ApplicationController
+   
    def index
      @products = current_bank_admin.products.where(ad_params)
      json_response(@products, :ok)

@@ -13,7 +13,7 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
    end
 
    def show
-     @ad = current_bank_admin.ads.find_by(id:  params[:id])
+     @ad = current_bank_admin.ads.find_by(id: params[:id])
      if @ad
        status = :ok
      else

@@ -54,7 +54,7 @@ CREATE TABLE ads (
     header character varying NOT NULL,
     body character varying NOT NULL,
     link character varying NOT NULL,
-    image_url character varying,
+    image character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
