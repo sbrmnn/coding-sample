@@ -9,6 +9,7 @@ if Rails.env.production?
     config.fog_directory  = 'monotto-images'
     config.fog_public     = false
     config.fog_attributes = { cache_control: "public, max-age=#{365.day.to_i}" }
+  end
 else
   CarrierWave.configure do |config|
     config.storage = :file
