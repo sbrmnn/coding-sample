@@ -2,7 +2,7 @@ class BankAdmins::SessionsController < BankAdmins::ApplicationController
   skip_before_action :require_bank_admin_login, only: [:create], raise: false
   
   def create
-  	check_valid_login?(BankAdmin)
+  	get_auth_token(BankAdmin)
   end
 
   def destroy

@@ -23,7 +23,7 @@ module ControllerAuthenticatable
 
   protected
   
-  def check_valid_login?(objClass)
+  def get_auth_token(objClass)
     if obj = objClass.valid_login?(params[:email], params[:password])
       obj.allow_token_to_be_used_only_once
       send_auth_token_for_valid_login_of(obj)
