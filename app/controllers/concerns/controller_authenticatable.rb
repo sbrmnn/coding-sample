@@ -25,7 +25,7 @@ module ControllerAuthenticatable
   
   def get_auth_token(objClass)
     if obj = objClass.valid_login?(params[:email], params[:password])
-      obj.allow_token_to_be_used_only_once
+      obj.generate_token
       send_auth_token_for_valid_login_of(obj)
     else
       render_unauthorized("Error with your login or password")
@@ -69,9 +69,5 @@ module ControllerAuthenticatable
 
   def send_auth_token_for_valid_login_of(obj)
     render json: { token: obj.token }, status: 200
-  end
-
-  def allow_token_to_be_used_only_once_for(obj)
-    obj.regenerate_token
   end
 end

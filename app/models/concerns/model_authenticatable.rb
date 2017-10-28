@@ -6,7 +6,7 @@ module ModelAuthenticatable
     has_secure_token
   end
 
-  def allow_token_to_be_used_only_once
+  def generate_token
     regenerate_token
     touch(:token_created_at)
   end
