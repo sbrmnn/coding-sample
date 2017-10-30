@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :products
     resources :users, param: :bank_user_id do
         scope module: :users do
+          resources :messages
           resources :demographics
           resources :goals
         end

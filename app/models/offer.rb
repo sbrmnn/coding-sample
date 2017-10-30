@@ -1,5 +1,5 @@
 class Offer < ApplicationRecord
-   attr_accessor :ad_header, :ad_body, :ad_link, :ad_image_url
+   attr_accessor :ad_header, :ad_body, :ad_link, :ad_image_url, :product_name
 
    belongs_to :xref_goal_type
 
@@ -12,4 +12,6 @@ class Offer < ApplicationRecord
     :message    => "%{value} is not a valid symbol" }
 
    validates :amount, numericality: { greater_than_or_equal_to: 0}
+
+   has_many :messages, as: :message_obj
 end

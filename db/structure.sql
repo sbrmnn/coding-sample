@@ -240,6 +240,40 @@ ALTER SEQUENCE goals_id_seq OWNED BY goals.id;
 
 
 --
+-- Name: messages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE messages (
+    id integer NOT NULL,
+    message_obj_id integer,
+    message_obj_type character varying,
+    user_id integer,
+    clicks integer DEFAULT 0,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE messages_id_seq OWNED BY messages.id;
+
+
+--
 -- Name: monotto_users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -318,7 +352,7 @@ ALTER SEQUENCE offers_id_seq OWNED BY offers.id;
 CREATE TABLE products (
     id integer NOT NULL,
     financial_institution_id integer,
-    name character varying,
+    name character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -541,6 +575,13 @@ ALTER TABLE ONLY goals ALTER COLUMN id SET DEFAULT nextval('goals_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY messages ALTER COLUMN id SET DEFAULT nextval('messages_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY monotto_users ALTER COLUMN id SET DEFAULT nextval('monotto_users_id_seq'::regclass);
 
 
@@ -632,6 +673,14 @@ ALTER TABLE ONLY financial_institutions
 
 ALTER TABLE ONLY goals
     ADD CONSTRAINT goals_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY messages
+    ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
 
 
 --
@@ -745,6 +794,13 @@ CREATE INDEX index_goals_on_user_id ON goals USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX index_goals_on_user_id_and_priority ON goals USING btree (user_id, priority);
+
+
+--
+-- Name: index_messages_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_messages_on_user_id ON messages USING btree (user_id);
 
 
 --
@@ -956,6 +1012,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171022200829'),
 ('20171025042111'),
 ('20171026154033'),
-('20171026154034');
+('20171026154034'),
+('20171029050448'),
+('20171030042401');
 
 

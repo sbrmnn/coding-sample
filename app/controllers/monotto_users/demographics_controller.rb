@@ -57,7 +57,7 @@ class MonottoUsers::DemographicsController < MonottoUsers::ApplicationController
     if params[:demographic].nil?
       {}
     else
-      params.require(:demographic).permit(:user_id,:key, :value)
+      params.require(:demographic).permit(:user_id, :key, :value)
     end
   end
 end
