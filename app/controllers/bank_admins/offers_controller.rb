@@ -20,9 +20,9 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
        status = :not_found
      end
      json_response(@offer, status)
-  end
+   end
 
-  def update
+   def update
      @offer = current_bank_admin.offers.find_by(id: params[:id])
      if @offer
        @offer.update_attributes(offer_params) 

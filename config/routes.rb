@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  get "/" => redirect("https://monotto.com")
   resources :swaggers, :only => [:index]
   resource :monotto_users do
     scope module: :monotto_users do

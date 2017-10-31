@@ -4,8 +4,7 @@ class BankAdmin < ApplicationRecord
   has_many :offers,   through: :financial_institution
   has_many :products, through: :financial_institution
   has_many :ads,      through: :financial_institution
-  has_many :messages, through: :financial_institution
-
+ 
   belongs_to :financial_institution
 
 
