@@ -215,19 +215,9 @@ CREATE TABLE goals (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     target_amount numeric(10,2) DEFAULT 0 NOT NULL,
-    collection numeric(10,2) DEFAULT 0 NOT NULL,
+    balance numeric(10,2) DEFAULT 0 NOT NULL,
     xref_goal_type_id integer
 );
-
-
---
--- Name: goal_statistics; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW goal_statistics AS
- SELECT goals.id AS goal_id,
-    ((goals.collection * (100)::numeric) / goals.target_amount) AS percent_saved
-   FROM goals;
 
 
 --
@@ -397,43 +387,6 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE users (
-    id integer NOT NULL,
-    financial_institution_id integer NOT NULL,
-    sequence character varying NOT NULL,
-    bank_user_id character varying NOT NULL,
-    savings_account_identifier character varying NOT NULL,
-    checking_account_identifier character varying NOT NULL,
-    transfers_active boolean DEFAULT true,
-    safety_net_active boolean DEFAULT true,
-    max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: snapshot_summaries; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW snapshot_summaries AS
- SELECT financial_institutions.id AS financial_institution_id,
-    COALESCE(avg(goals.collection), (0)::numeric) AS average_user_collection,
-    COALESCE(sum(goals.collection), (0)::numeric) AS sum_collection,
-    COALESCE(sum(messages.clicks), (0)::bigint) AS sum_message_clicks,
-    count(messages.*) AS total_messages,
-    count(financial_institution_users.*) AS total_users
-   FROM (((financial_institutions
-     LEFT JOIN users financial_institution_users ON ((financial_institution_users.financial_institution_id = financial_institutions.id)))
-     LEFT JOIN goals ON ((goals.user_id = financial_institution_users.id)))
-     LEFT JOIN messages ON ((messages.user_id = financial_institution_users.id)))
-  GROUP BY financial_institutions.id;
-
-
---
 -- Name: transactions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -510,6 +463,25 @@ CREATE SEQUENCE transfers_id_seq
 --
 
 ALTER SEQUENCE transfers_id_seq OWNED BY transfers.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    financial_institution_id integer NOT NULL,
+    sequence character varying NOT NULL,
+    bank_user_id character varying NOT NULL,
+    savings_account_identifier character varying NOT NULL,
+    checking_account_identifier character varying NOT NULL,
+    transfers_active boolean DEFAULT true,
+    safety_net_active boolean DEFAULT true,
+    max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
 
 
 --
@@ -1042,8 +1014,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171026154033'),
 ('20171026154034'),
 ('20171029050448'),
-('20171030042401'),
-('20171030220547'),
-('20171031032104');
+('20171030042401');
 
 

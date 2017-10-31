@@ -4,7 +4,7 @@ class CreateGoalStatistics < ActiveRecord::Migration[5.0]
         CREATE VIEW goal_statistics AS
           SELECT
             goals.id AS goal_id,
-            (collection*100/target_amount) as percent_saved
+            (balance*100/target_amount) as percent_saved
           FROM 
            goals        
     SQL

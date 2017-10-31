@@ -6,7 +6,7 @@ class FinancialInstitution < ApplicationRecord
   has_many :bank_admins, dependent: :destroy
   has_one :snapshot_summary
   
-  delegate :average_user_collection, :sum_collection, :sum_message_clicks, 
+  delegate :average_user_balance, :sum_balance, :sum_message_clicks, 
            :total_messages, :total_users, to: :snapshot_summary
   
   validates_presence_of :name, :location

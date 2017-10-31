@@ -1,14 +1,13 @@
-class CreateSnapshotSummaries < ActiveRecord::Migration[5.0]
+class SnapshotSummary < ActiveRecord::Migration[5.0]
   def up
     execute <<-SQL
-      CREATE VIEW snapshot_summaries AS
+      CREATE VIEW snapshot_summary AS
         SELECT
           financial_institutions.id AS financial_institution_id,
-          coalesce(AVG(goals.balance), 0)       AS average_user_balance,
-          coalesce(SUM(goals.balance), 0)       AS sum_balance,
-          coalesce(SUM(messages.clicks) , 0)       AS sum_message_clicks,
-          COUNT(messages)                          AS total_messages,
-          COUNT(financial_institution_users)       AS total_users
+          AVG(goals.balance) AS average_user_balance,
+          SUM(goals.balance) AS sum_balance,
+          SUM(messages.clicks)  AS sum_message_clicks,
+          COUNT(messages)       as total_messages
         FROM
           financial_institutions
           LEFT JOIN users AS financial_institution_users
@@ -23,6 +22,6 @@ class CreateSnapshotSummaries < ActiveRecord::Migration[5.0]
   end
 
   def down
-    execute "DROP VIEW snapshot_summaries"
+    execute "DROP VIEW snapshot_summary"
   end
 end
