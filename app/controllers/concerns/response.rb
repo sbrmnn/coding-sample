@@ -14,7 +14,7 @@ module Response
       when :unprocessable_entity
         object = record.errors
       when :not_found
-        object = "not_found"
+        object = {}
       else
         status = :ok
         object = record
