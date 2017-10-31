@@ -52,7 +52,7 @@ CREATE TABLE ads (
     id integer NOT NULL,
     financial_institution_id integer,
     header character varying NOT NULL,
-    body character varying NOT NULL,
+    body text NOT NULL,
     link character varying NOT NULL,
     image character varying,
     created_at timestamp without time zone NOT NULL,
@@ -1065,6 +1065,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171030202629'),
 ('20171030220547'),
 ('20171031032104'),
-('20171031061024');
+('20171031061024'),
+('20171031215220');
 
 
