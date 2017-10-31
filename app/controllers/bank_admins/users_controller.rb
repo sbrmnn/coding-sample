@@ -47,7 +47,7 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
    protected
    
    def user_params
-    if params[:user].nil?
+    if params[:user].blank?
       {}
     else
       params.require(:user).permit(:sequence, :bank_user_id, :savings_account_identifier, :checking_account_identifier,

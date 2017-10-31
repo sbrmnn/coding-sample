@@ -47,7 +47,7 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
    protected
   
    def offer_params
-    if params[:offer].nil?
+    if params[:offer].blank?
       {}
     else
       params.require(:offer).permit(:name, :condition, :symbol, :value)

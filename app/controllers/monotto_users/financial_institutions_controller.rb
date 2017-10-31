@@ -54,7 +54,7 @@ class MonottoUsers::FinancialInstitutionsController < MonottoUsers::ApplicationC
    protected
 
    def financial_institution_params
-     if params[:financial_institution].nil?
+     if params[:financial_institution].blank?
       {}
      else
       params.require(:financial_institution).permit(:name, :location, :core, :web, :mobile, :notes, :relationship_manager, :max_transfer, :transfers_active)

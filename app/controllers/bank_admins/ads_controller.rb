@@ -47,7 +47,7 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
    protected
   
    def ad_params
-    if params[:ad].nil?
+    if params[:ad].blank?
       {}
     else
       params.require(:ad).permit(:header, :body, :link, :image)

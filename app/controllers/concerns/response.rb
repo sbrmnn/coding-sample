@@ -9,7 +9,7 @@ module Response
   end
 
   def json_response(record, status)
-    status = :not_found if record.nil?
+    status = :not_found if record.blank?
     case status
       when :unprocessable_entity
         object = record.errors

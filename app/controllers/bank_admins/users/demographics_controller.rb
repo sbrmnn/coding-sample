@@ -49,7 +49,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
   protected
 
   def demographic_params
-    if params[:demographic].nil?
+    if params[:demographic].blank?
       {}
     else
      params.require(:demographic).permit(:key, :value)

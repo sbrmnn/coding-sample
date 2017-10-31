@@ -49,7 +49,7 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
    protected
 
    def goal_params
-     if params[:goal].nil?
+     if params[:goal].blank?
        {}
      else
        params.require(:goal).permit(:name, :amount, :completion, :priority, :tag)

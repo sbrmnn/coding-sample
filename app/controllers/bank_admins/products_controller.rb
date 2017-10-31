@@ -47,7 +47,7 @@ class BankAdmins::ProductsController < BankAdmins::ApplicationController
    protected
   
    def product_params
-    if params[:product].nil?
+    if params[:product].blank?
       {}
     else
       params.require(:product).permit(:name)

@@ -54,7 +54,7 @@ class MonottoUsers::DemographicsController < MonottoUsers::ApplicationController
   protected
 
   def demographic_params
-    if params[:demographic].nil?
+    if params[:demographic].blank?
       {}
     else
       params.require(:demographic).permit(:user_id, :key, :value)
