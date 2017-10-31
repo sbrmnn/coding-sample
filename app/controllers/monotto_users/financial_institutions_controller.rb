@@ -7,7 +7,7 @@ class MonottoUsers::FinancialInstitutionsController < MonottoUsers::ApplicationC
      else
        status = :not_found
      end
-     json_response(@financial_institutions, status)
+     json_response(@financial_institutions)
    end
 
    def create
@@ -17,7 +17,7 @@ class MonottoUsers::FinancialInstitutionsController < MonottoUsers::ApplicationC
      else
         status = :created
      end
-     json_response(@financial_institution, status)
+     json_response(@financial_institution)
    end
 
    def show
@@ -27,7 +27,7 @@ class MonottoUsers::FinancialInstitutionsController < MonottoUsers::ApplicationC
      else
       status = :not_found
      end
-     json_response(@financial_institution, status)
+     json_response(@financial_institution)
    end
 
    def update
@@ -38,7 +38,7 @@ class MonottoUsers::FinancialInstitutionsController < MonottoUsers::ApplicationC
       else
         status = :not_found
       end
-      json_response(@financial_institution, status)
+      json_response(@financial_institution)
    end
 
    def destroy
@@ -48,7 +48,7 @@ class MonottoUsers::FinancialInstitutionsController < MonottoUsers::ApplicationC
      else
        status = :not_found
      end
-     json_response(@financial_institution, status) 
+     json_response(@financial_institution) 
    end
 
    protected

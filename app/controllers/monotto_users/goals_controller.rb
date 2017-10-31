@@ -7,7 +7,7 @@ class MonottoUsers::GoalsController < MonottoUsers::ApplicationController
     else
       status = :not_found
     end
-    json_response(@goals, status)
+    json_response(@goals)
   end
 
   def create
@@ -17,7 +17,7 @@ class MonottoUsers::GoalsController < MonottoUsers::ApplicationController
     else
       status = :created
     end
-    json_response(@goal, status)
+    json_response(@goal)
   end
 
   def show
@@ -27,7 +27,7 @@ class MonottoUsers::GoalsController < MonottoUsers::ApplicationController
     else
       status = :not_found
     end
-    json_response(@goal, status)
+    json_response(@goal)
   end
 
   def update
@@ -38,7 +38,7 @@ class MonottoUsers::GoalsController < MonottoUsers::ApplicationController
     else
       status = :not_found
     end
-    json_response(@goal, status)
+    json_response(@goal)
   end
 
   def destroy
@@ -48,7 +48,7 @@ class MonottoUsers::GoalsController < MonottoUsers::ApplicationController
    else
      status = :not_found
    end
-   json_response(@goal, status) 
+   json_response(@goal) 
   end
 
   protected

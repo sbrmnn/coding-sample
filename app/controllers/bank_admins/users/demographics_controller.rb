@@ -3,7 +3,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
 
   def index
     @demographics = @user.try(:demographics).select(:id, :key, :value, :created_at, :updated_at).where(demographic_params)
-    json_response(@demographics, :ok)
+    json_response(@demographics)
   end
 
   def show
@@ -13,7 +13,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
     else
       status = :not_found
     end
-    json_response(@demographic, status)
+    json_response(@demographic)
   end
 
   def create
@@ -21,7 +21,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
     @demographic =  Demographic.new(demographic_params)
     @demographics << @demographic
     status = @demographic.errors.any? ? :unprocessable_entity :  :created
-    json_response(@demographic, status)
+    json_response(@demographic)
   end
 
   def update
@@ -32,7 +32,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
     else
       status = :not_found
     end 
-    json_response(@demographic, status)
+    json_response(@demographic)
   end
 
   def destroy
@@ -43,7 +43,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
     else
       status = :not_found
     end
-    json_response(@demographic, status) 
+    json_response(@demographic) 
   end
 
   protected

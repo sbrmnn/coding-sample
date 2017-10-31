@@ -2,14 +2,14 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
    
    def index
      @offers = current_bank_admin.offers.where(offer_params)
-     json_response(@offers, :ok)
+     json_response(@offers)
    end
 
    def create
      @offer = Offer.new(offer_params)
      current_bank_admin.financial_institution.offers << @offer
      status = @offer.errors.any? ? :unprocessable_entity : :created
-     json_response(@offer, status)
+     json_response(@offer)
    end
 
    def show
@@ -19,7 +19,7 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
      else
        status = :not_found
      end
-     json_response(@offer, status)
+     json_response(@offer)
    end
 
    def update
@@ -30,7 +30,7 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
      else
        status = :not_found
      end 
-     json_response(@offer, status)
+     json_response(@offer)
    end
 
    def destroy
@@ -41,7 +41,7 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
      else
       status = :not_found
      end
-     json_response(@offer, status)
+     json_response(@offer)
    end
 
    protected

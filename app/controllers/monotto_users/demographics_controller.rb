@@ -7,7 +7,7 @@ class MonottoUsers::DemographicsController < MonottoUsers::ApplicationController
     else
       status = :not_found
     end
-    json_response(@demographics, status)
+    json_response(@demographics)
   end
 
   def create
@@ -17,7 +17,7 @@ class MonottoUsers::DemographicsController < MonottoUsers::ApplicationController
     else
       status = :created
     end
-    json_response(@demographic, status)
+    json_response(@demographic)
   end
 
   def show
@@ -27,7 +27,7 @@ class MonottoUsers::DemographicsController < MonottoUsers::ApplicationController
     else
       status = :not_found
     end
-    json_response(@demographic, status)
+    json_response(@demographic)
   end
 
   def update
@@ -38,7 +38,7 @@ class MonottoUsers::DemographicsController < MonottoUsers::ApplicationController
     else
       status = :not_found
     end
-    json_response(@demographic, status)
+    json_response(@demographic)
   end
 
   def destroy
@@ -48,7 +48,7 @@ class MonottoUsers::DemographicsController < MonottoUsers::ApplicationController
    else
      status = :not_found
    end
-   json_response(@demographic, status) 
+   json_response(@demographic) 
   end
 
   protected

@@ -2,14 +2,14 @@ class BankAdmins::ProductsController < BankAdmins::ApplicationController
    
    def index
      @products = current_bank_admin.products.where(product_params)
-     json_response(@products, :ok)
+     json_response(@products)
    end
 =begin
    def create
      @product = Product.new(product_params)
      current_bank_admin.financial_institution.products << @product
      status = @product.errors.any? ? :unprocessable_entity : :created
-     json_response(@product, status)
+     json_response(@product)
    end
 =end
    def show
@@ -19,7 +19,7 @@ class BankAdmins::ProductsController < BankAdmins::ApplicationController
      else
        status = :not_found
      end
-     json_response(@product, status)
+     json_response(@product)
    end
 =begin
    def update
@@ -30,7 +30,7 @@ class BankAdmins::ProductsController < BankAdmins::ApplicationController
      else
        status = :not_found
      end 
-     json_response(@product, status)
+     json_response(@product)
    end
 
    def destroy
@@ -41,7 +41,7 @@ class BankAdmins::ProductsController < BankAdmins::ApplicationController
      else
       status = :not_found
      end
-     json_response(@product, status)
+     json_response(@product)
    end
 =end
    protected

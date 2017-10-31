@@ -3,7 +3,7 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
 
   def index
     @goals = @user.try(:goals).where(params[:goal])
-    json_response(@goals, :ok)
+    json_response(@goals)
   end
 
   def show
@@ -13,7 +13,7 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
     else
       status = :not_found
     end
-    json_response(@goal, status)
+    json_response(@goal)
   end
 
   def create
@@ -21,7 +21,7 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
     @goal =  Goal.new(goal_params)
     @goals << @goal
     status = @goal.errors.any? ? :unprocessable_entity :  :created
-    json_response(@goal, status)
+    json_response(@goal)
   end
 
   def update
@@ -32,7 +32,7 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
     else
       status = :not_found
     end 
-    json_response(@goal, status)
+    json_response(@goal)
    end
 
   def destroy
@@ -43,7 +43,7 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
     else
       status = :not_found
     end
-    json_response(@goal, status) 
+    json_response(@goal) 
    end
 
    protected

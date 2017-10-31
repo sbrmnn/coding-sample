@@ -2,14 +2,14 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
    
    def index
      @ads = current_bank_admin.ads.where(ad_params)
-     json_response(@ads, :ok)
+     json_response(@ads)
    end
 
    def create
      @ad = Ad.new(ad_params)
      current_bank_admin.financial_institution.ads << @ad
      status = @ad.errors.any? ? :unprocessable_entity : :created
-     json_response(@ad, status)
+     json_response(@ad)
    end
 
    def show
@@ -19,7 +19,7 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
      else
        status = :not_found
      end
-     json_response(@ad, status)
+     json_response(@ad)
   end
 
   def update
@@ -30,7 +30,7 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
      else
        status = :not_found
      end 
-     json_response(@ad, status)
+     json_response(@ad)
    end
 
    def destroy
@@ -41,7 +41,7 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
      else
       status = :not_found
      end
-     json_response(@ad, status)
+     json_response(@ad)
    end
 
    protected

@@ -8,16 +8,16 @@ module Response
     render json: errors, status: :unauthorized
   end
 
-  def json_response(record, status)
-    status = :not_found if record.blank?
-    case status
-      when :unprocessable_entity
-        object = record.errors
-      when :not_found
-        object = {}
-      else
-        status = :ok
-        object = record
+  def json_response(record)
+    if record.blank?
+      object = {}
+      status = :not_found
+    elsif record.errors
+      object = record.errors
+      status = :unprocessable_entity
+    else
+      status = :ok
+      object = record  
     end
     render json: object, status: status
   end

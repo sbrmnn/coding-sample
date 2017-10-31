@@ -6,6 +6,6 @@ class BankAdmins::SnapshotsController < BankAdmins::ApplicationController
     else
        status = :not_found
     end
-    json_response(@snapshot_summary, status)
+    json_response(@snapshot_summary)
   end
 end

@@ -7,7 +7,7 @@ class MonottoUsers::BankAdminsController < MonottoUsers::ApplicationController
     else
       status = :not_found
     end
-    json_response(@bank_admins, status)
+    json_response(@bank_admins)
   end
 
   def show
@@ -17,7 +17,7 @@ class MonottoUsers::BankAdminsController < MonottoUsers::ApplicationController
     else
       status = :not_found
     end
-    json_response(@bank_admin, status)
+    json_response(@bank_admin)
   end
 
   def create
@@ -27,7 +27,7 @@ class MonottoUsers::BankAdminsController < MonottoUsers::ApplicationController
     else
       status = :created
     end
-    json_response(@bank_admin, status)
+    json_response(@bank_admin)
   end
 
   def update
@@ -38,7 +38,7 @@ class MonottoUsers::BankAdminsController < MonottoUsers::ApplicationController
     else
       status = :not_found
     end
-    json_response(@bank_admin, status)
+    json_response(@bank_admin)
   end
 
   def destroy
@@ -48,7 +48,7 @@ class MonottoUsers::BankAdminsController < MonottoUsers::ApplicationController
     else
       status = :not_found
     end
-    json_response(@bank_admin, status) 
+    json_response(@bank_admin) 
   end
 
   protected
