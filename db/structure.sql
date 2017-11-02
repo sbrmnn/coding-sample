@@ -333,7 +333,8 @@ CREATE TABLE offers (
     symbol character varying(2) NOT NULL,
     value numeric(10,2) NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    product_id integer
 );
 
 
@@ -555,7 +556,7 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 CREATE TABLE xref_goal_types (
     id integer NOT NULL,
-    type character varying,
+    code character varying,
     name character varying,
     department character varying,
     created_at timestamp without time zone NOT NULL,
@@ -892,6 +893,13 @@ CREATE INDEX index_products_on_financial_institution_id ON products USING btree 
 
 
 --
+-- Name: index_products_on_name_and_financial_institution_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_products_on_name_and_financial_institution_id ON products USING btree (name, financial_institution_id);
+
+
+--
 -- Name: index_transactions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1066,6 +1074,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171030220547'),
 ('20171031032104'),
 ('20171031061024'),
-('20171031215220');
+('20171031215220'),
+('20171102035919'),
+('20171102160911'),
+('20171102160955');
 
 

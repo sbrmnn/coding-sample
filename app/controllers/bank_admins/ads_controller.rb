@@ -21,7 +21,7 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
      end
      json_response(@ad)
   end
-
+=begin
   def update
      @ad = current_bank_admin.ads.find_by(id: params[:id])
      if @ad
@@ -43,7 +43,7 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
      end
      json_response(@ad)
    end
-
+=end
    protected
   
    def ad_params
