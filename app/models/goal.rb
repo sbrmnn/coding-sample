@@ -6,7 +6,7 @@ class Goal < ApplicationRecord
   validates :target_amount, numericality: { greater_than: 0}
   validates :balance, numericality: { greater_than: 0}
   validates_presence_of :user
-  validates_uniqueness_of :priority, :scope => :user
+  validates_uniqueness_of :priority, :scope => :user_id
   has_one :goal_statistic
   delegate :percent_saved, to: :goal_statistic
 end

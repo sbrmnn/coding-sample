@@ -12,7 +12,7 @@ module Response
     if record.blank?
       object = {}
       status = :not_found
-    elsif record.try(:errors)
+    elsif record.try(:errors).present?
       object = record.errors
       status = :unprocessable_entity
     else
