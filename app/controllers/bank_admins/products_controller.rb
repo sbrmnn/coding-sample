@@ -8,17 +8,11 @@ class BankAdmins::ProductsController < BankAdmins::ApplicationController
    def create
      @product = Product.new(product_params)
      current_bank_admin.financial_institution.products << @product
-     status = @product.errors.any? ? :unprocessable_entity : :created
      json_response(@product)
    end
 
    def show
      @product = current_bank_admin.products.find_by(id:  params[:id])
-     if @product
-       status = :ok
-     else
-       status = :not_found
-     end
      json_response(@product)
    end
 =begin
