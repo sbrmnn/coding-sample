@@ -9,6 +9,7 @@ module Response
   end
 
   def json_response(record)
+    assoc = nil
     if record.blank?
       object = {}
       status = :not_found
