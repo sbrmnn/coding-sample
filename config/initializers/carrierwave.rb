@@ -7,7 +7,7 @@ if Rails.env.production?
       aws_secret_access_key: Rails.application.secrets.aws_secret_access_key
     }
     config.fog_directory  = 'monotto-images'
-    config.fog_public     = false
+    config.fog_public     = true
     config.fog_attributes = { cache_control: "public, max-age=#{365.day.to_i}" }
   end
 else
