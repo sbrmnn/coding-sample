@@ -50,7 +50,7 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
     if params[:ad].blank?
       {}
     else
-      params.require(:ad).permit(:header, :body, :link, :image)
+      params.require(:ad).permit(:header, :body, :link, :image, :name)
     end
    end
 end
