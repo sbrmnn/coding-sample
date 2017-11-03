@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     resources :ads
     resources :offers
     resources :products do
-      resources :offers
+      resources :offers, only: [:index]
     end
     resources :snapshots, only: [:index]
     resources :users, param: :bank_user_id do
