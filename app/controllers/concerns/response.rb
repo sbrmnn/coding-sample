@@ -15,6 +15,9 @@ module Response
     elsif record.try(:errors).present?
       object = record.errors
       status = :unprocessable_entity
+    elsif record.class.is_a?(ActiveRecord::Relation)
+      status = :ok
+      object = record.map{|rec| rec.class.reflect_on_all_associations.map{|l| l.name}}
     else
       status = :ok
       object = record  
