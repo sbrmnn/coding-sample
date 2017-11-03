@@ -19,6 +19,6 @@ module Response
       status = :ok
       object = record  
     end
-    render json: object, status: status
+    render json: object.to_json, status: status
   end
 end
