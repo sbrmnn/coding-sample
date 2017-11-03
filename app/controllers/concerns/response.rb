@@ -19,12 +19,7 @@ module Response
     else
       status = :ok
       object = record 
-      if record.class.is_a?(ActiveRecord::Associations::CollectionProxy)
-        assoc = record.first.class.reflect_on_all_associations.map{|l| l.name}
-      else
-        assoc = nil
-      end
-      #assoc = record.class.is_a?(ActiveRecord::Associations::CollectionProxy) ? record.first.class.reflect_on_all_associations.map{|l| l.name} : record.class.reflect_on_all_associations.map{|l| l.name}
+      assoc = record.is_a?(ActiveRecord::Base) ? record.class.reflect_on_all_associations.map{|l| l.name} : record.first.class.reflect_on_all_associations.map{|l| l.name}
     end
     render json: object.to_json(:include => assoc), status: status
   end
