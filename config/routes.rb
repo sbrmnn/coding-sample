@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :ads
     resources :offers
     resources :products
+    resources :snapshots, only: [:index]
     resources :users, param: :bank_user_id do
         scope module: :users do
           resources :messages
