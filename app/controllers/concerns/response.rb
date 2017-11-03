@@ -18,7 +18,8 @@ module Response
     else
       status = :ok
       object = record  
+      associations = record.class.reflect_on_all_associations.map{|l| l.name}
     end
-    render json: object.to_json, status: status
+    render json: object.to_json(:include => associations), status: status
   end
 end
