@@ -21,7 +21,9 @@ Rails.application.routes.draw do
     delete "logout" => "sessions#destroy"
     resources :ads
     resources :offers
-    resources :products
+    resources :products do
+      resources :offers
+    end
     resources :snapshots, only: [:index]
     resources :users, param: :bank_user_id do
         scope module: :users do
