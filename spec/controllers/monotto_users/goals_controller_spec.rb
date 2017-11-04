@@ -4,6 +4,7 @@ RSpec.describe MonottoUsers::GoalsController, type: :controller do
   let(:monotto_user) {FactoryGirl.create(:monotto_user)}
   let(:user) {FactoryGirl.create(:user)}
   let(:goal) {FactoryGirl.create(:goal)}
+  let(:xref_goal_type) {FactoryGirl.create(:xref_goal_type)}
   
   before do
     allow_any_instance_of(ApplicationController).to receive(:authenticate_monotto_user_token).and_return(monotto_user)
@@ -16,7 +17,7 @@ RSpec.describe MonottoUsers::GoalsController, type: :controller do
     end
 
     it "gets a list of goals" do
-      expect(JSON.parse(response.body)).to eq(JSON.parse([goal].to_json))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(Goal.all.to_json(include:  [:goal_statistic, :user, :xref_goal_type])))
     end
   end
 
@@ -25,6 +26,7 @@ RSpec.describe MonottoUsers::GoalsController, type: :controller do
       user
       @attributes = FactoryGirl.attributes_for(:goal)
       @attributes[:user_id] = user.id
+      @xref_goal_type = FactoryGirl.create(:xref_goal_type)
     end
     it "goal" do
       expect {
@@ -40,7 +42,7 @@ RSpec.describe MonottoUsers::GoalsController, type: :controller do
 
     it "goal" do
       get :show, params: {id: goal.id}
-      expect(JSON.parse(response.body)).to eq(JSON.parse(goal.to_json))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(goal.to_json(include: [:goal_statistic, :user, :xref_goal_type])))
     end
   end
 

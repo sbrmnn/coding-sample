@@ -54,6 +54,6 @@ class MonottoUsers::GoalsController < MonottoUsers::ApplicationController
   protected
 
   def goal_params
-    params.require(:goal).permit(:name, :amount, :completion, :priority, :user_id, :tag)
+    params.require(:goal).permit(:user_id, :tag, :priority, :target_amount, :balance, :xref_goal_type_id)
   end
 end

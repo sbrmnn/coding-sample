@@ -16,7 +16,7 @@ RSpec.describe MonottoUsers::UsersController, type: :controller do
     end
 
     it "gets a list of users" do
-      expect(JSON.parse(response.body)).to eq(JSON.parse([user].to_json))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(User.all.to_json(include: [:demographics, :goals, :financial_institution, :messages])))
     end
   end
 
@@ -39,7 +39,7 @@ RSpec.describe MonottoUsers::UsersController, type: :controller do
 
     it "user" do
       get :show, params: {id: user.id}
-      expect(JSON.parse(response.body)).to eq(JSON.parse(user.to_json))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(user.to_json(include: [:demographics, :goals, :financial_institution, :messages])))
     end
   end
 
