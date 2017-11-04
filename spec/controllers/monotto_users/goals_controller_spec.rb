@@ -23,6 +23,7 @@ RSpec.describe MonottoUsers::GoalsController, type: :controller do
 
   describe "create" do
     before do
+      xref_goal_type
       user
       @attributes = FactoryGirl.attributes_for(:goal)
       @attributes[:user_id] = user.id
@@ -52,8 +53,8 @@ RSpec.describe MonottoUsers::GoalsController, type: :controller do
     end
     
     it "goal name" do
-      put :update, params: {id: goal.id, goal: {name: "Save for a car."}}
-      expect(JSON.parse(response.body)["name"]).to eq("Save for a car.")
+      put :update, params: {id: goal.id, goal: {tag: "Car"}}
+      expect(JSON.parse(response.body)["tag"]).to eq("Car")
     end
   end
 

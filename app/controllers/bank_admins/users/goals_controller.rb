@@ -52,7 +52,7 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
      if params[:goal].blank?
        {}
      else
-       params.require(:goal).permit(:tag, :priority, :target_amount, :balance, :xref_goal_type)
+       params.require(:goal).permit(:tag, :priority, :target_amount, :balance, :xref_goal_name)
      end
    end
 end

@@ -4,6 +4,7 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
   let(:bank_admin) {FactoryGirl.create(:bank_admin)}
   let(:user) {FactoryGirl.create(:user, financial_institution: bank_admin.financial_institution)}
   let(:goal) {FactoryGirl.create(:goal, user: user)}
+  let(:xref_goal_type) {FactoryGirl.create(:xref_goal_type)}
 
   before do
     allow_any_instance_of(ApplicationController).to receive(:authenticate_bank_admin_token).and_return(bank_admin)
@@ -20,6 +21,9 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
     end
   end
   describe "create" do
+    before do
+      xref_goal_type
+    end
     it "goal" do
       expect {
          post :create, params: {user_bank_user_id: user.bank_user_id, goal: FactoryGirl.attributes_for(:goal)}
@@ -39,6 +43,7 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
   describe "update" do
     before do
       goal
+      xref_goal_type
       put :update, params: {user_bank_user_id: user.bank_user_id, id: goal.id, goal: {name: "Save for a Car", value: 10000}}
     end
 

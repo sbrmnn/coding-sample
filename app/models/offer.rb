@@ -1,9 +1,5 @@
 class Offer < ApplicationRecord
   attr_accessor :ad_name, :product_name
-  belongs_to :xref_goal_type
-  belongs_to :financial_institution
-  belongs_to :ad
-  belongs_to :product
 
   validates_presence_of :product_name, if: lambda { self.product_id.blank? }
   validates_presence_of :ad_name, if: lambda { self.ad_id.blank? }
@@ -16,6 +12,11 @@ class Offer < ApplicationRecord
   validates :symbol,
   :inclusion  => { :in => [ '=', '>', '<', '>=', '<=' ],
   :message    => "%{value} is not a valid symbol" }
+  
+  belongs_to :xref_goal_type
+  belongs_to :financial_institution
+  belongs_to :ad
+  belongs_to :product
 
   has_many :messages, as: :message_obj
 
