@@ -4,7 +4,7 @@ module Response
   protected
 
   def render_unauthorized(message)
-    errors = { errors: [ { detail: message } ] }
+    errors = { errors: message }
     render json: errors, status: :unauthorized
   end
 
@@ -14,7 +14,7 @@ module Response
       object = {}
       status = :not_found
     elsif record.try(:errors).present?
-      object = record.errors
+      object = { errors: record.errors}
       status = :unprocessable_entity
     else
       status = :ok
