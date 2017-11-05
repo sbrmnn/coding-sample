@@ -27,7 +27,7 @@ class Offer < ApplicationRecord
   protected 
 
   def downcase_columns
-    self.condition = condition.downcase
+    self.condition = condition.try(:downcase)
   end
 
   def validate_product
