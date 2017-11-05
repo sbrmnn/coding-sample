@@ -4,6 +4,7 @@ class FinancialInstitution < ApplicationRecord
   has_many :products, dependent: :destroy
   has_many :ads, dependent: :destroy
   has_many :bank_admins, dependent: :destroy
+  has_many :xref_goal_types, dependent: :destroy
   has_one :snapshot_summary
   
   delegate :average_user_balance, :sum_balance, :sum_message_clicks, 

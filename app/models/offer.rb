@@ -7,11 +7,15 @@ class Offer < ApplicationRecord
   validate :validate_ad
   validate :validate_product
 
-  validates_presence_of :name, :condition, :value
+  validates_presence_of :name, :value
 
   validates :symbol,
   :inclusion  => { :in => [ '=', '>', '<', '>=', '<=' ],
   :message    => "%{value} is not a valid symbol" }
+
+  validates :condition,
+  :inclusion  => { :in => [ 'balance' ],
+  :message    => "%{value} is not a valid condition" }
   
   belongs_to :xref_goal_type
   belongs_to :financial_institution

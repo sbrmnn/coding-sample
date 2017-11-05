@@ -560,7 +560,8 @@ CREATE TABLE xref_goal_types (
     name character varying,
     department character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    financial_institution_id integer
 );
 
 
@@ -1077,6 +1078,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171031215220'),
 ('20171102035919'),
 ('20171102160911'),
-('20171102160955');
+('20171102160955'),
+('20171105225028');
 
 
