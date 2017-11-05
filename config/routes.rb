@@ -19,11 +19,10 @@ Rails.application.routes.draw do
   scope module: :bank_admins do
     post   "login"  => "sessions#create"
     delete "logout" => "sessions#destroy"
+    resources :xref_goal_types, only: [:index]
     resources :ads
     resources :offers
-    resources :products do
-      resources :offers, only: [:index]
-    end
+    resources :products
     resources :snapshots, only: [:index]
     resources :users, param: :bank_user_id do
         scope module: :users do

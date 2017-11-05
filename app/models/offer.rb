@@ -1,6 +1,6 @@
 class Offer < ApplicationRecord
   attr_accessor :ad_name, :product_name
-
+  before_validation :downcase_columns
   validates_presence_of :product_name, if: lambda { self.product_id.blank? }
   validates_presence_of :ad_name, if: lambda { self.ad_id.blank? }
 
@@ -25,6 +25,10 @@ class Offer < ApplicationRecord
   has_many :messages, as: :message_obj
 
   protected 
+
+  def downcase_columns
+    self.condition = condition.downcase
+  end
 
   def validate_product
     if product_name
