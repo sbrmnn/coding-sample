@@ -39,7 +39,7 @@ RSpec.describe MonottoUsers::UsersController, type: :controller do
 
     it "user" do
       get :show, params: {id: user.id}
-      expect(JSON.parse(response.body)).to eq(JSON.parse(user))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(user.to_json))
     end
   end
 

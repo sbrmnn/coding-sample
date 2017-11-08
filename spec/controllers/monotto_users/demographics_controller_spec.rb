@@ -37,7 +37,7 @@ RSpec.describe MonottoUsers::DemographicsController, type: :controller do
 
     it "bank admin" do
       get :show, params: {id: demographic.id}
-      expect(JSON.parse(response.body)).to eq(JSON.parse(demographic))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(demographic.to_json))
     end
   end
 

@@ -17,7 +17,7 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
     end
     
     it "gets a list of goals" do
-      expect(JSON.parse(response.body)).to eq(JSON.parse(user.goals)) 
+      expect(JSON.parse(response.body)).to eq(JSON.parse(user.goals.to_json)) 
     end
   end
   describe "create" do
@@ -37,22 +37,22 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
 
     it "goal" do
       get :show, params: {user_bank_user_id: user.bank_user_id, id: goal.id}
-      expect(JSON.parse(response.body)).to eq(JSON.parse(goal))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(goal.to_json))
     end
   end
   describe "update" do
     before do
       goal
       xref_goal_type
-      put :update, params: {user_bank_user_id: user.bank_user_id, id: goal.id, goal: {name: "Save for a Car", value: 10000}}
+      put :update, params: {user_bank_user_id: user.bank_user_id, id: goal.id, goal: {tag: "Save for a Car", value: 10000}}
     end
 
     it "goal key" do
-      expect(JSON.parse(response.body)["name"]).to eq("Save for a Car")
+      expect(JSON.parse(response.body)["tag"]).to eq("Save for a Car")
     end
 
      it "goal amount" do
-      expect(JSON.parse(response.body)["amount"]).to eq(100000)
+      expect(JSON.parse(response.body)["target_amount"]).to eq(100000.0.to_s)
      end
   end
   describe "destroy" do
