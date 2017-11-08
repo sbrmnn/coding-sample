@@ -9,6 +9,6 @@ class BankAdmins::Products::OffersController < ApplicationController
   protected
 
   def find_product
-    @product = current_bank_admin.products.find_by(id: params[:product_id])
+    @product = current_bank_admin.try(:products).try{ |obj| obj.find_by(id: params[:product_id]) }
   end
 end
