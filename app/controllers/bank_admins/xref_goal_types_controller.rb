@@ -1,4 +1,4 @@
-class BankAdmins::XrefGoalTypesController < ApplicationController
+class BankAdmins::XrefGoalTypesController < BankAdmins::ApplicationController
    
    def index
      @xref_goal_types = current_bank_admin.xref_goal_types.where(xref_goal_type_params)
