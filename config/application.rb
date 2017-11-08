@@ -22,6 +22,7 @@ module Monotto
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins 'http://localhost:3000'
+        origins 'http://c27b763a.ngrok.io'
         resource '*', headers: :any, methods: [:get, :post, :options], credentials: true
       end
     end
