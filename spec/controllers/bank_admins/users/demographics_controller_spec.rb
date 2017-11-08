@@ -16,7 +16,7 @@ RSpec.describe BankAdmins::Users::DemographicsController, type: :controller do
     end
     
     it "gets a list of demographics" do
-      expect(JSON.parse(response.body)).to eq([JSON.parse(demographic.to_json(include: :user))]) 
+      expect(JSON.parse(response.body)).to eq([JSON.parse(demographic.to_json)]) 
     end
   end
   describe "create" do
@@ -33,7 +33,7 @@ RSpec.describe BankAdmins::Users::DemographicsController, type: :controller do
 
     it "shows demographic" do
       get :show, params: {user_bank_user_id: user.bank_user_id, id: demographic.id}
-      expect(JSON.parse(response.body)).to eq(JSON.parse(demographic.to_json(include: :user)))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(demographic.to_json))
     end
   end
   describe "update" do

@@ -16,7 +16,7 @@ RSpec.describe MonottoUsers::BankAdminsController, type: :controller do
     end
 
     it "gets a list of bank admins" do
-      expect(JSON.parse(response.body)).to eq(JSON.parse(BankAdmin.all.to_json(include:  [:ads,:offers, :products, :users, :financial_institution])))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(BankAdmin.all.to_json))
     end
   end
 

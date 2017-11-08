@@ -17,7 +17,7 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
     end
     
     it "gets a list of goals" do
-      expect(JSON.parse(response.body)).to eq(JSON.parse(user.goals.to_json(include:  [:xref_goal_type, :user, :goal_statistic]))) 
+      expect(JSON.parse(response.body)).to eq(JSON.parse(user.goals)) 
     end
   end
   describe "create" do
@@ -37,7 +37,7 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
 
     it "goal" do
       get :show, params: {user_bank_user_id: user.bank_user_id, id: goal.id}
-      expect(JSON.parse(response.body)).to eq(JSON.parse(goal.to_json(include:  [:xref_goal_type, :user, :goal_statistic])))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(goal))
     end
   end
   describe "update" do

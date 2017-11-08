@@ -17,7 +17,7 @@ RSpec.describe MonottoUsers::GoalsController, type: :controller do
     end
 
     it "gets a list of goals" do
-      expect(JSON.parse(response.body)).to eq(JSON.parse(Goal.all.to_json(include:  [:goal_statistic, :user, :xref_goal_type])))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(Goal.all.to_json))
     end
   end
 
@@ -43,7 +43,7 @@ RSpec.describe MonottoUsers::GoalsController, type: :controller do
 
     it "goal" do
       get :show, params: {id: goal.id}
-      expect(JSON.parse(response.body)).to eq(JSON.parse(goal.to_json(include: [:goal_statistic, :user, :xref_goal_type])))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(goal.to_json))
     end
   end
 

@@ -1,4 +1,4 @@
-class BankAdmins::Products::OffersController < ApplicationController
+class BankAdmins::Products::OffersController < BankAdmins::ApplicationController
   before_action :find_product
 
   def index

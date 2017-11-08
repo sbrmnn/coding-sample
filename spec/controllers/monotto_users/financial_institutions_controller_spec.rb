@@ -15,7 +15,7 @@ RSpec.describe MonottoUsers::FinancialInstitutionsController, type: :controller 
     end
 
     it "gets a list of financial institutions" do
-      expect(JSON.parse(response.body)).to eq(JSON.parse(FinancialInstitution.all.to_json(include: [:ads, :bank_admins, :users, :offers, :products, :snapshot_summary])))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(FinancialInstitution.all.to_json))
     end
   end
 
@@ -35,7 +35,7 @@ RSpec.describe MonottoUsers::FinancialInstitutionsController, type: :controller 
 
     it "financial institution" do
       get :show, params: {id: financial_institution.id}
-      expect(JSON.parse(response.body)).to eq(JSON.parse(financial_institution.to_json(include: [:ads, :bank_admins, :users, :offers, :products, :snapshot_summary])))
+      expect(JSON.parse(response.body)).to eq(JSON.parse(financial_institution.to_json))
     end
   end
 
