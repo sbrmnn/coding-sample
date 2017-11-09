@@ -23,7 +23,7 @@ module Monotto
       allow do
         origins 'http://localhost:3000'
         origins 'http://c27b763a.ngrok.io'
-        resource '*', headers: :any, methods: [:get, :post, :options], credentials: true
+        resource '*', headers: :any, methods: [:get, :post, :patch, :delete, :put ,:options], credentials: true
       end
     end
     # Settings in config/environments/* take precedence over those specified here.
