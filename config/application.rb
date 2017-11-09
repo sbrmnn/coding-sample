@@ -23,7 +23,6 @@ module Monotto
       allow do
         origins 'http://localhost:3000'
         origins 'http://c27b763a.ngrok.io'
-        origins '*'
         resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options], credentials: true
       end
     end

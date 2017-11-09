@@ -7,6 +7,7 @@
     "schemes": [
         "https"
     ],
+    "host": "api-us.monotto.com",
     "paths": {
         "/bank_admins/login": {
             "get": {
@@ -16,7 +17,8 @@
                 ],
                 "parameters": [
                     {
-                        "name": "Content-Type: application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
@@ -53,7 +55,7 @@
                             "properties": {
                                 "token": {
                                     "type": "string",
-                                    "description": "Authorization token."
+                                    "description": "Authorization token. Expires in 24 hrs."
                                 }
                             }
                         }
@@ -91,7 +93,7 @@
                                 },
                                 "key": {
                                     "type": "string",
-                                    "description": "Demographic type that can be customized (ie. Gender, Ethnic Group, Profession )."
+                                    "description": "Demographic type that can be customized (ie. Gender, Ethnic Group, Profession)."
                                 },
                                 "value": {
                                     "type": "string",
@@ -101,15 +103,17 @@
                         }
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
                         "in": "header",
-                        "description": "Token authentication header",
+                        "default": "Token token={TOKEN_VALUE}",
+                        "description": "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call.",
                         "required": true,
                         "type": "string"
                     }
@@ -182,15 +186,17 @@
                         }
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
                         "in": "header",
-                        "description": "Token authentication header",
+                        "default": "Token token={TOKEN_VALUE}",
+                        "description": "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call.",
                         "required": true,
                         "type": "string"
                     }
@@ -234,7 +240,8 @@
                         "description": "Id of demographic record for user.",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 1
                     },
                     {
                         "name": "user_identifier",
@@ -244,15 +251,17 @@
                         "type": "integer"
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
                         "in": "header",
-                        "description": "Token authentication header",
+                        "default": "Token token={TOKEN_VALUE}",
+                        "description": "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call.",
                         "required": true,
                         "type": "string"
                     }
@@ -291,7 +300,8 @@
                         "description": "Id of demographic record for user.",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 1
                     },
                     {
                         "name": "user_identifier",
@@ -319,15 +329,17 @@
                         }
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
                         "in": "header",
-                        "description": "Token authentication header",
+                        "default": "Token token={TOKEN_VALUE}",
+                        "description": "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call.",
                         "required": true,
                         "type": "string"
                     }
@@ -365,7 +377,8 @@
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 1
                     },
                     {
                         "name": "user_identifier",
@@ -374,15 +387,17 @@
                         "type": "integer"
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
                         "in": "header",
-                        "description": "Token authentication header",
+                        "default": "Token token={TOKEN_VALUE}",
+                        "description": "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call.",
                         "required": true,
                         "type": "string"
                     }
@@ -462,15 +477,17 @@
                         }
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
                         "in": "header",
-                        "description": "Token authentication header",
+                        "default": "Token token={TOKEN_VALUE}",
+                        "description": "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call.",
                         "required": true,
                         "type": "string"
                     }
@@ -501,11 +518,15 @@
                                     },
                                     "completion": {
                                         "type": "integer",
-                                        "description": "Percent completion of goal. Valid values (0 to 100)."
+                                        "description": "Percent completion of goal.",
+                                        "minimum": 0,
+                                        "maximum": 100
                                     },
                                     "priority": {
                                         "type": "integer",
-                                        "description": "Priority of user's goal with higher integer value equating to higher priority. Valid values (1 to 10)."
+                                        "description": "Priority of user's goal with higher integer value equating to higher priority.",
+                                        "minimum": 1,
+                                        "maximum": 10
                                     }
                                 }
                             }
@@ -569,15 +590,17 @@
                         }
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
                         "in": "header",
-                        "description": "Token authentication header",
+                        "default": "Token token={TOKEN_VALUE}",
+                        "description": "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call.",
                         "required": true,
                         "type": "string"
                     }
@@ -633,7 +656,8 @@
                         "description": "Id of goal record for user.",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 1
                     },
                     {
                         "name": "user_identifier",
@@ -643,15 +667,17 @@
                         "type": "integer"
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
                         "in": "header",
-                        "description": "Token authentication header",
+                        "default": "Token token={TOKEN_VALUE}",
+                        "description": "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call.",
                         "required": true,
                         "type": "string"
                     }
@@ -702,7 +728,8 @@
                         "description": "Id of goal record for user.",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 1
                     },
                     {
                         "name": "user_identifier",
@@ -738,14 +765,33 @@
                                 },
                                 "completion": {
                                     "type": "integer",
-                                    "description": "Percent completion of goal. Valid values (0 to 100)."
+                                    "description": "Percent completion of goal. Valid values (0 to 100).",
+                                    "minimum": 0,
+                                    "maximum": 100
                                 },
                                 "priority": {
                                     "type": "integer",
-                                    "description": "Priority of user's goal with higher integer value equating to higher priority. Valid values (1 to 10)."
+                                    "description": "Priority of user's goal with higher integer value equating to higher priority.",
+                                    "minimum": 1,
+                                    "maximum": 10
                                 }
                             }
                         }
+                    },
+                    {
+                        "name": "Content-Type",
+                        "default": "application/json",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "default": "Token token={TOKEN_VALUE}",
+                        "description": "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call.",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
@@ -793,7 +839,8 @@
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 1
                     },
                     {
                         "name": "user_identifier",
@@ -802,13 +849,15 @@
                         "type": "integer"
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
+                        "default": "Token token={TOKEN}",
                         "in": "header",
                         "description": "Token authentication header",
                         "required": true,
@@ -896,13 +945,15 @@
                         }
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
+                        "default": "Token token={TOKEN}",
                         "in": "header",
                         "description": "Token authentication header",
                         "required": true,
@@ -911,7 +962,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "An array of user transfer data.",
+                        "description": "An array of all user transfer data.",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -953,7 +1004,7 @@
         },
         "/users/{user_identifier}/transfers/{id}": {
             "get": {
-                "summary": "Gets user transfer.",
+                "summary": "Gets user transfer record.",
                 "tags": [
                     "Transfers"
                 ],
@@ -963,7 +1014,8 @@
                         "description": "Id of transfer record for user.",
                         "in": "path",
                         "required": true,
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 1
                     },
                     {
                         "name": "user_identifier",
@@ -973,13 +1025,15 @@
                         "type": "integer"
                     },
                     {
-                        "name": "Content-Type:application/json",
+                        "name": "Content-Type",
+                        "default": "application/json",
                         "in": "header",
                         "required": true,
                         "type": "string"
                     },
                     {
-                        "name": "Authorization: Token token={TOKEN}",
+                        "name": "Authorization",
+                        "default": "Token token={TOKEN}",
                         "in": "header",
                         "description": "Token authentication header",
                         "required": true,
@@ -1018,6 +1072,436 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "description": "Not found."
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "summary": "Gets all users.",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "default": "application/json",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "default": "Token token={TOKEN}",
+                        "in": "header",
+                        "description": "Token authentication header",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "All users are returned.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "sequence": {
+                                        "type": "integer",
+                                        "description": "Customizable value to verify request value."
+                                    },
+                                    "bank_user_id": {
+                                        "type": "string",
+                                        "description": "Bank Id of user."
+                                    },
+                                    "savings_account_identifier": {
+                                        "type": "string",
+                                        "description": "Savings account number."
+                                    },
+                                    "checking_account_identifier": {
+                                        "type": "integer",
+                                        "description": "Checking account number."
+                                    },
+                                    "transfers_active": {
+                                        "type": "boolean",
+                                        "description": "Transfers active on user."
+                                    },
+                                    "safety_net_active": {
+                                        "type": "boolean"
+                                    },
+                                    "max_transfer_amount": {
+                                        "type": "integer",
+                                        "description": "Max transfer account for user at any given time."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Not found."
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create user.",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "Content-Type",
+                        "default": "application/json",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "default": "Token token={TOKEN}",
+                        "in": "header",
+                        "description": "Token authentication header",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "sequence": {
+                                        "type": "integer",
+                                        "description": "Customizable value to verify request value."
+                                    },
+                                    "bank_user_id": {
+                                        "type": "string",
+                                        "description": "Bank Id of user."
+                                    },
+                                    "savings_account_identifier": {
+                                        "type": "string",
+                                        "description": "Savings account number."
+                                    },
+                                    "checking_account_identifier": {
+                                        "type": "integer",
+                                        "description": "Checking account number."
+                                    },
+                                    "transfers_active": {
+                                        "type": "boolean",
+                                        "description": "Transfers active on user."
+                                    },
+                                    "safety_net_active": {
+                                        "type": "boolean"
+                                    },
+                                    "max_transfer_amount": {
+                                        "type": "integer",
+                                        "description": "Max transfer account for user at any given time."
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Not found."
+                    }
+                }
+            }
+        },
+        "/users/{user_identifier}": {
+            "get": {
+                "summary": "Gets all users.",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "user_identifier",
+                        "description": "Bank Id of user",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Content-Type",
+                        "default": "application/json",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "default": "Token token={TOKEN}",
+                        "in": "header",
+                        "description": "Token authentication header",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sequence": {
+                                    "type": "integer",
+                                    "description": "Id of transfer record."
+                                },
+                                "bank_user_id": {
+                                    "type": "string",
+                                    "description": "Origin Account that money was taken out of."
+                                },
+                                "savings_account_identifier": {
+                                    "type": "string",
+                                    "description": "Destination Account that money was put into."
+                                },
+                                "checking_account_identifier": {
+                                    "type": "integer",
+                                    "description": "Amount transferred."
+                                },
+                                "transfers_active": {
+                                    "type": "integer",
+                                    "description": "Amount of times transfer was attempted."
+                                },
+                                "safety_net_active": {
+                                    "type": "boolean",
+                                    "description": "Boolean value indicating if transfer was successful."
+                                },
+                                "max_transfer_amount": {
+                                    "type": "string",
+                                    "description": "Date for next transfer."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Not found."
+                    }
+                }
+            },
+            "post": {
+                "summary": "Create user.",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "user_identifier",
+                        "description": "Bank Id of user",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Content-Type",
+                        "default": "application/json",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "default": "Token token={TOKEN}",
+                        "in": "header",
+                        "description": "Token authentication header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "user",
+                        "description": "Key/value pair to create user record.",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sequence": {
+                                    "type": "integer",
+                                    "description": "Id of transfer record."
+                                },
+                                "bank_user_id": {
+                                    "type": "string",
+                                    "description": "Origin Account that money was taken out of."
+                                },
+                                "savings_account_identifier": {
+                                    "type": "string",
+                                    "description": "Destination Account that money was put into."
+                                },
+                                "checking_account_identifier": {
+                                    "type": "integer",
+                                    "description": "Amount transferred."
+                                },
+                                "transfers_active": {
+                                    "type": "integer",
+                                    "description": "Amount of times transfer was attempted."
+                                },
+                                "safety_net_active": {
+                                    "type": "boolean",
+                                    "description": "Boolean value indicating if transfer was successful."
+                                },
+                                "max_transfer_amount": {
+                                    "type": "string",
+                                    "description": "Date for next transfer."
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sequence": {
+                                    "type": "integer",
+                                    "description": "Id of transfer record."
+                                },
+                                "bank_user_id": {
+                                    "type": "string",
+                                    "description": "Origin Account that money was taken out of."
+                                },
+                                "savings_account_identifier": {
+                                    "type": "string",
+                                    "description": "Destination Account that money was put into."
+                                },
+                                "checking_account_identifier": {
+                                    "type": "integer",
+                                    "description": "Amount transferred."
+                                },
+                                "transfers_active": {
+                                    "type": "integer",
+                                    "description": "Amount of times transfer was attempted."
+                                },
+                                "safety_net_active": {
+                                    "type": "boolean",
+                                    "description": "Boolean value indicating if transfer was successful."
+                                },
+                                "max_transfer_amount": {
+                                    "type": "string",
+                                    "description": "Date for next transfer."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Not found."
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Update user record.",
+                "tags": [
+                    "Users"
+                ],
+                "parameters": [
+                    {
+                        "name": "user_identifier",
+                        "description": "Bank Id of user",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "Content-Type",
+                        "default": "application/json",
+                        "in": "header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "default": "Token token={TOKEN}",
+                        "in": "header",
+                        "description": "Token authentication header",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "user",
+                        "description": "Key/value pair to update user record.",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sequence": {
+                                    "type": "integer",
+                                    "description": "Id of transfer record."
+                                },
+                                "bank_user_id": {
+                                    "type": "string",
+                                    "description": "Origin Account that money was taken out of."
+                                },
+                                "savings_account_identifier": {
+                                    "type": "string",
+                                    "description": "Destination Account that money was put into."
+                                },
+                                "checking_account_identifier": {
+                                    "type": "integer",
+                                    "description": "Amount transferred."
+                                },
+                                "transfers_active": {
+                                    "type": "integer",
+                                    "description": "Amount of times transfer was attempted."
+                                },
+                                "safety_net_active": {
+                                    "type": "boolean",
+                                    "description": "Boolean value indicating if transfer was successful."
+                                },
+                                "max_transfer_amount": {
+                                    "type": "string",
+                                    "description": "Date for next transfer."
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sequence": {
+                                    "type": "integer",
+                                    "description": "Id of transfer record."
+                                },
+                                "bank_user_id": {
+                                    "type": "string",
+                                    "description": "Origin Account that money was taken out of."
+                                },
+                                "savings_account_identifier": {
+                                    "type": "string",
+                                    "description": "Destination Account that money was put into."
+                                },
+                                "checking_account_identifier": {
+                                    "type": "integer",
+                                    "description": "Amount transferred."
+                                },
+                                "transfers_active": {
+                                    "type": "integer",
+                                    "description": "Amount of times transfer was attempted."
+                                },
+                                "safety_net_active": {
+                                    "type": "boolean",
+                                    "description": "Boolean value indicating if transfer was successful."
+                                },
+                                "max_transfer_amount": {
+                                    "type": "string",
+                                    "description": "Date for next transfer."
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Not found."
                     }
                 }
             }
