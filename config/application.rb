@@ -19,21 +19,13 @@ Bundler.require(*Rails.groups)
 module Monotto
   class Application < Rails::Application
 
-    # Allow access for localhost:3000
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'http://localhost:3000'
+        origins 'localhost:3000', 'http://c27b763a.ngrok.io'
         resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options], credentials: true
       end
     end
 
-    # Allow access for http://c27b763a.ngrok.io
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins 'http://c27b763a.ngrok.io'
-        resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options], credentials: true
-      end
-    end
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
