@@ -4,6 +4,7 @@ info:
   version: v1
 schemes: ['https']
 host: api-us.monotto.com
+x-explorer-enabled: false
 paths:
   '/bank_admins/login':
     get:
