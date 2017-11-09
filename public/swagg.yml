@@ -3,7 +3,7 @@ info:
   title: API V1
   version: v1
 schemes: ['https']
-host: 'https://api-us.monotto.com'
+host: api-us.monotto.com
 paths:
   '/bank_admins/login':
     get:
