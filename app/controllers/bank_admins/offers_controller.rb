@@ -50,7 +50,7 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
     if params[:offer].blank?
       {}
     else
-      params.require(:offer).permit(:name, :condition, :symbol, :value, :ad_name, :product_name)
+      params.require(:offer).permit(:name, :condition, :symbol, :value, :ad_name, :click_through, :delivered, :product_name)
     end
    end 
 end

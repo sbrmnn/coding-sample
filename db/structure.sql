@@ -334,7 +334,9 @@ CREATE TABLE offers (
     value numeric(10,2) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    product_id integer
+    product_id integer,
+    click_through integer DEFAULT 0,
+    delivered integer DEFAULT 0
 );
 
 
@@ -1079,6 +1081,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171102035919'),
 ('20171102160911'),
 ('20171102160955'),
-('20171105225028');
+('20171105225028'),
+('20171109022120'),
+('20171109022152');
 
 
