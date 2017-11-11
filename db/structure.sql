@@ -339,6 +339,19 @@ CREATE TABLE offers (
 
 
 --
+-- Name: offer_summaries; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW offer_summaries AS
+ SELECT offers.id AS offer_id,
+    count(messages.*) AS delivered,
+    COALESCE(sum(messages.clicks), (0)::bigint) AS click_through
+   FROM (offers
+     LEFT JOIN messages ON (((messages.message_obj_id = offers.id) AND ((messages.message_obj_type)::text = 'Offer'::text))))
+  GROUP BY offers.id;
+
+
+--
 -- Name: offers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1079,6 +1092,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171102035919'),
 ('20171102160911'),
 ('20171102160955'),
-('20171105225028');
+('20171105225028'),
+('20171111045858');
 
 
