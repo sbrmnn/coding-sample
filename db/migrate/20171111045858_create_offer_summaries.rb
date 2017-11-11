@@ -4,7 +4,7 @@ class CreateOfferSummaries < ActiveRecord::Migration[5.0]
       CREATE VIEW offer_summaries AS
         SELECT
           offers.id AS offer_id,
-          COUNT(messages)  AS delivered
+          COUNT(messages)  AS delivered,
           coalesce(AVG(messages.clicks), 0)       AS clicks
         FROM
           offers
