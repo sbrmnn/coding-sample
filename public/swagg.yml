@@ -929,3 +929,302 @@ paths:
                 description: Date for next transfer.
         '400':
           description: Not found.
+  '/ads':
+    get:
+      summary: Gets all ads.
+      tags:
+        - Ads
+      parameters:
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: All ads are returned.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                header: 
+                  type: string
+                  description: Header text for Ad.
+                body:
+                  type: string
+                  description: Body text for Ad.
+                link:
+                  type: string
+                  description: Link to upsell page.
+                image:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      description: URL of ad image.
+                  description: Transfers active on user.
+                name:
+                  type: string
+                  description: Name of the ad (only visible to the bank admin).
+        '400':
+          description: Not found.
+    post:
+      summary: Create ad.
+      tags:
+        - Ads
+      parameters:
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                sequence: 
+                  type: integer
+                  description: Customizable value to verify request value.
+                bank_user_id: 
+                  type: string
+                  description: Bank Id of user.
+                savings_account_identifier:
+                  type: string
+                  description: Savings account number.
+                checking_account_identifier:
+                  type: integer
+                  description: Checking account number.
+                transfers_active:
+                  type: boolean
+                  description: Transfers active on user.
+                safety_net_active:
+                  type: boolean
+                max_transfer_amount:
+                  type: integer
+                  description: Max transfer account for user at any given time.
+        '400':
+          description: Not found.
+  '/users/{user_identifier}':
+    get:
+      summary: Gets all users.
+      tags:
+        - Ads
+      parameters:
+        - name: user_identifier
+          description: "Bank Id of user"
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK.
+          schema:
+            type: object
+            properties:
+              sequence: 
+                type: integer
+                description: Id of transfer record.
+              bank_user_id: 
+                type: string
+                description: Origin Account that money was taken out of.
+              savings_account_identifier:
+                type: string
+                description: Destination Account that money was put into.
+              checking_account_identifier:
+                type: integer
+                description: Amount transferred.
+              transfers_active:
+                type: integer
+                description: Amount of times transfer was attempted.
+              safety_net_active:
+                type: boolean
+                description: Boolean value indicating if transfer was successful.
+              max_transfer_amount:
+                type: string
+                description: Date for next transfer.
+        '400':
+          description: Not found.
+    post:
+      summary: Create user.
+      tags:
+        - Ads
+      parameters:
+        - name: user_identifier
+          description: "Bank Id of user"
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+        - name: user
+          description: "Key/value pair to create user record."
+          required: true
+          in: body
+          schema:
+            type: object
+            properties:
+              sequence: 
+                type: integer
+                description: Id of transfer record.
+              bank_user_id: 
+                type: string
+                description: Origin Account that money was taken out of.
+              savings_account_identifier:
+                type: string
+                description: Destination Account that money was put into.
+              checking_account_identifier:
+                type: integer
+                description: Amount transferred.
+              transfers_active:
+                type: integer
+                description: Amount of times transfer was attempted.
+              safety_net_active:
+                type: boolean
+                description: Boolean value indicating if transfer was successful.
+              max_transfer_amount:
+                type: string
+                description: Date for next transfer.
+      responses:
+        '200':
+          description: OK.
+          schema:
+            type: object
+            properties:
+              sequence: 
+                type: integer
+                description: Id of transfer record.
+              bank_user_id: 
+                type: string
+                description: Origin Account that money was taken out of.
+              savings_account_identifier:
+                type: string
+                description: Destination Account that money was put into.
+              checking_account_identifier:
+                type: integer
+                description: Amount transferred.
+              transfers_active:
+                type: integer
+                description: Amount of times transfer was attempted.
+              safety_net_active:
+                type: boolean
+                description: Boolean value indicating if transfer was successful.
+              max_transfer_amount:
+                type: string
+                description: Date for next transfer.
+        '400':
+          description: Not found.
+    patch:
+      summary: Update user record.
+      tags:
+        - Ads
+      parameters:
+        - name: user_identifier
+          description: "Bank Id of user"
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+        - name: user
+          description: "Key/value pair to update user record."
+          required: true
+          in: body
+          schema:
+            type: object
+            properties:
+              sequence: 
+                type: integer
+                description: Id of transfer record.
+              bank_user_id: 
+                type: string
+                description: Origin Account that money was taken out of.
+              savings_account_identifier:
+                type: string
+                description: Destination Account that money was put into.
+              checking_account_identifier:
+                type: integer
+                description: Amount transferred.
+              transfers_active:
+                type: integer
+                description: Amount of times transfer was attempted.
+              safety_net_active:
+                type: boolean
+                description: Boolean value indicating if transfer was successful.
+              max_transfer_amount:
+                type: string
+                description: Date for next transfer.
+      responses:
+        '200':
+          description: OK.
+          schema:
+            type: object
+            properties:
+              sequence: 
+                type: integer
+                description: Id of transfer record.
+              bank_user_id: 
+                type: string
+                description: Origin Account that money was taken out of.
+              savings_account_identifier:
+                type: string
+                description: Destination Account that money was put into.
+              checking_account_identifier:
+                type: integer
+                description: Amount transferred.
+              transfers_active:
+                type: integer
+                description: Amount of times transfer was attempted.
+              safety_net_active:
+                type: boolean
+                description: Boolean value indicating if transfer was successful.
+              max_transfer_amount:
+                type: string
+                description: Date for next transfer.
+        '400':
+          description: Not found.
