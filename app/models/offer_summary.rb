@@ -1,4 +1,4 @@
 class OfferSummary < ApplicationRecord
-  self.primary_key = "goal_id"
-  belongs_to :goal
+  self.primary_key = "offer_id"
+  belongs_to :offer
 end
