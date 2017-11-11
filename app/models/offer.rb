@@ -3,7 +3,7 @@ class Offer < ApplicationRecord
   before_validation :downcase_columns
   validates_presence_of :product_name, if: lambda { self.product_id.blank? }
   validates_presence_of :ad_name, if: lambda { self.ad_id.blank? }
-
+  has_one :offer_summary
   validate :validate_ad
   validate :validate_product
 

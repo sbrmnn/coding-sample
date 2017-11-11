@@ -13,6 +13,9 @@ class FinancialInstitution < ApplicationRecord
   validates_presence_of :name, :location
   validates :max_transfer_amount, numericality: { greater_than_or_equal_to: 0}
 
+
+  after_create :create_default_xref_goals
+
   before_save :cascade_down_max_transfer_price_to_users
 
   protected
