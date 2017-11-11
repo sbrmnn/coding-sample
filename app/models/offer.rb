@@ -24,6 +24,8 @@ class Offer < ApplicationRecord
 
   has_many :messages, as: :message_obj
 
+  default_scope { joins(:offer_summary).select("offers.*, offer_summaries.delivered, offer_summaries.click_through") }
+
   protected 
 
   def downcase_columns

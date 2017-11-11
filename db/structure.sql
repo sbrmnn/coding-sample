@@ -334,23 +334,8 @@ CREATE TABLE offers (
     value numeric(10,2) NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    product_id integer,
-    click_through integer DEFAULT 0,
-    delivered integer DEFAULT 0
+    product_id integer
 );
-
-
---
--- Name: offer_summaries; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW offer_summaries AS
- SELECT offers.id AS offer_id,
-    count(messages.*) AS delivered
-   FROM (offers
-     LEFT JOIN messages ON ((messages.message_obj_id = offers.id)))
-  WHERE ((messages.message_obj_type)::text = 'Offer'::text)
-  GROUP BY offers.id;
 
 
 --
@@ -1094,9 +1079,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171102035919'),
 ('20171102160911'),
 ('20171102160955'),
-('20171105225028'),
-('20171109022120'),
-('20171109022152'),
-('20171111045858');
+('20171105225028');
 
 
