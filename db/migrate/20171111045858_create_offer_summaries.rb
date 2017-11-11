@@ -5,7 +5,7 @@ class CreateOfferSummaries < ActiveRecord::Migration[5.0]
         SELECT
           offers.id AS offer_id,
           COUNT(messages)  AS delivered,
-          coalesce(AVG(messages.clicks), 0)       AS clicks
+          coalesce(SUM(messages.clicks), 0)       AS clicks
         FROM
           offers
           LEFT JOIN messages
