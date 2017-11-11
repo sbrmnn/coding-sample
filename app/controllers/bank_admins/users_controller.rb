@@ -8,17 +8,11 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
    def create
      @user = User.new(user_params)
      current_bank_admin.financial_institution.users << @user
-     status = @user.errors.any? ? :unprocessable_entity : :created
      json_response(@user)
    end
 
    def show
      @user = current_bank_admin.users.find_by(bank_user_id:  params[:bank_user_id])
-     if @user
-       status = :ok
-     else
-       status = :not_found
-     end
      json_response(@user)
   end
 
@@ -26,9 +20,6 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
      @user = current_bank_admin.users.find_by(bank_user_id: params[:bank_user_id])
      if @user
        @user.update_attributes(user_params) 
-       status = @user.errors.any? ? :unprocessable_entity :  :ok
-     else
-       status = :not_found
      end 
      json_response(@user)
    end
@@ -37,9 +28,6 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
      @user = current_bank_admin.users.find_by(bank_user_id: params[:bank_user_id])
      if @user
        @user.destroy
-       status = :ok
-     else
-      status = :not_found
      end
      json_response(@user)
    end

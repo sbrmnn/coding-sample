@@ -8,11 +8,6 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
 
   def show
     @goal = @user.try(:goals).find_by(id: params[:id])
-    if @goal
-      status = :ok
-    else
-      status = :not_found
-    end
     json_response(@goal)
   end
 
@@ -20,7 +15,6 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
     @goals = @user.try(:goals)
     @goal =  Goal.new(goal_params)
     @goals << @goal
-    status = @goal.errors.any? ? :unprocessable_entity :  :created
     json_response(@goal)
   end
 
@@ -28,9 +22,6 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
     @goal = @user.try(:goals).try{ |obj| obj.find_by(:id=> params[:id])}
     if @goal
       @goal.update_attributes(goal_params) 
-      status = @goal.errors.any? ? :unprocessable_entity :  :ok
-    else
-      status = :not_found
     end 
     json_response(@goal)
    end
@@ -39,9 +30,6 @@ class BankAdmins::Users::GoalsController < BankAdmins::ApplicationController
     @goal = @user.try(:goals).try{ |obj| obj.find_by(:id=> params[:id]) }
     if @goal
       @goal.destroy 
-      status = :ok
-    else
-      status = :not_found
     end
     json_response(@goal) 
    end

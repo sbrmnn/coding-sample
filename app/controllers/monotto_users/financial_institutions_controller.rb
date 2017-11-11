@@ -2,31 +2,16 @@ class MonottoUsers::FinancialInstitutionsController < MonottoUsers::ApplicationC
    
    def index
      @financial_institutions = FinancialInstitution.all.where(financial_institution_params)
-     if @financial_institutions.present?
-       status = :ok
-     else
-       status = :not_found
-     end
      json_response(@financial_institutions)
    end
 
    def create
      @financial_institution = FinancialInstitution.create(financial_institution_params)
-     if @financial_institution.errors.any?
-        status = :unprocessable_entity
-     else
-        status = :created
-     end
      json_response(@financial_institution)
    end
 
    def show
      @financial_institution = FinancialInstitution.find_by(id: params[:id])
-     if @financial_institution
-      status = :ok
-     else
-      status = :not_found
-     end
      json_response(@financial_institution)
    end
 
@@ -34,20 +19,12 @@ class MonottoUsers::FinancialInstitutionsController < MonottoUsers::ApplicationC
       @financial_institution = FinancialInstitution.find_by(id: params[:id])
       if @financial_institution.present?
         @financial_institution.update_attributes(financial_institution_params)
-        status = @financial_institution.errors.any? ? :unprocessable_entity : :ok
-      else
-        status = :not_found
       end
       json_response(@financial_institution)
    end
 
    def destroy
      @financial_institution = FinancialInstitution.find_by(id: params[:id]).try(:destroy)
-     if @financial_institution.present?
-       status = :ok
-     else
-       status = :not_found
-     end
      json_response(@financial_institution) 
    end
 

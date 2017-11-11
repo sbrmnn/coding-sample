@@ -14,11 +14,6 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
 
    def show
      @ad = current_bank_admin.ads.find_by(id: params[:id])
-     if @ad
-       status = :ok
-     else
-       status = :not_found
-     end
      json_response(@ad)
   end
 =begin

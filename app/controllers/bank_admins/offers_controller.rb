@@ -8,17 +8,11 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
    def create
      @offer = Offer.new(offer_params)
      current_bank_admin.financial_institution.offers << @offer
-     status = @offer.errors.any? ? :unprocessable_entity : :created
      json_response(@offer)
    end
 
    def show
      @offer = current_bank_admin.offers.find_by(id:  params[:id])
-     if @offer
-       status = :ok
-     else
-       status = :not_found
-     end
      json_response(@offer)
    end
 
@@ -26,9 +20,6 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
      @offer = current_bank_admin.offers.find_by(id: params[:id])
      if @offer
        @offer.update_attributes(offer_params) 
-       status = @offer.errors.any? ? :unprocessable_entity :  :ok
-     else
-       status = :not_found
      end 
      json_response(@offer)
    end
@@ -37,9 +28,6 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
      @offer = current_bank_admin.offers.find_by(id: params[:id])
      if @offer
        @offer.destroy
-       status = :ok
-     else
-      status = :not_found
      end
      json_response(@offer)
    end

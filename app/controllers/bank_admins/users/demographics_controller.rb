@@ -8,11 +8,6 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
 
   def show
     @demographic = @user.try(:demographics).find_by(id: params[:id])
-    if @demographic
-      status = :ok
-    else
-      status = :not_found
-    end
     json_response(@demographic)
   end
 
@@ -20,7 +15,6 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
     @demographics = @user.try(:demographics)
     @demographic =  Demographic.new(demographic_params)
     @demographics << @demographic
-    status = @demographic.errors.any? ? :unprocessable_entity :  :created
     json_response(@demographic)
   end
 
@@ -28,9 +22,6 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
     @demographic = @user.try(:demographics).try{ |obj| obj.find_by(:id=> params[:id])}
     if @demographic
       @demographic.update_attributes(demographic_params) 
-      status = @demographic.errors.any? ? :unprocessable_entity :  :ok
-    else
-      status = :not_found
     end 
     json_response(@demographic)
   end
@@ -39,9 +30,6 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
     @demographic = @user.try(:demographics).try{ |obj| obj.where(:id=> params[:id]).first }
     if @demographic
       @demographic.destroy
-      status = :ok
-    else
-      status = :not_found
     end
     json_response(@demographic) 
   end
