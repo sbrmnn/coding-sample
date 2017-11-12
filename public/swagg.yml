@@ -422,7 +422,7 @@ paths:
           required: true
           type: string
       responses:
-        '201':
+        '200':
           description: Goal entry created.
           schema:
             type: object
@@ -631,7 +631,7 @@ paths:
                 description: Priority of user's goal with higher integer value equating to higher priority. Valid values (1 to 10).
   '/users':
     get:
-      summary: Gets all users.
+      summary: Gets all user data.
       tags:
         - Users
       parameters:
@@ -648,141 +648,40 @@ paths:
           type: string
       responses:
         '200':
-          description: All users are returned.
+          description: An array of user data.
           schema:
             type: array
             items:
               type: object
               properties:
                 sequence: 
-                  type: integer
-                  description: Customizable value to verify request value.
+                  type: string
+                  description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
                 bank_user_id: 
                   type: string
-                  description: Bank Id of user.
+                  description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
                 savings_account_identifier:
                   type: string
-                  description: Savings account number.
+                  description: System ID for Savings account that user will be moving money to.
                 checking_account_identifier:
-                  type: integer
-                  description: Checking account number.
+                  type: string
+                  description: System ID for Checking account that user will be moving money from.
                 transfers_active:
                   type: boolean
-                  description: Transfers active on user.
+                  description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
                 safety_net_active:
                   type: boolean
+                  description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
                 max_transfer_amount:
-                  type: integer
-                  description: Max transfer account for user at any given time.
+                  type: decimal
+                  description: Max amount that user's can transfer funds to their savings accounts.
         '400':
-          description: Not found.
+          description: Not found
     post:
-      summary: Create user.
+      summary: Creates a user record.
       tags:
         - Users
       parameters:
-        - name: Content-Type
-          default: application/json
-          in: header
-          required: true
-          type: string
-        - name: Authorization
-          default: Token token={TOKEN}
-          in: header
-          description: "Token authentication header"
-          required: true
-          type: string
-      responses:
-        '200':
-          description: OK.
-          schema:
-            type: array
-            items:
-              type: object
-              properties:
-                sequence: 
-                  type: integer
-                  description: Customizable value to verify request value.
-                bank_user_id: 
-                  type: string
-                  description: Bank Id of user.
-                savings_account_identifier:
-                  type: string
-                  description: Savings account number.
-                checking_account_identifier:
-                  type: integer
-                  description: Checking account number.
-                transfers_active:
-                  type: boolean
-                  description: Transfers active on user.
-                safety_net_active:
-                  type: boolean
-                max_transfer_amount:
-                  type: integer
-                  description: Max transfer account for user at any given time.
-        '400':
-          description: Not found.
-  '/users/{user_identifier}':
-    get:
-      summary: Gets all users.
-      tags:
-        - Users
-      parameters:
-        - name: user_identifier
-          description: "Bank Id of user"
-          in: path
-          required: true
-          type: integer
-        - name: Content-Type
-          default: application/json
-          in: header
-          required: true
-          type: string
-        - name: Authorization
-          default: Token token={TOKEN}
-          in: header
-          description: "Token authentication header"
-          required: true
-          type: string
-      responses:
-        '200':
-          description: OK.
-          schema:
-            type: object
-            properties:
-              sequence: 
-                type: integer
-                description: Id of transfer record.
-              bank_user_id: 
-                type: string
-                description: Origin Account that money was taken out of.
-              savings_account_identifier:
-                type: string
-                description: Destination Account that money was put into.
-              checking_account_identifier:
-                type: integer
-                description: Amount transferred.
-              transfers_active:
-                type: integer
-                description: Amount of times transfer was attempted.
-              safety_net_active:
-                type: boolean
-                description: Boolean value indicating if transfer was successful.
-              max_transfer_amount:
-                type: string
-                description: Date for next transfer.
-        '400':
-          description: Not found.
-    post:
-      summary: Create user.
-      tags:
-        - Users
-      parameters:
-        - name: user_identifier
-          description: "Bank Id of user"
-          in: path
-          required: true
-          type: integer
         - name: Content-Type
           default: application/json
           in: header
@@ -802,26 +701,26 @@ paths:
             type: object
             properties:
               sequence: 
-                type: integer
-                description: Id of transfer record.
+                type: string
+                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
-                description: Origin Account that money was taken out of.
+                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
               savings_account_identifier:
                 type: string
-                description: Destination Account that money was put into.
+                description: System ID for Savings account that user will be moving money to.
               checking_account_identifier:
-                type: integer
-                description: Amount transferred.
+                type: string
+                description: System ID for Checking account that user will be moving money from.
               transfers_active:
-                type: integer
-                description: Amount of times transfer was attempted.
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
               safety_net_active:
                 type: boolean
-                description: Boolean value indicating if transfer was successful.
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
               max_transfer_amount:
-                type: string
-                description: Date for next transfer.
+                type: decimal
+                description: Max amount that user's can transfer funds to their savings accounts.
       responses:
         '200':
           description: OK.
@@ -829,38 +728,162 @@ paths:
             type: object
             properties:
               sequence: 
-                type: integer
-                description: Id of transfer record.
+                type: string
+                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
-                description: Origin Account that money was taken out of.
+                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
               savings_account_identifier:
                 type: string
-                description: Destination Account that money was put into.
+                description: System ID for Savings account that user will be moving money to.
               checking_account_identifier:
-                type: integer
-                description: Amount transferred.
+                type: string
+                description: System ID for Checking account that user will be moving money from.
               transfers_active:
-                type: integer
-                description: Amount of times transfer was attempted.
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
               safety_net_active:
                 type: boolean
-                description: Boolean value indicating if transfer was successful.
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
               max_transfer_amount:
-                type: string
-                description: Date for next transfer.
+                type: decimal
+                description: Max amount that user's can transfer funds to their savings accounts.
         '400':
           description: Not found.
-    patch:
-      summary: Update user record.
+  '/users/{bank_user_id}':
+    get:
+      summary: Gets user.
       tags:
         - Users
       parameters:
-        - name: user_identifier
-          description: "Bank Id of user"
+        - name: bank_user_id
+          description: Bank identifier for the user.
           in: path
           required: true
-          type: integer
+          type: string
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User info returned.
+          schema:
+            type: object
+            properties:
+              sequence: 
+                type: string
+                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
+              bank_user_id: 
+                type: string
+                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              savings_account_identifier:
+                type: string
+                description: System ID for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System ID for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: decimal
+                description: Max amount that user's can transfer funds to their savings accounts.
+    patch:
+      summary: Updates user record.
+      tags:
+        - Users
+      parameters:
+        - name: bank_user_id
+          description: Bank identifier for the user.
+          in: path
+          required: true
+          type: string
+        - name: user
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              sequence: 
+                type: string
+                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
+              bank_user_id: 
+                type: string
+                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              savings_account_identifier:
+                type: string
+                description: System ID for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System ID for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: decimal
+                description: Max amount that user's can transfer funds to their savings accounts.
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User updated.
+          schema:
+            type: object
+            properties:
+              sequence: 
+                type: string
+                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
+              bank_user_id: 
+                type: string
+                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              savings_account_identifier:
+                type: string
+                description: System ID for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System ID for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: decimal
+                description: Max amount that user's can transfer funds to their savings accounts.
+    delete:
+      summary: Deletes user entry.
+      tags:
+        - Users
+      parameters:
+        - name: bank_user_id
+          description: Bank identifier for the user.
+          in: path
+          required: true
+          type: string
         - name: Content-Type
           default: application/json
           in: header
@@ -872,66 +895,36 @@ paths:
           description: "Token authentication header"
           required: true
           type: string
-        - name: user
-          description: "Key/value pair to update user record."
-          required: true
-          in: body
-          schema:
-            type: object
-            properties:
-              sequence: 
-                type: integer
-                description: Id of transfer record.
-              bank_user_id: 
-                type: string
-                description: Origin Account that money was taken out of.
-              savings_account_identifier:
-                type: string
-                description: Destination Account that money was put into.
-              checking_account_identifier:
-                type: integer
-                description: Amount transferred.
-              transfers_active:
-                type: integer
-                description: Amount of times transfer was attempted.
-              safety_net_active:
-                type: boolean
-                description: Boolean value indicating if transfer was successful.
-              max_transfer_amount:
-                type: string
-                description: Date for next transfer.
       responses:
         '200':
-          description: OK.
+          description: User deleted.
           schema:
             type: object
             properties:
               sequence: 
-                type: integer
-                description: Id of transfer record.
+                type: string
+                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
-                description: Origin Account that money was taken out of.
+                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
               savings_account_identifier:
                 type: string
-                description: Destination Account that money was put into.
+                description: System ID for Savings account that user will be moving money to.
               checking_account_identifier:
-                type: integer
-                description: Amount transferred.
+                type: string
+                description: System ID for Checking account that user will be moving money from.
               transfers_active:
-                type: integer
-                description: Amount of times transfer was attempted.
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
               safety_net_active:
                 type: boolean
-                description: Boolean value indicating if transfer was successful.
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
               max_transfer_amount:
-                type: string
-                description: Date for next transfer.
-        '400':
-          description: Not found.
+                type: decimal
+                description: Max amount that user's can transfer funds to their savings accounts.
   '/ads':
     get:
-      summary: Gets all ads.
+      summary: Gets all ad data.
       tags:
         - Ads
       parameters:
@@ -948,7 +941,7 @@ paths:
           type: string
       responses:
         '200':
-          description: All ads are returned.
+          description: An array of ad data.
           schema:
             type: array
             items:
@@ -966,17 +959,18 @@ paths:
                 image:
                   type: object
                   properties:
-                    url:
+                    id:
+                      type: integer
+                    name:
                       type: string
-                      description: URL of ad image.
-                  description: Transfers active on user.
+                  description: URL of the image.
                 name:
                   type: string
                   description: Name of the ad (only visible to the bank admin).
         '400':
-          description: Not found.
+          description: Not found
     post:
-      summary: Create ad.
+      summary: Creates a ad record.
       tags:
         - Ads
       parameters:
@@ -991,175 +985,202 @@ paths:
           description: "Token authentication header"
           required: true
           type: string
+        - name: ad
+          description: "Key/value pair to create ad record."
+          required: true
+          in: body
+          schema:
+            type: object
+            required:
+            - header
+            - body
+            - link
+            - name
+            properties:
+              header: 
+                type: string
+                description: Header text for Ad.
+              body:
+                type: string
+                description: Body text for Ad.
+              link:
+                type: string
+                description: Link to upsell page.
+              image:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                description: URL of the image.
+              name:
+                type: string
+                description: Name of the ad (only visible to the bank admin).
       responses:
         '200':
           description: OK.
           schema:
-            type: array
-            items:
-              type: object
-              properties:
-                sequence: 
-                  type: integer
-                  description: Customizable value to verify request value.
-                bank_user_id: 
-                  type: string
-                  description: Bank Id of user.
-                savings_account_identifier:
-                  type: string
-                  description: Savings account number.
-                checking_account_identifier:
-                  type: integer
-                  description: Checking account number.
-                transfers_active:
-                  type: boolean
-                  description: Transfers active on user.
-                safety_net_active:
-                  type: boolean
-                max_transfer_amount:
-                  type: integer
-                  description: Max transfer account for user at any given time.
+            type: object
+            properties:
+              header: 
+                type: string
+                description: Header text for Ad.
+              body:
+                type: string
+                description: Body text for Ad.
+              link:
+                type: string
+                description: Link to upsell page.
+              image:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                description: URL of the image.
+              name:
+                type: string
+                description: Name of the ad (only visible to the bank admin).
         '400':
           description: Not found.
-  '/users/{user_identifier}':
+  '/ads/{id}':
     get:
-      summary: Gets all users.
+      summary: Gets ad.
       tags:
         - Ads
       parameters:
-        - name: user_identifier
-          description: "Bank Id of user"
+        - name: id
+          description: Id of the ad.
           in: path
           required: true
-          type: integer
+          type: string
         - name: Content-Type
           default: application/json
           in: header
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
           in: header
-          description: "Token authentication header"
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
           required: true
           type: string
       responses:
         '200':
-          description: OK.
+          description: Ad info returned.
           schema:
             type: object
             properties:
-              sequence: 
-                type: integer
-                description: Id of transfer record.
-              bank_user_id: 
+              header: 
                 type: string
-                description: Origin Account that money was taken out of.
-              savings_account_identifier:
+                description: Header text for Ad.
+              body:
                 type: string
-                description: Destination Account that money was put into.
-              checking_account_identifier:
-                type: integer
-                description: Amount transferred.
-              transfers_active:
-                type: integer
-                description: Amount of times transfer was attempted.
-              safety_net_active:
-                type: boolean
-                description: Boolean value indicating if transfer was successful.
-              max_transfer_amount:
+                description: Body text for Ad.
+              link:
                 type: string
-                description: Date for next transfer.
-        '400':
-          description: Not found.
-    post:
-      summary: Create user.
-      tags:
-        - Ads
-      parameters:
-        - name: user_identifier
-          description: "Bank Id of user"
-          in: path
-          required: true
-          type: integer
-        - name: Content-Type
-          default: application/json
-          in: header
-          required: true
-          type: string
-        - name: Authorization
-          default: Token token={TOKEN}
-          in: header
-          description: "Token authentication header"
-          required: true
-          type: string
-        - name: user
-          description: "Key/value pair to create user record."
-          required: true
-          in: body
-          schema:
-            type: object
-            properties:
-              sequence: 
-                type: integer
-                description: Id of transfer record.
-              bank_user_id: 
+                description: Link to upsell page.
+              image:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                description: URL of the image.
+              name:
                 type: string
-                description: Origin Account that money was taken out of.
-              savings_account_identifier:
-                type: string
-                description: Destination Account that money was put into.
-              checking_account_identifier:
-                type: integer
-                description: Amount transferred.
-              transfers_active:
-                type: integer
-                description: Amount of times transfer was attempted.
-              safety_net_active:
-                type: boolean
-                description: Boolean value indicating if transfer was successful.
-              max_transfer_amount:
-                type: string
-                description: Date for next transfer.
-      responses:
-        '200':
-          description: OK.
-          schema:
-            type: object
-            properties:
-              sequence: 
-                type: integer
-                description: Id of transfer record.
-              bank_user_id: 
-                type: string
-                description: Origin Account that money was taken out of.
-              savings_account_identifier:
-                type: string
-                description: Destination Account that money was put into.
-              checking_account_identifier:
-                type: integer
-                description: Amount transferred.
-              transfers_active:
-                type: integer
-                description: Amount of times transfer was attempted.
-              safety_net_active:
-                type: boolean
-                description: Boolean value indicating if transfer was successful.
-              max_transfer_amount:
-                type: string
-                description: Date for next transfer.
-        '400':
-          description: Not found.
+                description: Name of the ad (only visible to the bank admin).
     patch:
-      summary: Update user record.
+      summary: Updates ad record.
       tags:
         - Ads
       parameters:
-        - name: user_identifier
-          description: "Bank Id of user"
+        - name: id
+          description: Bank identifier for the ad.
           in: path
           required: true
-          type: integer
+          type: string
+        - name: ad
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+            - header
+            - body
+            - link
+            - name
+            properties:
+              header: 
+                type: string
+                description: Header text for Ad.
+              body:
+                type: string
+                description: Body text for Ad.
+              link:
+                type: string
+                description: Link to upsell page.
+              image:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                description: URL of the image.
+              name:
+                type: string
+                description: Name of the ad (only visible to the bank admin).
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Ad updated.
+          schema:
+            type: object
+            properties:
+              header: 
+                type: string
+                description: Header text for Ad.
+              body:
+                type: string
+                description: Body text for Ad.
+              link:
+                type: string
+                description: Link to upsell page.
+              image:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                description: URL of the image.
+              name:
+                type: string
+                description: Name of the ad (only visible to the bank admin).
+    delete:
+      summary: Deletes ad entry.
+      tags:
+        - Ads
+      parameters:
+        - name: id
+          description: Bank identifier for the ad.
+          in: path
+          required: true
+          type: string
         - name: Content-Type
           default: application/json
           in: header
@@ -1171,60 +1192,29 @@ paths:
           description: "Token authentication header"
           required: true
           type: string
-        - name: user
-          description: "Key/value pair to update user record."
-          required: true
-          in: body
-          schema:
-            type: object
-            properties:
-              sequence: 
-                type: integer
-                description: Id of transfer record.
-              bank_user_id: 
-                type: string
-                description: Origin Account that money was taken out of.
-              savings_account_identifier:
-                type: string
-                description: Destination Account that money was put into.
-              checking_account_identifier:
-                type: integer
-                description: Amount transferred.
-              transfers_active:
-                type: integer
-                description: Amount of times transfer was attempted.
-              safety_net_active:
-                type: boolean
-                description: Boolean value indicating if transfer was successful.
-              max_transfer_amount:
-                type: string
-                description: Date for next transfer.
       responses:
         '200':
-          description: OK.
+          description: Ad deleted.
           schema:
             type: object
             properties:
-              sequence: 
-                type: integer
-                description: Id of transfer record.
-              bank_user_id: 
+              header: 
                 type: string
-                description: Origin Account that money was taken out of.
-              savings_account_identifier:
+                description: Header text for Ad.
+              body:
                 type: string
-                description: Destination Account that money was put into.
-              checking_account_identifier:
-                type: integer
-                description: Amount transferred.
-              transfers_active:
-                type: integer
-                description: Amount of times transfer was attempted.
-              safety_net_active:
-                type: boolean
-                description: Boolean value indicating if transfer was successful.
-              max_transfer_amount:
+                description: Body text for Ad.
+              link:
                 type: string
-                description: Date for next transfer.
-        '400':
-          description: Not found.
+                description: Link to upsell page.
+              image:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                description: URL of the image.
+              name:
+                type: string
+                description: Name of the ad (only visible to the bank admin).
