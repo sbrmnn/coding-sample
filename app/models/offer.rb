@@ -1,11 +1,12 @@
 class Offer < ApplicationRecord
-  attr_accessor :ad_name, :product_name
+  attr_accessor :ad_name, :product_name, :xref_goal_name
   before_validation :downcase_columns
   validates_presence_of :product_name, if: lambda { self.product_id.blank? }
   validates_presence_of :ad_name, if: lambda { self.ad_id.blank? }
   has_one :offer_summary
   validate :validate_ad
   validate :validate_product
+  validate :validate_xref_goal
 
   validates_presence_of :name, :value
 
@@ -30,6 +31,17 @@ class Offer < ApplicationRecord
 
   def downcase_columns
     self.condition = condition.try(:downcase)
+  end
+
+  def validate_xref_goal
+    if xref_goal_name
+      xref_goal_name_obj = self.financial_institution.xref_goal_types.where(name: xref_goal_name).first
+      if xref_goal_name_obj
+        self.xref_goal_type_id = xref_goal_name_obj.id
+      else
+        errors.add(:xref_goal_name, 'doesn\'t exist')
+      end
+    end
   end
 
   def validate_product
