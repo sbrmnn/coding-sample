@@ -957,12 +957,10 @@ paths:
                   type: string
                   description: Link to upsell page.
                 image:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                    name:
-                      type: string
+                  type: array
+                  items:
+                    url: integer
+                    format: link
                   description: URL of the image.
                 name:
                   type: string
@@ -1007,12 +1005,10 @@ paths:
                 type: string
                 description: Link to upsell page.
               image:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
+                type: array
+                items:
+                  url: integer
+                  format: link
                 description: URL of the image.
               name:
                 type: string
@@ -1033,12 +1029,10 @@ paths:
                 type: string
                 description: Link to upsell page.
               image:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
+                type: array
+                items:
+                  url: integer
+                  format: link
                 description: URL of the image.
               name:
                 type: string
@@ -1052,10 +1046,10 @@ paths:
         - Ads
       parameters:
         - name: id
-          description: Id of the ad.
+          description: Id for the ad.
           in: path
           required: true
-          type: string
+          type: integer
         - name: Content-Type
           default: application/json
           in: header
@@ -1083,12 +1077,10 @@ paths:
                 type: string
                 description: Link to upsell page.
               image:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
+                type: array
+                items:
+                  url: integer
+                  format: link
                 description: URL of the image.
               name:
                 type: string
@@ -1099,10 +1091,10 @@ paths:
         - Ads
       parameters:
         - name: id
-          description: Bank identifier for the ad.
+          description: Id for the ad.
           in: path
           required: true
-          type: string
+          type: integer
         - name: ad
           in: body
           required: true
@@ -1124,12 +1116,10 @@ paths:
                 type: string
                 description: Link to upsell page.
               image:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
+                type: array
+                items:
+                  url: integer
+                  format: link
                 description: URL of the image.
               name:
                 type: string
@@ -1161,12 +1151,10 @@ paths:
                 type: string
                 description: Link to upsell page.
               image:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
+                type: array
+                items:
+                  url: integer
+                  format: link
                 description: URL of the image.
               name:
                 type: string
@@ -1177,10 +1165,10 @@ paths:
         - Ads
       parameters:
         - name: id
-          description: Bank identifier for the ad.
+          description: Id for the ad.
           in: path
           required: true
-          type: string
+          type: integer
         - name: Content-Type
           default: application/json
           in: header
@@ -1208,12 +1196,10 @@ paths:
                 type: string
                 description: Link to upsell page.
               image:
-                type: object
-                properties:
-                  id:
-                    type: integer
-                  name:
-                    type: string
+                type: array
+                items:
+                  url: integer
+                  format: link
                 description: URL of the image.
               name:
                 type: string
