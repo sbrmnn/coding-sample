@@ -956,6 +956,12 @@ paths:
                 link:
                   type: string
                   description: Link to upsell page.
+                image:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      description: url string
                 name:
                   type: string
                   description: Name of the ad (only visible to the bank admin).
@@ -1000,7 +1006,7 @@ paths:
                 description: Link to upsell page.
               image:
                 type: string
-                description: URL of the image.
+                description: "Ad Image Blob valid extensions: [jpg, jpeg, gif, png]"
               name:
                 type: string
                 description: Name of the ad (only visible to the bank admin).
@@ -1020,8 +1026,11 @@ paths:
                 type: string
                 description: Link to upsell page.
               image:
-                type: string
-                description: URL of the image.
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: url string
               name:
                 type: string
                 description: Name of the ad (only visible to the bank admin).
@@ -1065,8 +1074,11 @@ paths:
                 type: string
                 description: Link to upsell page.
               image:
-                type: string
-                description: URL of the image.
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: url string
               name:
                 type: string
                 description: Name of the ad (only visible to the bank admin).
@@ -1102,7 +1114,7 @@ paths:
                 description: Link to upsell page.
               image:
                 type: string
-                description: URL of the image.
+                description: "Ad Image Blob valid extensions: [jpg, jpeg, gif, png]"
               name:
                 type: string
                 description: Name of the ad (only visible to the bank admin).
@@ -1133,8 +1145,11 @@ paths:
                 type: string
                 description: Link to upsell page.
               image:
-                type: string
-                description: URL of the image.
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: url string
               name:
                 type: string
                 description: Name of the ad (only visible to the bank admin).
@@ -1175,8 +1190,11 @@ paths:
                 type: string
                 description: Link to upsell page.
               image:
-                type: string
-                description: URL of the image.
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: url string
               name:
                 type: string
                 description: Name of the ad (only visible to the bank admin).
