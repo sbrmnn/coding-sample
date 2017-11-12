@@ -8,7 +8,7 @@ class Offer < ApplicationRecord
   validate :validate_product
   validate :validate_xref_goal
 
-  validates_presence_of :name, :value
+  validates_presence_of :value
 
   validates :symbol,
   :inclusion  => { :in => [ '=', '>', '<', '>=', '<=' ],

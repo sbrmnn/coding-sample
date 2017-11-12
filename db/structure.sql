@@ -328,7 +328,6 @@ CREATE TABLE offers (
     xref_goal_type_id integer,
     financial_institution_id integer,
     ad_id integer,
-    name character varying NOT NULL,
     condition character varying NOT NULL,
     symbol character varying(2) NOT NULL,
     value numeric(10,2) NOT NULL,
@@ -1093,6 +1092,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171102160911'),
 ('20171102160955'),
 ('20171105225028'),
-('20171111045858');
+('20171111045858'),
+('20171112045102');
 
 
