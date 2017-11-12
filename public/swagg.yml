@@ -1198,3 +1198,103 @@ paths:
               name:
                 type: string
                 description: Name of the ad (only visible to the bank admin).
+  '/products':
+    get:
+      summary: Gets all product data.
+      tags:
+        - Products
+      parameters:
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: An array of product data.
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of the product.
+        '400':
+          description: Not found
+    post:
+      summary: Creates a product record.
+      tags:
+        - Products
+      parameters:
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+        - name: product
+          description: "Key/value pair to create product record."
+          required: true
+          in: body
+          schema:
+            type: object
+            required:
+            - name
+            properties:
+              name:
+                type: string
+                description: Name of the product.
+      responses:
+        '200':
+          description: OK.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the product.
+        '400':
+          description: Not found.
+  '/products/{id}':
+    get:
+      summary: Gets product.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          description: Id for the product.
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type
+          default: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Product info returned.
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the product.
