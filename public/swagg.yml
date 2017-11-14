@@ -6,42 +6,64 @@ schemes: ['https']
 host: api-us.monotto.com
 x-explorer-enabled: false
 paths:
-  '/bank_admins/login':
-    get:
+  '/login':
+    post:
       summary: Login endpoint to get authentication token.
       tags:
-        - Login
+        - Authentication
       parameters:
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
-        - name: authentication
-          description: "Filter user demographics by valid key/value pairs."
+        - name: login
           in: body
           required: true
           schema:
             type: object
             required:
-             - email
-             - password
+            - email
+            - password
             properties:
               email:
                 type: string
-                description: Bank Admin email.
+                description: Bank admin email.
               password:
                 type: string
-                description: Bank Admin password.
+                description: Bank admin password.
       responses:
         '200':
           description: Authorized.
+          examples:
+             application/json:
+               {
+                 token: "TOKEN"
+               }
           schema:
             type: object
             properties:
               token: 
                 type: string
                 description: Authorization token. Expires in 24 hrs.
+        '401':
+          description: Unauthorized.
+  '/logout':
+    delete:
+      summary: Logout endpoint to delete authentication token.
+      tags:
+        - Authentication
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK.
         '401':
           description: Unauthorized.
   '/users/{user_identifier}/demographics':
@@ -51,7 +73,7 @@ paths:
         - Demographics
       parameters:
         - name: user_identifier
-          description: "Bank Id of user"
+          description: "Bank Id of user."
           in: path
           required: true
           type: integer
@@ -61,29 +83,41 @@ paths:
           schema:
             type: object
             properties:
-              id: 
+              demographic[id]:
                 type: integer
                 description: Id of demographic record.
-              key:
+              demographic[key]:
                 type: string
                 description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession).
-              value:
+              demographic[value]:
                 type: string
                 description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: An array of user demographic data.
+          examples:
+             application/json:
+               [
+                 {
+                     "id": 1,
+                     "key":"Race",
+                     "value":"Asian",
+                     "created_at":"2017-04-10T01:00:56.881Z",
+                     "updated_at":"2017-04-10T01:00:56.881Z"
+                  }
+               ]
           schema:
             type: array
             items:
@@ -94,7 +128,7 @@ paths:
                   description: Id of demographic record.
                 key:
                   type: string
-                  description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+                  description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession).
                 value:
                   type: string
                   description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
@@ -108,7 +142,7 @@ paths:
         - application/json
       parameters:
         - name: user_identifier
-          description: "Bank Id for user"
+          description: "Bank Id of user."
           in: path
           required: true
           type: integer
@@ -118,29 +152,39 @@ paths:
           schema:
             type: object
             required:
-            - key
-            - value
+            - demographic[key]
+            - demographic[value]
             properties:
-              key:
+              demographic[key]:
                 type: string
-                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
-              value:
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession).
+              demographic[value]:
                 type: string
                 description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
-        '201':
+        '200':
           description: Demographic entry created.
+          examples:
+             application/json:
+               {
+                 "id": 1,
+                 "key":"Race",
+                 "value":"Asian",
+                 "created_at":"2017-04-10T01:00:56.881Z",
+                 "updated_at":"2017-04-10T01:00:56.881Z"
+               }
           schema:
             type: object
             properties:
@@ -168,24 +212,34 @@ paths:
           type: integer
           minimum: 1
         - name: user_identifier
-          description: "Bank Id of user"
+          description: "Bank Id of user."
           in: path
           required: true
           type: integer
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: User demographic info returned.
+          examples:
+             application/json:
+               {
+                 "id": 1,
+                 "key":"Race",
+                 "value":"Asian",
+                 "created_at":"2017-04-10T01:00:56.881Z",
+                 "updated_at":"2017-04-10T01:00:56.881Z"
+               }
           schema:
             type: object
             properties:
@@ -194,7 +248,7 @@ paths:
                 description: Id of demographic record.
               key:
                 type: string
-                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession).
               value:
                 type: string
                 description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
@@ -210,7 +264,7 @@ paths:
           type: integer
           minimum: 1
         - name: user_identifier
-          description: "Bank Id of user"
+          description: "Bank Id of user."
           in: path
           required: true
           type: integer
@@ -220,26 +274,36 @@ paths:
           schema:
             type: object
             properties:
-              key:
+              demographic[key]:
                 type: string
-                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
-              value:
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession).
+              demographic[value]:
                 type: string
                 description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: User demographic updated.
+          examples:
+             application/json:
+               {
+                 "id": 1,
+                 "key":"Race",
+                 "value":"Asian",
+                 "created_at":"2017-04-10T01:00:56.881Z",
+                 "updated_at":"2017-04-10T01:00:56.881Z"
+               }
           schema:
             type: object
             properties:
@@ -248,7 +312,7 @@ paths:
                 description: Id of demographic record.
               key:
                 type: string
-                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession).
               value:
                 type: string
                 description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
@@ -268,18 +332,28 @@ paths:
           type: integer
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: User demographic deleted.
+          examples:
+             application/json:
+               {
+                 "id": 1,
+                 "key":"Race",
+                 "value":"Asian",
+                 "created_at":"2017-04-10T01:00:56.881Z",
+                 "updated_at":"2017-04-10T01:00:56.881Z"
+               }
           schema:
             type: object
             properties:
@@ -288,7 +362,7 @@ paths:
                 description: Id of demographic record.
               key:
                 type: string
-                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession ).
+                description: Demographic type that can be customized (ie. Gender, Ethnic Group, Profession).
               value:
                 type: string
                 description: Demographic value in relation to the key (ie. Male, Asian, Doctor).
@@ -299,7 +373,7 @@ paths:
         - Goals
       parameters:
         - name: user_identifier
-          description: "Bank Id of user"
+          description: "Bank Id of user."
           in: path
           required: true
           type: integer
@@ -308,41 +382,52 @@ paths:
           in: body
           schema:
             type: object
-            required:
-            - name
-            - amount
-            - completion
-            - priority
             properties:
-              name:
+              goal[xref_goal_name]:
                 type: string
                 description: Name of goal.
-              tag:
+              goal[tag]:
                 type: string
                 description: Customizable value which can be used to group different goals.
-              amount:
-                type: integer
+              goal[target_amount]:
+                type: number
                 description: Total amount to save for goal.
-              completion:
+              goal[balance]:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              goal[priority]:
                 type: integer
-                description: Percent completion of goal. Valid values (0 to 100).
-              priority:
-                type: integer
-                description: Priority of user's goal with higher integer value equating to higher priority. Valid values (1 to 10).
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+                minimum: 1
+                maximum: 10
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: An array of user goal data.
+          examples:
+             application/json:
+               [
+                 {
+                    "id": 1,
+                    "tag": "Other",
+                    "priority": 10,
+                    "created_at": "2017-11-04T05:25:39.248Z",
+                    "updated_at": "2017-11-04T05:25:39.248Z",
+                    "target_amount": "7.0",
+                    "balance": "6.0"
+                 }
+               ]
           schema:
             type: array
             items:
@@ -351,23 +436,18 @@ paths:
                 id: 
                   type: integer
                   description: Id of goal record.
-                name:
-                  type: string
-                  description: Name of goal.
                 tag:
                   type: string
                   description: Customizable value which can be used to group different goals.
-                amount:
-                  type: integer
+                target_amount:
+                  type: number
                   description: Total amount to save for goal.
-                completion:
-                  type: integer
-                  description: Percent completion of goal.
-                  minimum: 0
-                  maximum: 100
+                balance:
+                  type: number
+                  description: Total amount saved by the user towards the goal.
                 priority:
                   type: integer
-                  description: Priority of user's goal with higher integer value equating to higher priority.
+                  description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
                   minimum: 1
                   maximum: 10
         '400':
@@ -380,7 +460,7 @@ paths:
         - application/json
       parameters:
         - name: user_identifier
-          description: "Bank Id for user"
+          description: "Bank Id of user."
           in: path
           required: true
           type: integer
@@ -390,61 +470,74 @@ paths:
           schema:
             type: object
             required:
-            - name
-            - amount
-            - completion
-            - priority
+            - goal[xref_goal_name]
+            - goal[target_amount]
+            - goal[balance]
+            - goal[priority]
             properties:
-              name:
+              goal[xref_goal_name]:
                 type: string
                 description: Name of goal.
-              tag:
+              goal[tag]:
                 type: string
                 description: Customizable value which can be used to group different goals.
-              amount:
-                type: integer
+              goal[target_amount]:
+                type: number
                 description: Total amount to save for goal.
-              completion:
+              goal[balance]:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              goal[priority]:
                 type: integer
-                description: Percent completion of goal. Valid values (0 to 100).
-              priority:
-                type: integer
-                description: Priority of user's goal with higher integer value equating to higher priority. Valid values (1 to 10).
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+                minimum: 1
+                maximum: 10
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: Goal entry created.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+               }
           schema:
             type: object
             properties:
-              id:
+              id: 
                 type: integer
-                description: Unique Id that references the Goal record.
-              name:
-                type: string
-                description: Name of goal.
+                description: Id of goal record.
               tag:
                 type: string
                 description: Customizable value which can be used to group different goals.
-              amount:
-                type: integer
+              target_amount:
+                type: number
                 description: Total amount to save for goal.
-              completion:
-                type: integer
-                description: Percent completion of goal. Valid values (0 to 100).
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
               priority:
                 type: integer
-                description: Priority of user's goal with higher integer value equating to higher priority. Valid values (1 to 10).
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+                minimum: 1
+                maximum: 10
         '422':
           description: unprocessable entity
   '/users/{user_identifier}/goals/{id}':
@@ -460,45 +553,57 @@ paths:
           type: integer
           minimum: 1
         - name: user_identifier
-          description: "Bank Id of user"
+          description: "Bank Id of user."
           in: path
           required: true
           type: integer
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: User goal info returned.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+
+               }
           schema:
             type: object
             properties:
               id: 
                 type: integer
                 description: Id of goal record.
-              name:
-                type: string
-                description: Name of goal.
               tag:
                 type: string
                 description: Customizable value which can be used to group different goals.
-              amount:
-                type: integer
+              target_amount:
+                type: number
                 description: Total amount to save for goal.
-              completion:
-                type: integer
-                description: Percent completion of goal. Valid values (0 to 100).
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
               priority:
                 type: integer
-                description: Priority of user's goal with higher integer value equating to higher priority. Valid values (1 to 10).
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+                minimum: 1
+                maximum: 10
     patch:
       summary: Updates user goal record.
       tags:
@@ -511,7 +616,7 @@ paths:
           type: integer
           minimum: 1
         - name: user_identifier
-          description: "Bank Id of user"
+          description: "Bank Id of user."
           in: path
           required: true
           type: integer
@@ -520,66 +625,71 @@ paths:
           required: true
           schema:
             type: object
-            required:
-            - name
-            - amount
-            - completion
-            - priority
             properties:
-              name:
+              goal[xref_goal_name]:
                 type: string
                 description: Name of goal.
-              tag:
+              goal[tag]:
                 type: string
                 description: Customizable value which can be used to group different goals.
-              amount:
-                type: integer
+              goal[target_amount]:
+                type: number
                 description: Total amount to save for goal.
-              completion:
+              goal[balance]:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              goal[priority]:
                 type: integer
-                description: Percent completion of goal. Valid values (0 to 100).
-                minimum: 0
-                maximum: 100
-              priority:
-                type: integer
-                description: Priority of user's goal with higher integer value equating to higher priority.
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
                 minimum: 1
-                maximum : 10
+                maximum: 10
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: User goal updated.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+
+               }
           schema:
             type: object
             properties:
               id: 
                 type: integer
                 description: Id of goal record.
-              name:
-                type: string
-                description: Name of goal.
               tag:
                 type: string
                 description: Customizable value which can be used to group different goals.
-              amount:
-                type: integer
+              target_amount:
+                type: number
                 description: Total amount to save for goal.
-              completion:
-                type: integer
-                description: Percent completion of goal. Valid values (0 to 100).
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
               priority:
                 type: integer
-                description: Priority of user's goal with higher integer value equating to higher priority. Valid values (1 to 10).
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+                minimum: 1
+                maximum: 10
     delete:
       summary: Deletes user goal entry.
       tags:
@@ -596,6 +706,7 @@ paths:
           type: integer
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
@@ -608,27 +719,38 @@ paths:
       responses:
         '200':
           description: User goal deleted.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+
+               }
           schema:
             type: object
             properties:
               id: 
                 type: integer
                 description: Id of goal record.
-              name:
-                type: string
-                description: Name of goal.
               tag:
                 type: string
                 description: Customizable value which can be used to group different goals.
-              amount:
-                type: integer
+              target_amount:
+                type: number
                 description: Total amount to save for goal.
-              completion:
-                type: integer
-                description: Percent completion of goal. Valid values (0 to 100).
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
               priority:
                 type: integer
-                description: Priority of user's goal with higher integer value equating to higher priority. Valid values (1 to 10).
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+                minimum: 1
+                maximum: 10
   '/users':
     get:
       summary: Gets all user data.
@@ -637,6 +759,7 @@ paths:
       parameters:
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
@@ -649,6 +772,21 @@ paths:
       responses:
         '200':
           description: An array of user data.
+          examples:
+             application/json:
+               [
+                 {
+                    "sequence":"6d8ba742-30ea-4000-a7fa-86d9bbfb5948",
+                    "bank_user_id":"10020102002306194",
+                    "savings_account_identifier":"123a46b75n432i",
+                    "checking_account_identifier":"123t456t543y",
+                    "transfers_active":true,
+                    "safety_net_active":true,
+                    "max_transfer_amount":70.00,
+                    "created_at":"2017-04-09T04:22:28.106Z",
+                    "updated_at":"2017-04-09T04:22:28.106Z"
+                 }
+               ]
           schema:
             type: array
             items:
@@ -659,13 +797,13 @@ paths:
                   description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
                 bank_user_id: 
                   type: string
-                  description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+                  description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
                 savings_account_identifier:
                   type: string
-                  description: System ID for Savings account that user will be moving money to.
+                  description: System Id for Savings account that user will be moving money to.
                 checking_account_identifier:
                   type: string
-                  description: System ID for Checking account that user will be moving money from.
+                  description: System Id for Checking account that user will be moving money from.
                 transfers_active:
                   type: boolean
                   description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
@@ -684,6 +822,7 @@ paths:
       parameters:
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
@@ -699,31 +838,49 @@ paths:
           in: body
           schema:
             type: object
+            required:
+            - user[sequence]
+            - user[bank_user_id]
+            - user[checking_account_identifier]
+            - user[savings_account_identifier]
             properties:
-              sequence: 
+              user[sequence]: 
                 type: string
                 description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
-              bank_user_id: 
+              user[bank_user_id]: 
                 type: string
-                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
-              savings_account_identifier:
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              user[savings_account_identifier]:
                 type: string
-                description: System ID for Savings account that user will be moving money to.
-              checking_account_identifier:
+                description: System Id for Savings account that user will be moving money to.
+              user[checking_account_identifier]:
                 type: string
-                description: System ID for Checking account that user will be moving money from.
-              transfers_active:
+                description: System Id for Checking account that user will be moving money from.
+              user[transfers_active]:
                 type: boolean
                 description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
-              safety_net_active:
+              user[safety_net_active]:
                 type: boolean
                 description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
-              max_transfer_amount:
+              user[max_transfer_amount]:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
       responses:
         '200':
           description: OK.
+          examples:
+             application/json:
+               {
+                  "sequence":"6d8ba742-30ea-4000-a7fa-86d9bbfb5948",
+                  "bank_user_id":"10020102002306194",
+                  "savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active":true,
+                  "safety_net_active":true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+                }
           schema:
             type: object
             properties:
@@ -732,13 +889,13 @@ paths:
                 description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
-                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
               savings_account_identifier:
                 type: string
-                description: System ID for Savings account that user will be moving money to.
+                description: System Id for Savings account that user will be moving money to.
               checking_account_identifier:
                 type: string
-                description: System ID for Checking account that user will be moving money from.
+                description: System Id for Checking account that user will be moving money from.
               transfers_active:
                 type: boolean
                 description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
@@ -763,18 +920,32 @@ paths:
           type: string
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: User info returned.
+          examples:
+             application/json:
+               {
+                  "sequence":"6d8ba742-30ea-4000-a7fa-86d9bbfb5948",
+                  "bank_user_id":"10020102002306194",
+                  "savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active": true,
+                  "safety_net_active": true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+                }
           schema:
             type: object
             properties:
@@ -783,13 +954,13 @@ paths:
                 description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
-                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
               savings_account_identifier:
                 type: string
-                description: System ID for Savings account that user will be moving money to.
+                description: System Id for Savings account that user will be moving money to.
               checking_account_identifier:
                 type: string
-                description: System ID for Checking account that user will be moving money from.
+                description: System Id for Checking account that user will be moving money from.
               transfers_active:
                 type: boolean
                 description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
@@ -820,13 +991,13 @@ paths:
                 description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
-                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
               savings_account_identifier:
                 type: string
-                description: System ID for Savings account that user will be moving money to.
+                description: System Id for Savings account that user will be moving money to.
               checking_account_identifier:
                 type: string
-                description: System ID for Checking account that user will be moving money from.
+                description: System Id for Checking account that user will be moving money from.
               transfers_active:
                 type: boolean
                 description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
@@ -838,18 +1009,32 @@ paths:
                 description: Max amount that user's can transfer funds to their savings accounts.
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: User updated.
+          examples:
+             application/json:
+               {
+                  "sequence":"6d8ba742-30ea-4000-a7fa-86d9bbfb5948",
+                  "bank_user_id":"10020102002306194",
+                  "savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active":true,
+                  "safety_net_active":true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+               }
           schema:
             type: object
             properties:
@@ -858,13 +1043,13 @@ paths:
                 description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
-                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
               savings_account_identifier:
                 type: string
-                description: System ID for Savings account that user will be moving money to.
+                description: System Id for Savings account that user will be moving money to.
               checking_account_identifier:
                 type: string
-                description: System ID for Checking account that user will be moving money from.
+                description: System Id for Checking account that user will be moving money from.
               transfers_active:
                 type: boolean
                 description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
@@ -886,6 +1071,7 @@ paths:
           type: string
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
@@ -898,6 +1084,19 @@ paths:
       responses:
         '200':
           description: User deleted.
+          examples:
+             application/json:
+               {
+                  "sequence":"6d8ba742-30ea-4000-a7fa-86d9bbfb5948",
+                  "bank_user_id":"10020102002306194",
+                  "savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active":true,
+                  "safety_net_active":true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+               }
           schema:
             type: object
             properties:
@@ -906,13 +1105,13 @@ paths:
                 description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
-                description: Unique System ID for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
               savings_account_identifier:
                 type: string
-                description: System ID for Savings account that user will be moving money to.
+                description: System Id for Savings account that user will be moving money to.
               checking_account_identifier:
                 type: string
-                description: System ID for Checking account that user will be moving money from.
+                description: System Id for Checking account that user will be moving money from.
               transfers_active:
                 type: boolean
                 description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
@@ -930,6 +1129,7 @@ paths:
       parameters:
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
@@ -942,6 +1142,22 @@ paths:
       responses:
         '200':
           description: An array of ad data.
+          examples:
+             application/json:
+               [
+                 {
+                    "id": 10,
+                    "header": "Header01",
+                    "body": "Body01",
+                    "link": "https://www.monotto.com",
+                    "image": {
+                        "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/11/monotto.png"
+                    },
+                    "created_at": "2017-10-31T21:56:51.527Z",
+                    "updated_at": "2017-10-31T21:56:51.527Z",
+                    "name": "Ad1"
+                 }
+               ]
           schema:
             type: array
             items:
@@ -973,7 +1189,8 @@ paths:
         - Ads
       parameters:
         - name: Content-Type
-          default: application/json
+          default: multipart/mixed
+          description: multipart/mixed
           in: header
           required: true
           type: string
@@ -990,29 +1207,43 @@ paths:
           schema:
             type: object
             required:
-            - header
-            - body
-            - link
-            - name
+            - ad[header]
+            - ad[body]
+            - ad[link]
+            - ad[name]
             properties:
-              header: 
+              ad[header]: 
                 type: string
                 description: Header text for Ad.
-              body:
+              ad[body]:
                 type: string
                 description: Body text for Ad.
-              link:
+              ad[link]:
                 type: string
                 description: Link to upsell page.
-              image:
+              ad[image]:
                 type: string
-                description: "Ad Image Blob valid extensions: [jpg, jpeg, gif, png]"
-              name:
+                description: "Ad image blob. Valid extensions: [jpg, jpeg, gif, png]."
+              ad[name]:
                 type: string
                 description: Name of the ad (only visible to the bank admin).
       responses:
         '200':
           description: OK.
+          examples:
+             application/json:
+               {
+                  "id": 10,
+                  "header": "Header01",
+                  "body": "Body01",
+                  "link": "https://www.monotto.com",
+                  "image": {
+                      "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/11/monotto.png"
+                  },
+                  "created_at": "2017-10-31T21:56:51.527Z",
+                  "updated_at": "2017-10-31T21:56:51.527Z",
+                  "name": "Ad1"
+               }
           schema:
             type: object
             properties:
@@ -1049,18 +1280,33 @@ paths:
           type: integer
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: Ad info returned.
+          examples:
+             application/json:
+               {
+                  "id": 10,
+                  "header": "Header01",
+                  "body": "Body01",
+                  "link": "https://www.monotto.com",
+                  "image": {
+                      "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/11/monotto.png"
+                  },
+                  "created_at": "2017-10-31T21:56:51.527Z",
+                  "updated_at": "2017-10-31T21:56:51.527Z",
+                  "name": "Ad1"
+               }
           schema:
             type: object
             properties:
@@ -1098,40 +1344,55 @@ paths:
           schema:
             type: object
             required:
-            - header
-            - body
-            - link
-            - name
+            - ad[header]
+            - ad[body]
+            - ad[link]
+            - ad[name]
             properties:
-              header: 
+              ad[header]: 
                 type: string
                 description: Header text for Ad.
-              body:
+              ad[body]:
                 type: string
                 description: Body text for Ad.
-              link:
+              ad[link]:
                 type: string
                 description: Link to upsell page.
-              image:
+              ad[image]:
                 type: string
-                description: "Ad Image Blob valid extensions: [jpg, jpeg, gif, png]"
-              name:
+                description: "Ad image blob. Valid extensions: [jpg, jpeg, gif, png]."
+              ad[name]:
                 type: string
                 description: Name of the ad (only visible to the bank admin).
         - name: Content-Type
-          default: application/json
+          default: multipart/mixed
+          description: multipart/mixed
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: Ad updated.
+          examples:
+             application/json:
+               {
+                  "id": 10,
+                  "header": "Header01",
+                  "body": "Body01",
+                  "link": "https://www.monotto.com",
+                  "image": {
+                      "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/11/monotto.png"
+                  },
+                  "created_at": "2017-10-31T21:56:51.527Z",
+                  "updated_at": "2017-10-31T21:56:51.527Z",
+                  "name": "Ad1"
+               }
           schema:
             type: object
             properties:
@@ -1141,6 +1402,7 @@ paths:
               body:
                 type: string
                 description: Body text for Ad.
+                example: Body
               link:
                 type: string
                 description: Link to upsell page.
@@ -1165,6 +1427,7 @@ paths:
           type: integer
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
@@ -1177,6 +1440,20 @@ paths:
       responses:
         '200':
           description: Ad deleted.
+          examples:
+             application/json:
+               {
+                  "id": 10,
+                  "header": "Header01",
+                  "body": "Body01",
+                  "link": "https://www.monotto.com",
+                  "image": {
+                      "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/11/monotto.png"
+                  },
+                  "created_at": "2017-10-31T21:56:51.527Z",
+                  "updated_at": "2017-10-31T21:56:51.527Z",
+                  "name": "Ad1"
+               }
           schema:
             type: object
             properties:
@@ -1206,6 +1483,7 @@ paths:
       parameters:
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
@@ -1218,6 +1496,16 @@ paths:
       responses:
         '200':
           description: An array of product data.
+          examples:
+             application/json:
+               [
+                  {
+                      "id": 1,
+                      "name": "ProductName01",
+                      "created_at": "2017-11-02T22:32:15.684Z",
+                      "updated_at": "2017-11-02T22:32:15.684Z",
+                  }
+               ]
           schema:
             type: array
             items:
@@ -1235,6 +1523,7 @@ paths:
       parameters:
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
@@ -1251,14 +1540,22 @@ paths:
           schema:
             type: object
             required:
-            - name
+            - product[name]
             properties:
-              name:
+              product[name]:
                 type: string
                 description: Name of the product.
       responses:
         '200':
           description: OK.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "name": "ProductName01",
+                  "created_at": "2017-11-02T22:32:15.684Z",
+                  "updated_at": "2017-11-02T22:32:15.684Z",
+               }
           schema:
             type: object
             properties:
@@ -1280,21 +1577,407 @@ paths:
           type: integer
         - name: Content-Type
           default: application/json
+          description: application/json
           in: header
           required: true
           type: string
         - name: Authorization
           in: header
           default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /bank_admins/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
         '200':
           description: Product info returned.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "name": "ProductName01",
+                  "created_at": "2017-11-02T22:32:15.684Z",
+                  "updated_at": "2017-11-02T22:32:15.684Z",
+               }
           schema:
             type: object
             properties:
               name:
                 type: string
                 description: Name of the product.
+  '/products/{product_id}/offers':
+    get:
+      summary: Gets offers scoped under a particular product.
+      tags:
+        - Products
+      parameters:
+        - name: product_id
+          description: Id for the product.
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Offers scoped under a product are returned.
+          examples:
+             application/json:
+               [
+                  {
+                      "id": 1,
+                      "name": "Offer01",
+                      "condition": "balance",
+                      "symbol": ">=",
+                      "value": "50.0",
+                      "created_at": "2017-11-05T23:10:53.904Z",
+                      "updated_at": "2017-11-05T23:15:41.936Z"
+                  }
+               ]
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                condition:
+                  type: string
+                  description: Condition applied to the user’s goal to send offer.
+                symbol:
+                  type: string
+                  description: "[ '=', '>', '<', '>=', '<=' ]."
+                value:
+                  type: string
+                  description: Value of the condition.
+  '/offers':
+    get:
+      summary: Gets all offer data.
+      tags:
+        - Offers
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: An array of offer data.
+          examples:
+             application/json:
+               [
+                  {
+                      "id": 1,
+                      "name": "Offer01",
+                      "condition": "balance",
+                      "symbol": ">=",
+                      "value": "50.0",
+                      "created_at": "2017-11-05T23:10:53.904Z",
+                      "updated_at": "2017-11-05T23:15:41.936Z"
+                  }
+               ]
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                condition:
+                  type: string
+                  description: Condition applied to the user’s goal to send offer.
+                symbol:
+                  type: string
+                  description: "[ '=', '>', '<', '>=', '<=' ]."
+                value:
+                  type: string
+                  description: Value of the condition.
+        '400':
+          description: Not found.
+    post:
+      summary: Creates a offer record.
+      tags:
+        - Offers
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+        - name: offer
+          description: "Key/value pair to create offer record."
+          required: true
+          in: body
+          schema:
+            type: object
+            required:
+            - offer[condition]
+            - offer[symbol]
+            - offer[value]
+            properties:
+              offer[condition]:
+                type: string
+                description: Condition applied to the user’s goal to send offer.
+              offer[symbol]:
+                type: string
+                description: "[ '=', '>', '<', '>=', '<=' ]."
+              offer[value]:
+                type: string
+                description: Value of the condition.
+      responses:
+        '200':
+          description: OK.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "name": "Offer01",
+                  "condition": "balance",
+                  "symbol": ">=",
+                  "value": "50.0",
+                  "created_at": "2017-11-05T23:10:53.904Z",
+                  "updated_at": "2017-11-05T23:15:41.936Z"
+               }
+          schema:
+            type: object
+            properties:
+              condition:
+                type: string
+                description: Condition applied to the user’s goal to send offer.
+              symbol:
+                type: string
+                description: "[ '=', '>', '<', '>=', '<=' ]."
+              value:
+                type: string
+                description: Value of the condition.
+        '400':
+          description: Not found.
+  '/offers/{id}':
+    get:
+      summary: Gets offer.
+      tags:
+        - Offers
+      parameters:
+        - name: id
+          description: Identifier for the offer.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Offer info returned.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "name": "Offer01",
+                  "condition": "balance",
+                  "symbol": ">=",
+                  "value": "50.0",
+                  "created_at": "2017-11-05T23:10:53.904Z",
+                  "updated_at": "2017-11-05T23:15:41.936Z"
+               }
+          schema:
+            type: object
+            properties:
+              condition:
+                type: string
+                description: Condition applied to the user’s goal to send offer.
+              symbol:
+                type: string
+                description: "[ '=', '>', '<', '>=', '<=' ]."
+              value:
+                type: string
+                description: Value of the condition.
+    patch:
+      summary: Updates offer record.
+      tags:
+        - Offers
+      parameters:
+        - name: id
+          description: Identifier for the offer.
+          in: path
+          required: true
+          type: string
+        - name: offer
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+            - offer[condition]
+            - offer[symbol]
+            - offer[value]
+            properties:
+              offer[condition]:
+                type: string
+                description: Condition applied to the user’s goal to send offer.
+              offer[symbol]:
+                type: string
+                description: "[ '=', '>', '<', '>=', '<=' ]."
+              offer[value]:
+                type: string
+                description: Value of the condition.
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Offer updated.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "name": "Offer01",
+                  "condition": "balance",
+                  "symbol": ">=",
+                  "value": "50.0",
+                  "created_at": "2017-11-05T23:10:53.904Z",
+                  "updated_at": "2017-11-05T23:15:41.936Z"
+               }
+          schema:
+            type: object
+            properties:
+              condition:
+                type: string
+                description: Condition applied to the user’s goal to send offer.
+              symbol:
+                type: string
+                description: "[ '=', '>', '<', '>=', '<=' ]."
+              value:
+                type: string
+                description: Value of the condition.
+    delete:
+      summary: Deletes offer entry.
+      tags:
+        - Offers
+      parameters:
+        - name: id
+          description: Identifier for the offer.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Offer deleted.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "name": "Offer01",
+                  "condition": "balance",
+                  "symbol": ">=",
+                  "value": "50.0",
+                  "created_at": "2017-11-05T23:10:53.904Z",
+                  "updated_at": "2017-11-05T23:15:41.936Z"
+               }
+          schema:
+            type: object
+            properties:
+              condition:
+                type: string
+                description: Condition applied to the user’s goal to send offer.
+              symbol:
+                type: string
+                description: "[ '=', '>', '<', '>=', '<=' ]."
+              value:
+                type: string
+                description: Value of the condition.
+  '/snapshots':
+    get:
+      summary: Gets account level snapshot data.
+      tags:
+        - Snapshot
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN}
+          in: header
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Snapshot data.
+          examples:
+             application/json:
+               {
+                  "average_user_balance": "6.0",
+                  "sum_balance": "6.0",
+                  "sum_message_clicks": 0,
+                  "total_messages": 1,
+                  "total_users": 1
+               }
+          schema:
+            type: object
+            properties:
+              average_user_balance: 
+                type: string
+                description: Average balance of all users.
+              sum_balance:
+                type: string
+                description: Sum of all balances across all users.
+              sum_message_clicks:
+                type: integer
+                description: Total amount of message clicks.
+              total_users:
+                type: integer
+                description: Total users.
