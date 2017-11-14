@@ -711,7 +711,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -764,7 +764,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -827,7 +827,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -1076,7 +1076,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -1134,7 +1134,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -1195,7 +1195,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -1432,7 +1432,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -1488,7 +1488,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -1528,7 +1528,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -1670,7 +1670,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -1719,7 +1719,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header"
           required: true
@@ -1905,7 +1905,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
@@ -1949,7 +1949,7 @@ paths:
           required: true
           type: string
         - name: Authorization
-          default: Token token={TOKEN}
+          default: Token token={TOKEN_VALUE}
           in: header
           description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
