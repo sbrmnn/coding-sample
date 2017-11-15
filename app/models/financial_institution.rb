@@ -20,6 +20,15 @@ class FinancialInstitution < ApplicationRecord
 
   protected
 
+
+  def create_default_xref_goals
+    self.xref_goal_types << XrefGoalType.new(code: "MOTG", name: "House Goal")
+    self.xref_goal_types << XrefGoalType.new(code: "CAR",  name: "Car Goal")
+    self.xref_goal_types << XrefGoalType.new(code: "ACCT", name: "House Goal")
+    self.xref_goal_types << XrefGoalType.new(code: "VACA", name: "Vacation Goal")
+    self.xref_goal_types << XrefGoalType.new(code: "OTHER", name: "Other")
+  end
+
   def cascade_down_max_transfer_price_to_users
     if self.max_transfer_amount_changed?
       self.users.where("max_transfer_amount > #{self.max_transfer_amount}").update_all(max_transfer_amount: self.max_transfer_amount)
