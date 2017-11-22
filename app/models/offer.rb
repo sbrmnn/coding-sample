@@ -3,10 +3,11 @@ class Offer < ApplicationRecord
   before_validation :downcase_columns
   validates_presence_of :product_name, if: lambda { self.product_id.blank? }
   validates_presence_of :ad_name, if: lambda { self.ad_id.blank? }
+  validates_presence_of :xref_goal_name, if: lambda { self.xref_goal_type_id.blank? }
   has_one :offer_summary
   validate :validate_ad
   validate :validate_product
-  validate :validate_xref_goal
+  validate :validate_xref_goal_name
 
   validates_presence_of :value
 
@@ -31,8 +32,8 @@ class Offer < ApplicationRecord
   def downcase_columns
     self.condition = condition.try(:parameterize).try(:underscore)
   end
-
-  def validate_xref_goal
+ 
+  def validate_xref_goal_name
     if xref_goal_name
       xref_goal_name_obj = self.financial_institution.xref_goal_types.where(name: xref_goal_name).first
       if xref_goal_name_obj

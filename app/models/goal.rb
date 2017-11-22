@@ -9,6 +9,7 @@ class Goal < ApplicationRecord
   validates_presence_of :user
   validates_uniqueness_of :priority, :scope => :user_id
   has_one :goal_statistic
+  has_one :financial_insitution, through: :user
   delegate :percent_saved, to: :goal_statistic
 
   belongs_to :user
@@ -18,9 +19,9 @@ class Goal < ApplicationRecord
   
   def validate_xref_goal_name
     if xref_goal_name
-      xref_goal_type_obj = XrefGoalType.where(name: xref_goal_name).first
-      if xref_goal_type_obj
-        self.xref_goal_type_id = xref_goal_type_obj.id
+      xref_goal_name_obj = self.financial_institution.xref_goal_types.where(name: xref_goal_name).first
+      if xref_goal_name_obj
+        self.xref_goal_type_id = xref_goal_name_obj.id
       else
         errors.add(:xref_goal_name, 'doesn\'t exist')
       end
