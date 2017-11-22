@@ -1934,51 +1934,6 @@ paths:
               value:
                 type: string
                 description: Value of the condition.
-  '/snapshots':
-    get:
-      summary: Gets account level snapshot data.
-      tags:
-        - Snapshot
-      parameters:
-        - name: Content-Type
-          default: application/json
-          description: application/json
-          in: header
-          required: true
-          type: string
-        - name: Authorization
-          default: Token token={TOKEN_VALUE}
-          in: header
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Snapshot data.
-          examples:
-             application/json:
-               {
-                  "average_user_balance": "6.0",
-                  "sum_balance": "6.0",
-                  "sum_message_clicks": 0,
-                  "total_messages": 1,
-                  "total_users": 1
-               }
-          schema:
-            type: object
-            properties:
-              average_user_balance: 
-                type: string
-                description: Average balance of all users.
-              sum_balance:
-                type: string
-                description: Sum of all balances across all users.
-              sum_message_clicks:
-                type: integer
-                description: Total amount of message clicks.
-              total_users:
-                type: integer
-                description: Total users.
   '/historical_snapshots':
     get:
       summary: Gets historical account-level snapshot data.
