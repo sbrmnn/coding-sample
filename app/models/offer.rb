@@ -15,7 +15,7 @@ class Offer < ApplicationRecord
   :message    => "%{value} is not a valid symbol" }
 
   validates :condition,
-  :inclusion  => { :in => [ 'balance' ],
+  :inclusion  => { :in => [ 'balance', 'percentage_complete', 'time_until_completion'],
   :message    => "%{value} is not a valid condition" }
   
   belongs_to :xref_goal_type
@@ -25,12 +25,11 @@ class Offer < ApplicationRecord
 
   has_many :messages, as: :message_obj
 
-  default_scope { joins(:offer_summary).select("offers.*, offer_summaries.delivered, offer_summaries.click_through") }
 
   protected 
 
   def downcase_columns
-    self.condition = condition.try(:downcase)
+    self.condition = condition.try(:parameterize).try(:underscore)
   end
 
   def validate_xref_goal

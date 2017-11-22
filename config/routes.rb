@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :ads
     resources :offers
     resources :products
+    resources :historical_snapshots, only: [:index]
     resources :snapshots, only: [:index]
     resources :products do
       scope module: :products do

@@ -2,7 +2,7 @@ class BankAdmins::Products::OffersController < BankAdmins::ApplicationController
   before_action :find_product
 
   def index
-    @offers = @product.try(:offers)
+    @offers = @product.try(:offers).try(:with_status)
     json_response(@offers)
   end
 

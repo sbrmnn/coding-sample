@@ -8,26 +8,22 @@ class BankAdmins::AdsController < BankAdmins::ApplicationController
    def create
      @ad = Ad.new(ad_params)
      current_bank_admin.financial_institution.ads << @ad
-     status = @ad.errors.any? ? :unprocessable_entity : :created
      json_response(@ad)
    end
 
    def show
      @ad = current_bank_admin.ads.find_by(id: params[:id])
      json_response(@ad)
-  end
-=begin
-  def update
+   end
+
+   def update
      @ad = current_bank_admin.ads.find_by(id: params[:id])
      if @ad
-       @ad.update_attributes(ad_params) 
-       status = @ad.errors.any? ? :unprocessable_entity :  :ok
-     else
-       status = :not_found
+      @ad.update_attributes(ad_params) 
      end 
      json_response(@ad)
    end
-
+=begin
    def destroy
      @ad = current_bank_admin.ads.find_by(id: params[:id])
      if @ad

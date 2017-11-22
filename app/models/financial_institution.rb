@@ -5,7 +5,9 @@ class FinancialInstitution < ApplicationRecord
   has_many :ads, dependent: :destroy
   has_many :bank_admins, dependent: :destroy
   has_many :xref_goal_types, dependent: :destroy
+  has_many :historical_snapshots
   has_one :snapshot_summary
+  has_many :historical_snapshot_stats
   
   delegate :average_user_balance, :sum_balance, :sum_message_clicks, 
            :total_messages, :total_users, to: :snapshot_summary
@@ -22,11 +24,11 @@ class FinancialInstitution < ApplicationRecord
 
 
   def create_default_xref_goals
-    self.xref_goal_types << XrefGoalType.new(code: "MOTG", name: "House Goal")
-    self.xref_goal_types << XrefGoalType.new(code: "CAR",  name: "Car Goal")
-    self.xref_goal_types << XrefGoalType.new(code: "ACCT", name: "House Goal")
-    self.xref_goal_types << XrefGoalType.new(code: "VACA", name: "Vacation Goal")
-    self.xref_goal_types << XrefGoalType.new(code: "OTHER", name: "Other")
+    self.xref_goal_types << XrefGoalType.new(code: "CAR",     name: "Car Goal")
+    self.xref_goal_types << XrefGoalType.new(code: "HOUSE",   name: "House Goal")
+    self.xref_goal_types << XrefGoalType.new(code: "VACA",    name: "Vacation Goal")
+    self.xref_goal_types << XrefGoalType.new(code: "TOTSVGS", name: "Total Savings")
+    self.xref_goal_types << XrefGoalType.new(code: "OTHER",   name: "Other")
   end
 
   def cascade_down_max_transfer_price_to_users

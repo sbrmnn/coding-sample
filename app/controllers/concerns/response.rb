@@ -8,7 +8,7 @@ module Response
     render json: errors, status: :unauthorized
   end
 
-  def json_response(record)
+  def json_response(record, assoc=nil)
     if record.blank?
       object = {}
       status = :not_found
@@ -19,6 +19,6 @@ module Response
       status = :ok
       object = record
     end
-    render json: object.to_json, status: status
+    render json: object.to_json(:include => assoc), status: status
   end
 end

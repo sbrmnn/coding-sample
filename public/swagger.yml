@@ -1343,11 +1343,6 @@ paths:
           required: true
           schema:
             type: object
-            required:
-            - ad[header]
-            - ad[body]
-            - ad[link]
-            - ad[name]
             properties:
               ad[header]: 
                 type: string
@@ -1836,10 +1831,6 @@ paths:
           required: true
           schema:
             type: object
-            required:
-            - offer[condition]
-            - offer[symbol]
-            - offer[value]
             properties:
               offer[condition]:
                 type: string
@@ -1966,6 +1957,68 @@ paths:
                   "total_messages": 1,
                   "total_users": 1
                }
+          schema:
+            type: object
+            properties:
+              average_user_balance: 
+                type: string
+                description: Average balance of all users.
+              sum_balance:
+                type: string
+                description: Sum of all balances across all users.
+              sum_message_clicks:
+                type: integer
+                description: Total amount of message clicks.
+              total_users:
+                type: integer
+                description: Total users.
+  '/historical_snapshots':
+    get:
+      summary: Gets historical account-level snapshot data.
+      tags:
+        - Historical Snapshot
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Historical snapshot data.
+          examples:
+             application/json:
+              [
+                  {
+                      "id": 3,
+                      "average_user_balance": "0.0",
+                      "sum_balance": "0.0",
+                      "sum_message_clicks": 0,
+                      "total_messages": 1,
+                      "total_users": 1,
+                      "created_at": "2017-11-20T11:00:04.389Z",
+                      "updated_at": "2017-11-20T15:16:28.981Z",
+                      "date": "2017-11-20T11:00:04.389Z"
+                  },
+                  {
+                      "id": 4,
+                      "average_user_balance": "0.0",
+                      "sum_balance": "0.0",
+                      "sum_message_clicks": 0,
+                      "total_messages": 1,
+                      "total_users": 1,
+                      "created_at": "2017-11-20T11:00:04.392Z",
+                      "updated_at": "2017-11-20T15:16:28.987Z",
+                      "date": "2017-11-20T11:00:04.392Z"
+                  }
+              ]
           schema:
             type: object
             properties:
