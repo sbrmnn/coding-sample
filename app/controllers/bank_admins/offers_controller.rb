@@ -12,12 +12,12 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
    end
 
    def show
-     @offer = current_bank_admin.offer.find_by(id:  params[:id])
+     @offer = current_bank_admin.offers.find_by(id:  params[:id])
      json_response(@offer)
    end
 
    def update
-     @offer = current_bank_admin.offer.find_by(id: params[:id])
+     @offer = current_bank_admin.offers.find_by(id: params[:id])
      if @offer
        @offer.update_attributes(offer_params) 
      end 
@@ -25,7 +25,7 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
    end
 
    def destroy
-     @offer = current_bank_admin.offer.find_by(id: params[:id])
+     @offer = current_bank_admin.offers.find_by(id: params[:id])
      if @offer
        @offer.destroy
      end
