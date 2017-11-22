@@ -2030,10 +2030,10 @@ paths:
             type: object
             properties:
               average_user_balance: 
-                type: string
+                type: number
                 description: Average balance of all users.
               sum_balance:
-                type: string
+                type: number
                 description: Sum of all balances across all users.
               sum_message_clicks:
                 type: integer
@@ -2041,3 +2041,57 @@ paths:
               total_users:
                 type: integer
                 description: Total users.
+  '/snapshots':
+    get:
+      summary: Gets historical account-level snapshot data.
+      tags:
+        - Account Level Snapshot
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Account level snapshot data.
+          examples:
+             application/json:
+              {
+                  "average_user_balance": "0.0",
+                  "sum_balance": "0.0",
+                  "sum_message_clicks": 0,
+                  "total_messages": 1,
+                  "total_users": 1,
+                  "last_seven_days_user_signup": 0,
+                  "historical_snapshot_stats": [
+                      {
+                          "thirty_day_savings": "0.0"
+                      }
+                  ]
+              }
+          schema:
+            type: object
+            properties:
+              average_user_balance: 
+                type: number
+                description: Average balance of all users.
+              sum_balance:
+                type: number
+                description: Sum of all balances across all users.
+              sum_message_clicks:
+                type: integer
+                description: Total amount of message clicks.
+              total_users:
+                type: integer
+                description: Total users.
+              historical_snapshot_stats[thirty_day_savings]:
+                type: number
+                description: Total amount of money saved by users within the past 30 days.
