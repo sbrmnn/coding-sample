@@ -1729,6 +1729,7 @@ paths:
             - offer[condition]
             - offer[symbol]
             - offer[value]
+            - offer[xref_goal_name]
             properties:
               offer[condition]:
                 type: string
@@ -1739,6 +1740,9 @@ paths:
               offer[value]:
                 type: string
                 description: Value of the condition.
+              offer[xref_goal_name]:
+                type: string
+                description: Name of Xref Goal Type that is to be attached to the offer.
       responses:
         '200':
           description: OK.
@@ -1841,6 +1845,9 @@ paths:
               offer[value]:
                 type: string
                 description: Value of the condition.
+              offer[xref_goal_name]:
+                type: string
+                description: Name of Xref Goal Type that is to be attached to the offer.
         - name: Content-Type
           default: application/json
           description: application/json
