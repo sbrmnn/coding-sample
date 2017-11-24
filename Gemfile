@@ -13,6 +13,8 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'carrierwave', '~> 1.0'
 gem "fog-aws"
 
+gem 'bulk_insert'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.1'
  
