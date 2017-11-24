@@ -26,7 +26,7 @@ class BankAdmins::ProductsController < BankAdmins::ApplicationController
      end 
      json_response(@product)
    end
-
+=end
    def destroy
      @product = current_bank_admin.products.find_by(id: params[:id])
      if @product
@@ -37,7 +37,7 @@ class BankAdmins::ProductsController < BankAdmins::ApplicationController
      end
      json_response(@product)
    end
-=end
+
    protected
   
    def product_params

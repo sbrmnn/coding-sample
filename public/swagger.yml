@@ -1599,6 +1599,45 @@ paths:
               name:
                 type: string
                 description: Name of the product.
+    delete:
+      summary: Deletes product entry.
+      tags:
+        - Products
+      parameters:
+        - name: id
+          description: Id for the product.
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Product deleted.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "name": "ProductName01",
+                  "created_at": "2017-11-02T22:32:15.684Z",
+                  "updated_at": "2017-11-02T22:32:15.684Z",
+               }
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Name of the product.
   '/products/{product_id}/offers':
     get:
       summary: Gets offers scoped under a particular product.
