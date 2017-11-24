@@ -2089,3 +2089,149 @@ paths:
               historical_snapshot_stats[thirty_day_savings]:
                 type: number
                 description: Total amount of money saved by users within the past 30 days.
+  '/xref_goal_types':
+    get:
+      summary: Gets all xref goal types data.
+      tags:
+        - Xref Goal Types
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: An array of ad data.
+          examples:
+             application/json:
+               [
+                 {
+                    "id": 10,
+                    "header": "Header01",
+                    "body": "Body01",
+                    "link": "https://www.monotto.com",
+                    "image": {
+                        "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/11/monotto.png"
+                    },
+                    "created_at": "2017-10-31T21:56:51.527Z",
+                    "updated_at": "2017-10-31T21:56:51.527Z",
+                    "name": "Ad1"
+                 }
+               ]
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                header: 
+                  type: string
+                  description: Header text for Ad.
+                body:
+                  type: string
+                  description: Body text for Ad.
+                link:
+                  type: string
+                  description: Link to upsell page.
+                image:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                      description: url string
+                name:
+                  type: string
+                  description: Name of the ad (only visible to the bank admin).
+        '400':
+          description: Not found
+    post:
+      summary: Creates a xref goal type record.
+      tags:
+        - Xref Goal Types
+      parameters:
+        - name: Content-Type
+          default: multipart/mixed
+          description: multipart/mixed
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+        - name: ad
+          description: "Key/value pair to create ad record."
+          required: true
+          in: body
+          schema:
+            type: object
+            required:
+            - ad[header]
+            - ad[body]
+            - ad[link]
+            - ad[name]
+            properties:
+              ad[header]: 
+                type: string
+                description: Header text for Ad.
+              ad[body]:
+                type: string
+                description: Body text for Ad.
+              ad[link]:
+                type: string
+                description: Link to upsell page.
+              ad[image]:
+                type: string
+                description: "Ad image blob. Valid extensions: [jpg, jpeg, gif, png]."
+              ad[name]:
+                type: string
+                description: Name of the ad (only visible to the bank admin).
+      responses:
+        '200':
+          description: OK.
+          examples:
+             application/json:
+               {
+                  "id": 10,
+                  "header": "Header01",
+                  "body": "Body01",
+                  "link": "https://www.monotto.com",
+                  "image": {
+                      "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/11/monotto.png"
+                  },
+                  "created_at": "2017-10-31T21:56:51.527Z",
+                  "updated_at": "2017-10-31T21:56:51.527Z",
+                  "name": "Ad1"
+               }
+          schema:
+            type: object
+            properties:
+              header: 
+                type: string
+                description: Header text for Ad.
+              body:
+                type: string
+                description: Body text for Ad.
+              link:
+                type: string
+                description: Link to upsell page.
+              image:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: url string
+              name:
+                type: string
+                description: Name of the ad (only visible to the bank admin).
+        '400':
+          description: Not found.

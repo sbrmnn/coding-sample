@@ -35,10 +35,10 @@ class BankAdmins::OffersController < BankAdmins::ApplicationController
    protected
   
    def offer_params
-    if params[:offer].blank?
+     if params[:offer].blank?
       {}
-    else
+     else
       params.require(:offer).permit(:name, :condition, :symbol, :value, :ad_name, :click_through, :delivered, :product_name, :xref_goal_name)
-    end
+     end
    end 
 end
