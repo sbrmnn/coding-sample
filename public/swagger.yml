@@ -1772,7 +1772,7 @@ paths:
             properties:
               offer[condition]:
                 type: string
-                description: Condition applied to the user’s goal to send offer.
+                description: "Condition applied to the user’s goal to send offer Valid values [ 'balance', 'percentage_complete', 'time_until_completion']."
               offer[symbol]:
                 type: string
                 description: "[ '=', '>', '<', '>=', '<=' ]."
@@ -1877,7 +1877,7 @@ paths:
             properties:
               offer[condition]:
                 type: string
-                description: Condition applied to the user’s goal to send offer.
+                description: "Condition applied to the user’s goal to send offer Valid values [ 'balance', 'percentage_complete', 'time_until_completion']."
               offer[symbol]:
                 type: string
                 description: "[ '=', '>', '<', '>=', '<=' ]."
