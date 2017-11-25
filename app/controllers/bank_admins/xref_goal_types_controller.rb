@@ -11,6 +11,11 @@ class BankAdmins::XrefGoalTypesController < BankAdmins::ApplicationController
      json_response(@xref_goal_type)
    end
 
+   def show
+     @xref_goal_type = current_bank_admin.xref_goal_types.find_by(id: params[:id])
+     json_response(@xref_goal_type)
+   end
+
    def update
      @xref_goal_type = current_bank_admin.xref_goal_types.find_by(id: params[:id])
      if @xref_goal_type
