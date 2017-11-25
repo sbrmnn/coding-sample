@@ -10,6 +10,22 @@ class BankAdmins::XrefGoalTypesController < BankAdmins::ApplicationController
      current_bank_admin.financial_institution.xref_goal_types << @xref_goal_type
      json_response(@xref_goal_type)
    end
+
+   def update
+     @xref_goal_type = current_bank_admin.xref_goal_types.find_by(id: params[:id])
+     if @xref_goal_type
+       @product.update_attributes(xref_goal_type_params) 
+     end 
+     json_response(@xref_goal_type)
+   end
+
+   def destroy
+     @xref_goal_type = current_bank_admin.xref_goal_types.find_by(id: params[:id])
+     if @xref_goal_type
+       @xref_goal_type.destroy
+     end
+     json_response(@xref_goal_type)
+   end
   
    protected
    

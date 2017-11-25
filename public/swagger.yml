@@ -2109,46 +2109,70 @@ paths:
           type: string
       responses:
         '200':
-          description: An array of ad data.
+          description: An array of xref_goal_type data.
           examples:
              application/json:
-               [
-                 {
-                    "id": 10,
-                    "header": "Header01",
-                    "body": "Body01",
-                    "link": "https://www.monotto.com",
-                    "image": {
-                        "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/11/monotto.png"
-                    },
-                    "created_at": "2017-10-31T21:56:51.527Z",
-                    "updated_at": "2017-10-31T21:56:51.527Z",
-                    "name": "Ad1"
-                 }
-               ]
+              [
+                  {
+                      "id": 22,
+                      "code": "CAR",
+                      "name": "Car Goal",
+                      "department": null,
+                      "created_at": "2017-11-21T07:08:23.218Z",
+                      "updated_at": "2017-11-21T07:08:23.218Z",
+                      "financial_institution_id": 1
+                  },
+                  {
+                      "id": 23,
+                      "code": "HOUSE",
+                      "name": "House Goal",
+                      "department": null,
+                      "created_at": "2017-11-21T07:08:39.432Z",
+                      "updated_at": "2017-11-21T07:08:39.432Z",
+                      "financial_institution_id": 1
+                  },
+                  {
+                      "id": 24,
+                      "code": "VACA",
+                      "name": "Vacation Goal",
+                      "department": null,
+                      "created_at": "2017-11-21T07:08:50.338Z",
+                      "updated_at": "2017-11-21T07:08:50.338Z",
+                      "financial_institution_id": 1
+                  },
+                  {
+                      "id": 25,
+                      "code": "TOTSVGS",
+                      "name": "Total Savings",
+                      "department": null,
+                      "created_at": "2017-11-21T07:09:03.682Z",
+                      "updated_at": "2017-11-21T07:09:03.682Z",
+                      "financial_institution_id": 1
+                  },
+                  {
+                      "id": 26,
+                      "code": "OTHER",
+                      "name": "Other",
+                      "department": null,
+                      "created_at": "2017-11-21T07:09:13.858Z",
+                      "updated_at": "2017-11-21T07:09:13.858Z",
+                      "financial_institution_id": 1
+                  }
+              ]
           schema:
             type: array
             items:
               type: object
               properties:
-                header: 
+                code: 
                   type: string
-                  description: Header text for Ad.
-                body:
-                  type: string
-                  description: Body text for Ad.
-                link:
-                  type: string
-                  description: Link to upsell page.
-                image:
-                  type: object
-                  properties:
-                    url:
-                      type: string
-                      description: url string
+                  description: Code for xref goal type.
                 name:
                   type: string
-                  description: Name of the ad (only visible to the bank admin).
+                  description: Name for xref goal type.
+                department:
+                  type: string
+                  description: Department name of your organization that monitors this goal.
         '400':
           description: Not found
     post:
@@ -2168,33 +2192,27 @@ paths:
           description: "Token authentication header"
           required: true
           type: string
-        - name: ad
-          description: "Key/value pair to create ad record."
+        - name: xref_goal_type
+          description: "Key/value pair to create xref_goal_type record."
           required: true
           in: body
           schema:
             type: object
             required:
-            - ad[header]
-            - ad[body]
-            - ad[link]
-            - ad[name]
+            - xref_goal_type[header]
+            - xref_goal_type[body]
+            - xref_goal_type[link]
+            - xref_goal_type[name]
             properties:
-              ad[header]: 
+              xref_goal_type[code]: 
                 type: string
-                description: Header text for Ad.
-              ad[body]:
+                description: Code for xref goal type.
+              xref_goal_type[name]:
                 type: string
-                description: Body text for Ad.
-              ad[link]:
+                description: Name for xref goal type.
+              xref_goal_type[department]:
                 type: string
-                description: Link to upsell page.
-              ad[image]:
-                type: string
-                description: "Ad image blob. Valid extensions: [jpg, jpeg, gif, png]."
-              ad[name]:
-                type: string
-                description: Name of the ad (only visible to the bank admin).
+                description: Department name of your organization that monitors this goal.
       responses:
         '200':
           description: OK.
