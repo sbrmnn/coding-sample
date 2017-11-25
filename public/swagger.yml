@@ -2231,19 +2231,11 @@ paths:
               {
                 "errors": {
                     "code": [
-                        "has already been taken"
-                    ],
-                    "name": [
-                        "has already been taken"
-                    ]
-                }
-              }
-              {
-                "errors": {
-                    "code": [
+                        "has already been taken",
                         "can't be blank"
                     ],
                     "name": [
+                        "has already been taken",
                         "can't be blank"
                     ]
                 }
