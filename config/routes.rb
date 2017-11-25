@@ -13,8 +13,6 @@ Rails.application.routes.draw do
     end
   end
 
-  post '/cron/get_transfer_information_for_users' => 'cron#get_transfer_information_for_users'
-  post '/cron/ground' => 'cron#ground'
 
   scope module: :bank_admins do
     post   "login"  => "sessions#create"
