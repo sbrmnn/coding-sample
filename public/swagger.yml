@@ -2228,27 +2228,26 @@ paths:
           description: Unprocessable entity.
           examples:
              application/json:
-                {
-                  "errors": {
-                      "code": [
-                          "has already been taken"
-                      ],
-                      "name": [
-                          "has already been taken"
-                      ]
-                  }
+              {
+                "errors": {
+                    "code": [
+                        "has already been taken"
+                    ],
+                    "name": [
+                        "has already been taken"
+                    ]
                 }
-
-                {
-                  "errors": {
-                      "code": [
-                          "can't be blank"
-                      ],
-                      "name": [
-                          "can't be blank"
-                      ]
-                  }
+              }
+              {
+                "errors": {
+                    "code": [
+                        "can't be blank"
+                    ],
+                    "name": [
+                        "can't be blank"
+                    ]
                 }
+              }
           schema:
             type: object
             properties:
