@@ -2224,6 +2224,31 @@ paths:
                     "created_at": "2017-11-25T01:24:37.985Z",
                     "updated_at": "2017-11-25T01:24:37.985Z",
                 }
+        '422':
+          description: Unprocessable entity.
+          examples:
+             application/json:
+                {
+                  "errors": {
+                      "code": [
+                          "has already been taken"
+                      ],
+                      "name": [
+                          "has already been taken"
+                      ]
+                  }
+                }
+
+                {
+                  "errors": {
+                      "code": [
+                          "can't be blank"
+                      ],
+                      "name": [
+                          "can't be blank"
+                      ]
+                  }
+                }
           schema:
             type: object
             properties:
