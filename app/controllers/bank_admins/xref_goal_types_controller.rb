@@ -14,7 +14,7 @@ class BankAdmins::XrefGoalTypesController < BankAdmins::ApplicationController
    def update
      @xref_goal_type = current_bank_admin.xref_goal_types.find_by(id: params[:id])
      if @xref_goal_type
-       @product.update_attributes(xref_goal_type_params) 
+       @xref_goal_type.update_attributes(xref_goal_type_params) 
      end 
      json_response(@xref_goal_type)
    end
