@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   scope module: :bank_admins do
     post   "login"  => "sessions#create"
     delete "logout" => "sessions#destroy"
-    resources :financial_institutions, only: [:index, :update]
+    resource :financial_institutions
     resources :xref_goal_types
     resources :ads
     resources :offers

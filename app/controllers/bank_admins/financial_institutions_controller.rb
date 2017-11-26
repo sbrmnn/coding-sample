@@ -1,9 +1,10 @@
 class BankAdmins::FinancialInstitutionsController < BankAdmins::ApplicationController
    
-   def index
+   def show
      @financial_institution = current_bank_admin.financial_institution
      json_response(@financial_institution)
    end
+
    def update
    	 @financial_institution = current_bank_admin.financial_institution
      if @financial_institution
@@ -11,6 +12,7 @@ class BankAdmins::FinancialInstitutionsController < BankAdmins::ApplicationContr
      end 
      json_response(@financial_institution)
    end
+
    protected
   
    def financial_institution_params
