@@ -643,6 +643,18 @@ CREATE TABLE xref_goal_types (
 
 
 --
+-- Name: xref_goal_type_stats; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW xref_goal_type_stats AS
+ SELECT xref_goal_types.id AS xref_goal_type_id,
+    count(goals.*) AS total_num_of_goals
+   FROM (xref_goal_types
+     LEFT JOIN goals ON ((goals.xref_goal_type_id = xref_goal_types.id)))
+  GROUP BY xref_goal_types.id;
+
+
+--
 -- Name: xref_goal_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1206,6 +1218,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171121010705'),
 ('20171121020210'),
 ('20171125234645'),
-('20171126022622');
+('20171126022622'),
+('20171126025921'),
+('20171126033613');
 
 
