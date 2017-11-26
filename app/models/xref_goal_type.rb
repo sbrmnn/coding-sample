@@ -5,7 +5,7 @@ class XrefGoalType < ApplicationRecord
    belongs_to :financial_institution
    validates_uniqueness_of :name, :code, scope: :financial_institution_id
    validates_presence_of :name, :code
-
+   has_many :xref_goal_type_stats
 
    protected
 

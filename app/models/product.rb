@@ -4,7 +4,7 @@ class Product < ApplicationRecord
   validates_uniqueness_of :name, :scope => :financial_institution_id
   belongs_to :financial_institution
   has_many :offers, dependent: :destroy  do
-   def with_status
+   def with_stats
      joins(:offer_summary).select("offers.*, offer_summaries.delivered, offer_summaries.click_through")
    end
   end

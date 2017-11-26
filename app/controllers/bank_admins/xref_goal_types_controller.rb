@@ -1,7 +1,7 @@
 class BankAdmins::XrefGoalTypesController < BankAdmins::ApplicationController
    
    def index
-     @xref_goal_types = current_bank_admin.xref_goal_types.where(xref_goal_type_params)
+     @xref_goal_types = current_bank_admin.xref_goal_types.with_stats.where(xref_goal_type_params)
      json_response(@xref_goal_types)
    end
 
@@ -12,7 +12,7 @@ class BankAdmins::XrefGoalTypesController < BankAdmins::ApplicationController
    end
 
    def show
-     @xref_goal_type = current_bank_admin.xref_goal_types.find_by(id: params[:id])
+     @xref_goal_type = current_bank_admin.xref_goal_types.with_stats.find_by(id: params[:id])
      json_response(@xref_goal_type)
    end
 
