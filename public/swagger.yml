@@ -2411,3 +2411,119 @@ paths:
                 department:
                   type: string
                   description: Department name of your organization that monitors this goal.
+  '/financial_institutions':
+      get:
+        summary: Gets financial institution info.
+        tags:
+          - Financial Institution
+        parameters:
+          - name: id
+            description: Identifier for the financial institution.
+            in: path
+            required: true
+            type: string
+          - name: Content-Type
+            default: application/json
+            description: application/json
+            in: header
+            required: true
+            type: string
+          - name: Authorization
+            in: header
+            default: Token token={TOKEN_VALUE}
+            description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+            required: true
+            type: string
+        responses:
+          '200':
+            description: Financial institution info returned.
+            examples:
+               application/json:
+                {
+                  "id": 1,
+                  "name": "Bank Of America",
+                  "location": "Atlanta, Ga",
+                  "core": null,
+                  "web": null,
+                  "mobile": null,
+                  "notes": null,
+                  "relationship_manager": null,
+                  "max_transfer_amount": "0.0",
+                  "transfers_active": null,
+                  "created_at": "2017-10-27T19:55:29.123Z",
+                  "updated_at": "2017-10-27T19:55:29.123Z"
+                }
+            schema:
+              type: object
+              properties:
+                code: 
+                  type: string
+                  description: Code for xref goal type.
+                name:
+                  type: string
+                  description: Name for xref goal type.
+                department:
+                  type: string
+                  description: Department name of your organization that monitors this goal.
+      patch:
+        summary: Updates offer record.
+        tags:
+          - Financial Institution
+        parameters:
+          - name: id
+            description: Identifier for the offer.
+            in: path
+            required: true
+            type: string
+          - name: xref_goal_type
+            in: body
+            required: true
+            schema:
+              type: object
+              properties:
+                xref_goal_type[code]: 
+                  type: string
+                  description: Code for xref goal type.
+                xref_goal_type[name]:
+                  type: string
+                  description: Name for xref goal type.
+                xref_goal_type[department]:
+                  type: string
+                  description: Department name of your organization that monitors this goal.
+          - name: Content-Type
+            default: application/json
+            description: application/json
+            in: header
+            required: true
+            type: string
+          - name: Authorization
+            in: header
+            default: Token token={TOKEN_VALUE}
+            description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+            required: true
+            type: string
+        responses:
+          '200':
+            description: Xref Goal Type updated.
+            examples:
+               application/json:
+                 {
+                      "id": 33,
+                      "code": "MISC",
+                      "name": "Smart Phone",
+                      "department": null,
+                      "created_at": "2017-11-25T01:24:37.985Z",
+                      "updated_at": "2017-11-25T01:24:37.985Z",
+                 }
+            schema:
+              type: object
+              properties:
+                code: 
+                  type: string
+                  description: Code for xref goal type.
+                name:
+                  type: string
+                  description: Name for xref goal type.
+                department:
+                  type: string
+                  description: Department name of your organization that monitors this goal.

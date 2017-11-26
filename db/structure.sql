@@ -114,6 +114,36 @@ CREATE TABLE bank_admins (
 
 
 --
+-- Name: bank_admins_financial_institutions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE bank_admins_financial_institutions (
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: bank_admins_financial_institutions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE bank_admins_financial_institutions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: bank_admins_financial_institutions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE bank_admins_financial_institutions_id_seq OWNED BY bank_admins_financial_institutions.id;
+
+
+--
 -- Name: bank_admins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -486,17 +516,16 @@ CREATE VIEW snapshot_summaries AS
  SELECT financial_institutions.id AS financial_institution_id,
     COALESCE(avg(goals.balance), (0)::numeric) AS average_user_balance,
     COALESCE(sum(goals.balance), (0)::numeric) AS sum_balance,
-    COALESCE(sum(msg.clicks), (0)::bigint) AS sum_message_clicks,
-    count(msg.*) AS total_messages,
+    COALESCE(sum(messages.clicks), (0)::bigint) AS sum_message_clicks,
+    count(messages.*) AS total_messages,
+    count(goals.*) AS total_num_of_goals,
     count(financial_institution_users.*) AS total_users,
-    count(last_seven_days_user_signup.*) AS last_seven_days_user_signup,
-    COALESCE((max(hs.sum_balance) - min(hs.sum_balance)), (0)::numeric) AS thirty_day_savings
-   FROM (((((financial_institutions
+    count(last_seven_days_user_signup.*) AS last_seven_days_user_signup
+   FROM ((((financial_institutions
      LEFT JOIN users financial_institution_users ON ((financial_institution_users.financial_institution_id = financial_institutions.id)))
      LEFT JOIN goals ON ((goals.user_id = financial_institution_users.id)))
-     LEFT JOIN messages msg ON (((msg.user_id = financial_institution_users.id) AND ((msg.message_obj_type)::text = 'Offer'::text))))
+     LEFT JOIN messages ON (((messages.user_id = financial_institution_users.id) AND ((messages.message_obj_type)::text = 'Offer'::text))))
      LEFT JOIN users last_seven_days_user_signup ON (((last_seven_days_user_signup.financial_institution_id = financial_institutions.id) AND (last_seven_days_user_signup.created_at > ((now())::date - 7)))))
-     LEFT JOIN historical_snapshots hs ON (((hs.financial_institution_id = financial_institutions.id) AND (hs.created_at > ((now())::date - 31)))))
   GROUP BY financial_institutions.id;
 
 
@@ -650,6 +679,13 @@ ALTER TABLE ONLY bank_admins ALTER COLUMN id SET DEFAULT nextval('bank_admins_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY bank_admins_financial_institutions ALTER COLUMN id SET DEFAULT nextval('bank_admins_financial_institutions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY demographics ALTER COLUMN id SET DEFAULT nextval('demographics_id_seq'::regclass);
 
 
@@ -744,6 +780,14 @@ ALTER TABLE ONLY ads
 
 ALTER TABLE ONLY ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: bank_admins_financial_institutions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY bank_admins_financial_institutions
+    ADD CONSTRAINT bank_admins_financial_institutions_pkey PRIMARY KEY (id);
 
 
 --
@@ -1160,6 +1204,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171120210734'),
 ('20171121001944'),
 ('20171121010705'),
-('20171121020210');
+('20171121020210'),
+('20171125234645'),
+('20171126022622');
 
 
