@@ -2417,11 +2417,6 @@ paths:
         tags:
           - Financial Institution
         parameters:
-          - name: id
-            description: Identifier for the financial institution.
-            in: path
-            required: true
-            type: string
           - name: Content-Type
             default: application/json
             description: application/json
@@ -2456,40 +2451,29 @@ paths:
             schema:
               type: object
               properties:
-                code: 
-                  type: string
-                  description: Code for xref goal type.
-                name:
-                  type: string
-                  description: Name for xref goal type.
-                department:
-                  type: string
-                  description: Department name of your organization that monitors this goal.
+                max_transfer_amount: 
+                  type: number
+                  description: Max transfer amount a user initiate within a particular financial institution.
+                transfers_active:
+                  type: boolean
+                  description: Boolean that states whether user transfers should take place within a particular financial institution.
       patch:
         summary: Updates offer record.
         tags:
           - Financial Institution
         parameters:
-          - name: id
-            description: Identifier for the offer.
-            in: path
-            required: true
-            type: string
           - name: xref_goal_type
             in: body
             required: true
             schema:
               type: object
               properties:
-                xref_goal_type[code]: 
-                  type: string
-                  description: Code for xref goal type.
-                xref_goal_type[name]:
-                  type: string
-                  description: Name for xref goal type.
-                xref_goal_type[department]:
-                  type: string
-                  description: Department name of your organization that monitors this goal.
+                financial_institution[max_transfer_amount]: 
+                  type: number
+                  description: Max transfer amount a user initiate within a particular financial institution.
+                financial_institution[transfers_active]:
+                  type: boolean
+                  description: Boolean that states whether user transfers should take place within a particular financial institution.
           - name: Content-Type
             default: application/json
             description: application/json
@@ -2507,14 +2491,20 @@ paths:
             description: Xref Goal Type updated.
             examples:
                application/json:
-                 {
-                      "id": 33,
-                      "code": "MISC",
-                      "name": "Smart Phone",
-                      "department": null,
-                      "created_at": "2017-11-25T01:24:37.985Z",
-                      "updated_at": "2017-11-25T01:24:37.985Z",
-                 }
+                {
+                  "id": 1,
+                  "name": "Bank Of America",
+                  "location": "Atlanta, Ga",
+                  "core": null,
+                  "web": null,
+                  "mobile": null,
+                  "notes": null,
+                  "relationship_manager": null,
+                  "max_transfer_amount": "0.0",
+                  "transfers_active": null,
+                  "created_at": "2017-10-27T19:55:29.123Z",
+                  "updated_at": "2017-10-27T19:55:29.123Z"
+                }
             schema:
               type: object
               properties:
