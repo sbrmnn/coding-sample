@@ -25,6 +25,7 @@ gem 'rails', '~> 5.0.1'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
+gem 'seed_dump'
 # Manages application of security headers with many safe defaults
 gem 'secure_headers'
 

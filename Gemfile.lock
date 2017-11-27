@@ -161,6 +161,9 @@ GEM
       railties (>= 4.0.0)
     secure_headers (3.6.6)
       useragent (>= 0.15.0)
+    seed_dump (3.2.4)
+      activerecord (>= 4)
+      activesupport (>= 4)
     sexp_processor (4.8.0)
     spring (2.0.1)
       activesupport (>= 4.2)
@@ -209,6 +212,7 @@ DEPENDENCIES
   rspec-rails (~> 3.5)
   scenic
   secure_headers
+  seed_dump
   spring
   spring-watcher-listen (~> 2.0.0)
   sqlite3
