@@ -2474,7 +2474,7 @@ paths:
                   type: boolean
                   description: Boolean that states whether user transfers should take place within a particular financial institution.
       patch:
-        summary: Updates offer record.
+        summary: Updates financial institution record.
         tags:
           - Financial Institution
         parameters:
