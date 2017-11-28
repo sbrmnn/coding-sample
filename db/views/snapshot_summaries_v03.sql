@@ -7,7 +7,7 @@ SELECT
   COUNT(goals)                             AS total_num_of_goals,
   COUNT(financial_institution_users)       AS total_users,
   COUNT(last_seven_days_user_signup)       AS last_seven_days_user_signup,
-  COUNT(completed_goals_list)              AS total_amount_of_scompleted_goals
+  COUNT(completed_goals_list)              AS total_amount_of_completed_goals
 FROM
   financial_institutions
   LEFT JOIN users AS financial_institution_users
