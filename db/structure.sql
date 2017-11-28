@@ -507,12 +507,14 @@ CREATE VIEW snapshot_summaries AS
     count(messages.*) AS total_messages,
     count(goals.*) AS total_num_of_goals,
     count(financial_institution_users.*) AS total_users,
-    count(last_seven_days_user_signup.*) AS last_seven_days_user_signup
-   FROM ((((financial_institutions
+    count(last_seven_days_user_signup.*) AS last_seven_days_user_signup,
+    count(completed_goals_list.*) AS total_amount_of_scompleted_goals
+   FROM (((((financial_institutions
      LEFT JOIN users financial_institution_users ON ((financial_institution_users.financial_institution_id = financial_institutions.id)))
      LEFT JOIN goals ON ((goals.user_id = financial_institution_users.id)))
      LEFT JOIN messages ON (((messages.user_id = financial_institution_users.id) AND ((messages.message_obj_type)::text = 'Offer'::text))))
      LEFT JOIN users last_seven_days_user_signup ON (((last_seven_days_user_signup.financial_institution_id = financial_institutions.id) AND (last_seven_days_user_signup.created_at > ((now())::date - 7)))))
+     LEFT JOIN goal_statistics completed_goals_list ON (((completed_goals_list.goal_id = goals.id) AND (completed_goals_list.percent_saved >= (100)::numeric))))
   GROUP BY financial_institutions.id;
 
 
@@ -1208,6 +1210,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171126022622'),
 ('20171126025921'),
 ('20171126033613'),
-('20171127222719');
+('20171127222719'),
+('20171128133055'),
+('20171128133347');
 
 
