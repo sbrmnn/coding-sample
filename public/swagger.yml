@@ -2059,15 +2059,19 @@ paths:
           examples:
              application/json:
               {
-                  "average_user_balance": "0.0",
-                  "sum_balance": "0.0",
+                  "financial_institution_id": 1,
+                  "average_user_balance": "1.99",
+                  "sum_balance": "1.99",
                   "sum_message_clicks": 0,
                   "total_messages": 1,
+                  "total_num_of_goals": 1,
                   "total_users": 1,
                   "last_seven_days_user_signup": 0,
+                  "total_amount_of_completed_goals": 0,
                   "historical_snapshot_stats": [
                       {
-                          "thirty_day_savings": "0.0"
+                          "financial_institution_id": 1,
+                          "thirty_day_savings": "1.2"
                       }
                   ]
               }
