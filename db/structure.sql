@@ -114,36 +114,6 @@ CREATE TABLE bank_admins (
 
 
 --
--- Name: bank_admins_financial_institutions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE bank_admins_financial_institutions (
-    id integer NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: bank_admins_financial_institutions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE bank_admins_financial_institutions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: bank_admins_financial_institutions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE bank_admins_financial_institutions_id_seq OWNED BY bank_admins_financial_institutions.id;
-
-
---
 -- Name: bank_admins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -680,13 +650,6 @@ ALTER TABLE ONLY bank_admins ALTER COLUMN id SET DEFAULT nextval('bank_admins_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY bank_admins_financial_institutions ALTER COLUMN id SET DEFAULT nextval('bank_admins_financial_institutions_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY demographics ALTER COLUMN id SET DEFAULT nextval('demographics_id_seq'::regclass);
 
 
@@ -781,14 +744,6 @@ ALTER TABLE ONLY ads
 
 ALTER TABLE ONLY ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: bank_admins_financial_institutions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY bank_admins_financial_institutions
-    ADD CONSTRAINT bank_admins_financial_institutions_pkey PRIMARY KEY (id);
 
 
 --
