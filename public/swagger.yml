@@ -2006,7 +2006,10 @@ paths:
                       "total_users": 1,
                       "created_at": "2017-11-20T11:00:04.389Z",
                       "updated_at": "2017-11-20T15:16:28.981Z",
-                      "date": "2017-11-20T11:00:04.389Z"
+                      "date": "2017-11-20T11:00:04.389Z",
+                      "total_num_of_goals": 0,
+                      "last_seven_days_user_signup": 0,
+                      "total_amount_of_completed_goals": 0
                   },
                   {
                       "id": 4,
@@ -2017,7 +2020,10 @@ paths:
                       "total_users": 1,
                       "created_at": "2017-11-20T11:00:04.392Z",
                       "updated_at": "2017-11-20T15:16:28.987Z",
-                      "date": "2017-11-20T21:00:04.392Z"
+                      "date": "2017-11-20T21:00:04.392Z",
+                      "total_num_of_goals": 0,
+                      "last_seven_days_user_signup": 0,
+                      "total_amount_of_completed_goals": 0
                   }
               ]
           schema:
@@ -2032,9 +2038,24 @@ paths:
               sum_message_clicks:
                 type: integer
                 description: Total amount of message clicks.
+              total_messages:
+                type: integer
+                description: Total offers sent to users.
+              total_num_of_goals:
+                type: integer
+                description: Total number of goals created by users within a financial institution.
+              last_seven_days_user_signup:
+                type: integer
+                description: New users from the 7 days.
+              total_amount_of_completed_goals:
+                 type: integer
+                 description: Amount of completed goals by users within a financial institution.
               total_users:
                 type: integer
                 description: Total users.
+              historical_snapshot_stats[thirty_day_savings]:
+                type: number
+                description: Total amount of money saved by users within the past 30 days.
   '/snapshots':
     get:
       summary: Gets current account-level snapshot data.
@@ -2087,6 +2108,18 @@ paths:
               sum_message_clicks:
                 type: integer
                 description: Total amount of message clicks.
+              total_messages:
+                type: integer
+                description: Total offers sent to users.
+              total_num_of_goals:
+                type: integer
+                description: Total number of goals created by users within a financial institution.
+              last_seven_days_user_signup:
+                type: integer
+                description: New users from the 7 days.
+              total_amount_of_completed_goals:
+                 type: integer
+                 description: Amount of completed goals by users within a financial institution.
               total_users:
                 type: integer
                 description: Total users.
