@@ -264,7 +264,10 @@ CREATE TABLE historical_snapshots (
     total_users integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    date timestamp without time zone
+    date timestamp without time zone,
+    total_num_of_goals integer,
+    last_seven_days_user_signup integer,
+    total_amount_of_completed_goals integer
 );
 
 
@@ -1167,6 +1170,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171126033613'),
 ('20171127222719'),
 ('20171128133055'),
-('20171128133347');
+('20171128133347'),
+('20171203225536'),
+('20171203225636'),
+('20171203225708');
 
 
