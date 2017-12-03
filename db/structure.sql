@@ -265,9 +265,9 @@ CREATE TABLE historical_snapshots (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     date timestamp without time zone,
-    total_num_of_goals integer,
-    last_seven_days_user_signup integer,
-    total_amount_of_completed_goals integer
+    total_num_of_goals integer DEFAULT 0,
+    last_seven_days_user_signup integer DEFAULT 0,
+    total_amount_of_completed_goals integer DEFAULT 0
 );
 
 
