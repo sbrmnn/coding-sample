@@ -4,7 +4,8 @@ class Offer < ApplicationRecord
   validates_presence_of :product_name, if: lambda { self.product_id.blank? }
   validates_presence_of :ad_name, if: lambda { self.ad_id.blank? }
   validates_presence_of :xref_goal_name, if: lambda { self.xref_goal_type_id.blank? }
-  validates :value, numericality: { less_than_or_equal_to: 100}, if: lambda { self.condition == 'percentage_complete' }
+  validates :value, numericality: {less_than_or_equal_to: 100}, if: lambda { self.condition == 'percentage_complete' }
+  validates :value, numericality: {greater_than_or_equal_to: 0}
   has_one :offer_summary
   validate :validate_ad
   validate :validate_product
