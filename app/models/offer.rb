@@ -23,7 +23,7 @@ class Offer < ApplicationRecord
   
   belongs_to :xref_goal_type
   belongs_to :financial_institution
-  belongs_to :ad
+  belongs_to :ad, :dependent => :destroy
   belongs_to :product
 
   has_many :messages, as: :message_obj
