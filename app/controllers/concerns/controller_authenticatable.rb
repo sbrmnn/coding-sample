@@ -6,7 +6,7 @@ module ControllerAuthenticatable
   TOKEN_EXPIRATION = 24.hours.ago
 
   def require_bank_admin_login
-    authenticate_bank_admin_token || render_unauthorized("Access denied")
+    authenticate_token(BankAdmin) || render_unauthorized("Access denied")
   end
 
   def require_vendor_login
@@ -14,16 +14,21 @@ module ControllerAuthenticatable
   end
 
   def require_monotto_user_login
-    authenticate_monotto_user_token || render_unauthorized("Access denied")
+    authenticate_token(MonottoUser) || render_unauthorized("Access denied")
   end
 
   def current_bank_admin
-    @current_bank_admin ||= authenticate_bank_admin_token
+    @current_bank_admin ||= authenticate_token(BankAdmin)
   end
 
   def current_monotto_user
-    @current_monotto_user ||= authenticate_monotto_user_token
+    @current_monotto_user ||= authenticate_token(MonottoUser) 
   end
+
+  def current_vendor
+    @current_vendor ||= authenticate_token(Vendor) 
+  end
+
 
   protected
   
@@ -45,19 +50,6 @@ module ControllerAuthenticatable
                         ::Digest::SHA256.hexdigest(obj.token))
   end
 
-  def authenticate_monotto_user_token
-    begin
-      authenticate_with_http_token do |token, options|
-        if monotto_user = MonottoUser.with_unexpired_token(token, TOKEN_EXPIRATION)
-          analyze_token_safely(token, monotto_user)
-          monotto_user
-        end
-      end
-    rescue
-      return nil
-    end
-  end
-
   def authenticate_token(model)
     begin
       authenticate_with_http_token do |token, options|
@@ -71,32 +63,6 @@ module ControllerAuthenticatable
     end
   end
   
-  def authenticate_bank_admin_token
-    begin
-      authenticate_with_http_token do |token, options|
-        if bank_admin = BankAdmin.with_unexpired_token(token, TOKEN_EXPIRATION)
-          analyze_token_safely(token, bank_admin)
-          bank_admin
-        end
-      end
-    rescue
-      return nil
-    end
-  end
-
-  def authenticate_vendor_token
-    begin
-      authenticate_with_http_token do |token, options|
-        if vendor = Vendor.with_unexpired_token(token, TOKEN_EXPIRATION)
-          analyze_token_safely(token, vendor)
-          vendor
-        end
-      end
-    rescue
-      return nil
-    end
-  end
-
   def send_auth_token_for_valid_login_of(obj)
     render json: { token: obj.token }, status: 200
   end

@@ -6,7 +6,7 @@ RSpec.describe BankAdmins::Users::DemographicsController, type: :controller do
   let(:demographic) {FactoryGirl.create(:demographic, user: user)}
 
   before do
-    allow_any_instance_of(ApplicationController).to receive(:authenticate_bank_admin_token).and_return(bank_admin)
+    allow_any_instance_of(ApplicationController).to receive(:authenticate_token).and_return(bank_admin)
   end
 
   describe "index" do

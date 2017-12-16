@@ -7,7 +7,7 @@ RSpec.describe BankAdmins::Users::GoalsController, type: :controller do
   let(:xref_goal_type) {FactoryGirl.create(:xref_goal_type)}
 
   before do
-    allow_any_instance_of(ApplicationController).to receive(:authenticate_bank_admin_token).and_return(bank_admin)
+    allow_any_instance_of(ApplicationController).to receive(:authenticate_token).and_return(bank_admin)
   end
 
   describe "index" do

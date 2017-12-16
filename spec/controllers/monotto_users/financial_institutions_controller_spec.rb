@@ -5,7 +5,7 @@ RSpec.describe MonottoUsers::FinancialInstitutionsController, type: :controller 
   let(:financial_institution) {FactoryGirl.create(:financial_institution)}
   
   before do
-    allow_any_instance_of(ApplicationController).to receive(:authenticate_monotto_user_token).and_return(monotto_user)
+    allow_any_instance_of(ApplicationController).to receive(:authenticate_token).and_return(monotto_user)
   end
 
   describe "index" do

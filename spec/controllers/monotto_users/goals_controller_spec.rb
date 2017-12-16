@@ -7,7 +7,7 @@ RSpec.describe MonottoUsers::GoalsController, type: :controller do
   let(:xref_goal_type) {FactoryGirl.create(:xref_goal_type)}
   
   before do
-    allow_any_instance_of(ApplicationController).to receive(:authenticate_monotto_user_token).and_return(monotto_user)
+    allow_any_instance_of(ApplicationController).to receive(:authenticate_token).and_return(monotto_user)
   end
 
   describe "index" do
