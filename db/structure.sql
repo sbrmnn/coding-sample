@@ -2,11 +2,12 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.4.2
--- Dumped by pg_dump version 9.5.3
+-- Dumped from database version 10.1
+-- Dumped by pg_dump version 10.1
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -66,6 +67,7 @@ CREATE TABLE ads (
 --
 
 CREATE SEQUENCE ads_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -118,6 +120,7 @@ CREATE TABLE bank_admins (
 --
 
 CREATE SEQUENCE bank_admins_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -151,6 +154,7 @@ CREATE TABLE demographics (
 --
 
 CREATE SEQUENCE demographics_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -190,6 +194,7 @@ CREATE TABLE financial_institutions (
 --
 
 CREATE SEQUENCE financial_institutions_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -236,6 +241,7 @@ CREATE VIEW goal_statistics AS
 --
 
 CREATE SEQUENCE goals_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -288,6 +294,7 @@ CREATE VIEW historical_snapshot_stats AS
 --
 
 CREATE SEQUENCE historical_snapshots_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -322,6 +329,7 @@ CREATE TABLE messages (
 --
 
 CREATE SEQUENCE messages_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -357,6 +365,7 @@ CREATE TABLE monotto_users (
 --
 
 CREATE SEQUENCE monotto_users_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -390,10 +399,24 @@ CREATE TABLE offers (
 
 
 --
+-- Name: offer_summaries; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW offer_summaries AS
+ SELECT offers.id AS offer_id,
+    count(messages.*) AS delivered,
+    COALESCE(sum(messages.clicks), (0)::bigint) AS click_through
+   FROM (offers
+     LEFT JOIN messages ON (((messages.message_obj_id = offers.id) AND ((messages.message_obj_type)::text = 'Offer'::text))))
+  GROUP BY offers.id;
+
+
+--
 -- Name: offers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE offers_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -426,6 +449,7 @@ CREATE TABLE products (
 --
 
 CREATE SEQUENCE products_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -464,7 +488,8 @@ CREATE TABLE users (
     safety_net_active boolean DEFAULT true,
     max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    vendor_id integer
 );
 
 
@@ -481,7 +506,7 @@ CREATE VIEW snapshot_summaries AS
     count(goals.*) AS total_num_of_goals,
     count(financial_institution_users.*) AS total_users,
     count(last_seven_days_user_signup.*) AS last_seven_days_user_signup,
-    count(completed_goals_list.*) AS total_amount_of_scompleted_goals
+    count(completed_goals_list.*) AS total_amount_of_completed_goals
    FROM (((((financial_institutions
      LEFT JOIN users financial_institution_users ON ((financial_institution_users.financial_institution_id = financial_institutions.id)))
      LEFT JOIN goals ON ((goals.user_id = financial_institution_users.id)))
@@ -518,6 +543,7 @@ CREATE TABLE transactions (
 --
 
 CREATE SEQUENCE transactions_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -556,6 +582,7 @@ CREATE TABLE transfers (
 --
 
 CREATE SEQUENCE transfers_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -575,6 +602,7 @@ ALTER SEQUENCE transfers_id_seq OWNED BY transfers.id;
 --
 
 CREATE SEQUENCE users_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -587,6 +615,48 @@ CREATE SEQUENCE users_id_seq
 --
 
 ALTER SEQUENCE users_id_seq OWNED BY users.id;
+
+
+--
+-- Name: vendors; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE vendors (
+    id integer NOT NULL,
+    name character varying,
+    location character varying,
+    core character varying,
+    web character varying,
+    mobile character varying,
+    email character varying,
+    notes text,
+    relationship_manager character varying,
+    password_digest character varying,
+    token character varying,
+    token_created_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: vendors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE vendors_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: vendors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE vendors_id_seq OWNED BY vendors.id;
 
 
 --
@@ -621,6 +691,7 @@ CREATE VIEW xref_goal_type_stats AS
 --
 
 CREATE SEQUENCE xref_goal_types_id_seq
+    AS integer
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -636,105 +707,112 @@ ALTER SEQUENCE xref_goal_types_id_seq OWNED BY xref_goal_types.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: ads id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ads ALTER COLUMN id SET DEFAULT nextval('ads_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: bank_admins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY bank_admins ALTER COLUMN id SET DEFAULT nextval('bank_admins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: demographics id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY demographics ALTER COLUMN id SET DEFAULT nextval('demographics_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: financial_institutions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY financial_institutions ALTER COLUMN id SET DEFAULT nextval('financial_institutions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: goals id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY goals ALTER COLUMN id SET DEFAULT nextval('goals_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: historical_snapshots id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY historical_snapshots ALTER COLUMN id SET DEFAULT nextval('historical_snapshots_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: messages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY messages ALTER COLUMN id SET DEFAULT nextval('messages_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: monotto_users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY monotto_users ALTER COLUMN id SET DEFAULT nextval('monotto_users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: offers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY offers ALTER COLUMN id SET DEFAULT nextval('offers_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: transactions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY transactions ALTER COLUMN id SET DEFAULT nextval('transactions_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: transfers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY transfers ALTER COLUMN id SET DEFAULT nextval('transfers_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: vendors id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY vendors ALTER COLUMN id SET DEFAULT nextval('vendors_id_seq'::regclass);
+
+
+--
+-- Name: xref_goal_types id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY xref_goal_types ALTER COLUMN id SET DEFAULT nextval('xref_goal_types_id_seq'::regclass);
 
 
 --
--- Name: ads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ads ads_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ads
@@ -742,7 +820,7 @@ ALTER TABLE ONLY ads
 
 
 --
--- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ar_internal_metadata
@@ -750,7 +828,7 @@ ALTER TABLE ONLY ar_internal_metadata
 
 
 --
--- Name: bank_admins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: bank_admins bank_admins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY bank_admins
@@ -758,7 +836,7 @@ ALTER TABLE ONLY bank_admins
 
 
 --
--- Name: demographics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: demographics demographics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY demographics
@@ -766,7 +844,7 @@ ALTER TABLE ONLY demographics
 
 
 --
--- Name: financial_institutions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: financial_institutions financial_institutions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY financial_institutions
@@ -774,7 +852,7 @@ ALTER TABLE ONLY financial_institutions
 
 
 --
--- Name: goals_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: goals goals_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY goals
@@ -782,7 +860,7 @@ ALTER TABLE ONLY goals
 
 
 --
--- Name: historical_snapshots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: historical_snapshots historical_snapshots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY historical_snapshots
@@ -790,7 +868,7 @@ ALTER TABLE ONLY historical_snapshots
 
 
 --
--- Name: messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY messages
@@ -798,7 +876,7 @@ ALTER TABLE ONLY messages
 
 
 --
--- Name: monotto_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: monotto_users monotto_users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY monotto_users
@@ -806,7 +884,7 @@ ALTER TABLE ONLY monotto_users
 
 
 --
--- Name: offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: offers offers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY offers
@@ -814,7 +892,7 @@ ALTER TABLE ONLY offers
 
 
 --
--- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY products
@@ -822,7 +900,7 @@ ALTER TABLE ONLY products
 
 
 --
--- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schema_migrations
@@ -830,7 +908,7 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: transactions transactions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY transactions
@@ -838,7 +916,7 @@ ALTER TABLE ONLY transactions
 
 
 --
--- Name: transfers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: transfers transfers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY transfers
@@ -846,7 +924,7 @@ ALTER TABLE ONLY transfers
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -854,7 +932,15 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: xref_goal_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: vendors vendors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY vendors
+    ADD CONSTRAINT vendors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: xref_goal_types xref_goal_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY xref_goal_types
@@ -1002,7 +1088,21 @@ CREATE UNIQUE INDEX index_users_on_financial_institution_id_and_bank_user_id ON 
 
 
 --
--- Name: fk_rails_009136a4eb; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: index_vendors_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vendors_on_email ON vendors USING btree (email);
+
+
+--
+-- Name: index_vendors_on_token_and_token_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vendors_on_token_and_token_created_at ON vendors USING btree (token, token_created_at);
+
+
+--
+-- Name: offers fk_rails_009136a4eb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY offers
@@ -1010,7 +1110,7 @@ ALTER TABLE ONLY offers
 
 
 --
--- Name: fk_rails_2047acc645; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: bank_admins fk_rails_2047acc645; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY bank_admins
@@ -1018,7 +1118,7 @@ ALTER TABLE ONLY bank_admins
 
 
 --
--- Name: fk_rails_344b52b7fd; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: transfers fk_rails_344b52b7fd; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY transfers
@@ -1026,7 +1126,7 @@ ALTER TABLE ONLY transfers
 
 
 --
--- Name: fk_rails_44583af250; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: offers fk_rails_44583af250; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY offers
@@ -1034,7 +1134,7 @@ ALTER TABLE ONLY offers
 
 
 --
--- Name: fk_rails_57a880a289; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: products fk_rails_57a880a289; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY products
@@ -1042,7 +1142,7 @@ ALTER TABLE ONLY products
 
 
 --
--- Name: fk_rails_77364e6416; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: transactions fk_rails_77364e6416; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY transactions
@@ -1050,7 +1150,7 @@ ALTER TABLE ONLY transactions
 
 
 --
--- Name: fk_rails_c5fd9c8a38; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: goals fk_rails_c5fd9c8a38; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY goals
@@ -1058,7 +1158,7 @@ ALTER TABLE ONLY goals
 
 
 --
--- Name: fk_rails_dd13be0cc8; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: demographics fk_rails_dd13be0cc8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY demographics
@@ -1066,7 +1166,7 @@ ALTER TABLE ONLY demographics
 
 
 --
--- Name: fk_rails_ed15292327; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: ads fk_rails_ed15292327; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ads
@@ -1074,7 +1174,7 @@ ALTER TABLE ONLY ads
 
 
 --
--- Name: fk_rails_eeccee8915; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: users fk_rails_eeccee8915; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY users
@@ -1082,7 +1182,7 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: fk_rails_f2dc556d45; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: goals fk_rails_f2dc556d45; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY goals
@@ -1093,7 +1193,7 @@ ALTER TABLE ONLY goals
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20170314005938'),
@@ -1144,7 +1244,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171026154034'),
 ('20171029050448'),
 ('20171030042401'),
-('20171030220547'),
 ('20171031032104'),
 ('20171031061024'),
 ('20171031215220'),
@@ -1152,27 +1251,20 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171102160911'),
 ('20171102160955'),
 ('20171105225028'),
-('20171111045858'),
 ('20171112045102'),
 ('20171117140039'),
-('20171119160738'),
 ('20171119210531'),
-('20171120045645'),
 ('20171120050231'),
-('20171120051242'),
-('20171120210734'),
-('20171121001944'),
-('20171121010705'),
 ('20171121020210'),
-('20171125234645'),
 ('20171126022622'),
 ('20171126025921'),
 ('20171126033613'),
 ('20171127222719'),
-('20171128133055'),
 ('20171128133347'),
 ('20171203225536'),
 ('20171203225636'),
-('20171203225708');
+('20171203225708'),
+('20171216201243'),
+('20171216203030');
 
 

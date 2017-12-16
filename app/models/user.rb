@@ -4,7 +4,7 @@ class User < ApplicationRecord
   has_many :goals, dependent: :destroy
   belongs_to :financial_institution
   has_many :messages, dependent: :destroy
-
+  belongs_to :vendor, optional: true
   before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
   after_create :insert_transfer_record
   validates :max_transfer_amount, numericality: { greater_than_or_equal_to: 0}

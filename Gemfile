@@ -35,7 +35,7 @@ gem 'rack-attack'
 
 group :production, :cron, :staging do # Cron env should have access to all production level gems.
   # Use PostgreSQL as the database for Active Record
-  gem 'pg', '~> 0.18.1'
+  gem 'pg', '~> 0.20.0'
 end
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

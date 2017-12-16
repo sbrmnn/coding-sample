@@ -9,6 +9,10 @@ module ControllerAuthenticatable
     authenticate_bank_admin_token || render_unauthorized("Access denied")
   end
 
+  def require_vendor_login
+    authenticate_token(Vendor) || render_unauthorized("Access denied")
+  end
+
   def require_monotto_user_login
     authenticate_monotto_user_token || render_unauthorized("Access denied")
   end
@@ -53,6 +57,19 @@ module ControllerAuthenticatable
       return nil
     end
   end
+
+  def authenticate_token(model)
+    begin
+      authenticate_with_http_token do |token, options|
+        if model_obj = model.with_unexpired_token(token, TOKEN_EXPIRATION)
+          analyze_token_safely(token, model_obj)
+          model_obj
+        end
+      end
+    rescue
+      return nil
+    end
+  end
   
   def authenticate_bank_admin_token
     begin
@@ -60,6 +77,19 @@ module ControllerAuthenticatable
         if bank_admin = BankAdmin.with_unexpired_token(token, TOKEN_EXPIRATION)
           analyze_token_safely(token, bank_admin)
           bank_admin
+        end
+      end
+    rescue
+      return nil
+    end
+  end
+
+  def authenticate_vendor_token
+    begin
+      authenticate_with_http_token do |token, options|
+        if vendor = Vendor.with_unexpired_token(token, TOKEN_EXPIRATION)
+          analyze_token_safely(token, vendor)
+          vendor
         end
       end
     rescue
