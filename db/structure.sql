@@ -1074,17 +1074,17 @@ CREATE INDEX index_transfers_on_user_id ON transfers USING btree (user_id);
 
 
 --
+-- Name: index_users_on_bank_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_bank_user_id ON users USING btree (bank_user_id);
+
+
+--
 -- Name: index_users_on_financial_institution_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_users_on_financial_institution_id ON users USING btree (financial_institution_id);
-
-
---
--- Name: index_users_on_financial_institution_id_and_bank_user_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_users_on_financial_institution_id_and_bank_user_id ON users USING btree (financial_institution_id, bank_user_id);
 
 
 --
@@ -1265,6 +1265,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171203225636'),
 ('20171203225708'),
 ('20171216201243'),
-('20171216203030');
+('20171216203030'),
+('20171217015239'),
+('20171217015401');
 
 
