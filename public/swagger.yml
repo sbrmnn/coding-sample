@@ -776,7 +776,6 @@ paths:
              application/json:
                [
                  {
-                    "sequence":"6d8ba742-30ea-4000-a7fa-86d9bbfb5948",
                     "bank_user_id":"10020102002306194",
                     "savings_account_identifier":"123a46b75n432i",
                     "checking_account_identifier":"123t456t543y",
@@ -792,9 +791,6 @@ paths:
             items:
               type: object
               properties:
-                sequence: 
-                  type: string
-                  description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
                 bank_user_id: 
                   type: string
                   description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
@@ -839,14 +835,10 @@ paths:
           schema:
             type: object
             required:
-            - user[sequence]
             - user[bank_user_id]
             - user[checking_account_identifier]
             - user[savings_account_identifier]
             properties:
-              user[sequence]: 
-                type: string
-                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               user[bank_user_id]: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
@@ -871,7 +863,6 @@ paths:
           examples:
              application/json:
                {
-                  "sequence":"6d8ba742-30ea-4000-a7fa-86d9bbfb5948",
                   "bank_user_id":"10020102002306194",
                   "savings_account_identifier":"123a46b75n432i",
                   "checking_account_identifier":"123t456t543y",
@@ -884,9 +875,6 @@ paths:
           schema:
             type: object
             properties:
-              sequence: 
-                type: string
-                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
@@ -936,7 +924,6 @@ paths:
           examples:
              application/json:
                {
-                  "sequence":"6d8ba742-30ea-4000-a7fa-86d9bbfb5948",
                   "bank_user_id":"10020102002306194",
                   "savings_account_identifier":"123a46b75n432i",
                   "checking_account_identifier":"123t456t543y",
@@ -949,9 +936,6 @@ paths:
           schema:
             type: object
             properties:
-              sequence: 
-                type: string
-                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
@@ -986,9 +970,6 @@ paths:
           schema:
             type: object
             properties:
-              sequence: 
-                type: string
-                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
@@ -1025,7 +1006,6 @@ paths:
           examples:
              application/json:
                {
-                  "sequence":"6d8ba742-30ea-4000-a7fa-86d9bbfb5948",
                   "bank_user_id":"10020102002306194",
                   "savings_account_identifier":"123a46b75n432i",
                   "checking_account_identifier":"123t456t543y",
@@ -1038,9 +1018,6 @@ paths:
           schema:
             type: object
             properties:
-              sequence: 
-                type: string
-                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
@@ -1087,7 +1064,6 @@ paths:
           examples:
              application/json:
                {
-                  "sequence":"6d8ba742-30ea-4000-a7fa-86d9bbfb5948",
                   "bank_user_id":"10020102002306194",
                   "savings_account_identifier":"123a46b75n432i",
                   "checking_account_identifier":"123t456t543y",
@@ -1100,9 +1076,6 @@ paths:
           schema:
             type: object
             properties:
-              sequence: 
-                type: string
-                description: A unique identifier so the Financial Institution knows that the response received is from the request sent by the Financial Institution.
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
