@@ -38,7 +38,7 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
     if params[:user].blank?
       {}
     else
-      params.require(:user).permit(:sequence, :bank_user_id, :savings_account_identifier, :checking_account_identifier,
+      params.require(:user).permit(:bank_user_id, :savings_account_identifier, :checking_account_identifier,
                                   :transfers_active, :safety_net_active, :max_transfer_amount)
     end
    end
