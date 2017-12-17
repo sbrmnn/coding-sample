@@ -16,9 +16,9 @@ class User < ApplicationRecord
   protected
 
   def generate_bank_user_id
-    token = SecureRandom.urlsafe_base64(40)
-    while User.exists?(:bank_user_id => token) # Make sure token doesn't exists for another user.
-      token = SecureRandom.urlsafe_base64(40)
+    token = SecureRandom.urlsafe_base64(100)
+    while User.exists?(:bank_user_id => token) # Making sure token hasn't been assigned for another user.
+      token = SecureRandom.urlsafe_base64(100)
     end
     self.bank_user_id = token
   end
