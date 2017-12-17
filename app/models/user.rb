@@ -11,14 +11,16 @@ class User < ApplicationRecord
   validates_presence_of :financial_institution, :sequence, :bank_user_id,
                         :savings_account_identifier, :checking_account_identifier
   
-  validate_uniqueness_of
-  
-  before_create :generate_bank_user_id
-
+  before_validation :generate_bank_user_id
+ 
   protected
 
   def generate_bank_user_id
-    self.bank_user_id = SecureRandom.urlsafe_base64(40)
+    token = SecureRandom.urlsafe_base64(40)
+    while User.exists?(:bank_user_id => token) # Make sure token doesn't exists for another user.
+      token = SecureRandom.urlsafe_base64(40)
+    end
+    self.bank_user_id = token
   end
 
   def verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
