@@ -480,7 +480,6 @@ CREATE TABLE schema_migrations (
 CREATE TABLE users (
     id integer NOT NULL,
     financial_institution_id integer NOT NULL,
-    sequence character varying NOT NULL,
     bank_user_id character varying NOT NULL,
     savings_account_identifier character varying NOT NULL,
     checking_account_identifier character varying NOT NULL,
@@ -1267,6 +1266,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171216201243'),
 ('20171216203030'),
 ('20171217015239'),
-('20171217015401');
+('20171217015401'),
+('20171217021928');
 
 

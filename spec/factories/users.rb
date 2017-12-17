@@ -1,7 +1,5 @@
 FactoryGirl.define do
   factory(:user) do
-    add_attribute :sequence, "ADFSDFGSDFGSDFGASDFADFADF"
-    bank_user_id "ASDFDFGSDFGSDFG"
     checking_account_identifier "ASDFASDFASDGDFG"
     association(:financial_institution, :factory => :financial_institution)
     max_transfer_amount 30
