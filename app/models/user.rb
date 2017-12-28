@@ -9,7 +9,7 @@ class User < ApplicationRecord
   after_create :insert_transfer_record
   validates :max_transfer_amount, numericality: { greater_than_or_equal_to: 0}
   validates_presence_of :financial_institution, :bank_user_id,
-                        :savings_account_identifier, :checking_account_identifier
+                        :default_savings_account_identifier, :checking_account_identifier
   
   before_validation :generate_bank_user_id
  

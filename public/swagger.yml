@@ -777,7 +777,7 @@ paths:
                [
                  {
                     "bank_user_id":"10020102002306194",
-                    "savings_account_identifier":"123a46b75n432i",
+                    "default_savings_account_identifier":"123a46b75n432i",
                     "checking_account_identifier":"123t456t543y",
                     "transfers_active":true,
                     "safety_net_active":true,
@@ -794,7 +794,7 @@ paths:
                 bank_user_id: 
                   type: string
                   description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
-                savings_account_identifier:
+                default_savings_account_identifier:
                   type: string
                   description: System Id for Savings account that user will be moving money to.
                 checking_account_identifier:
@@ -837,12 +837,12 @@ paths:
             required:
             - user[bank_user_id]
             - user[checking_account_identifier]
-            - user[savings_account_identifier]
+            - user[default_savings_account_identifier]
             properties:
               user[bank_user_id]: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
-              user[savings_account_identifier]:
+              user[default_savings_account_identifier]:
                 type: string
                 description: System Id for Savings account that user will be moving money to.
               user[checking_account_identifier]:
@@ -864,7 +864,7 @@ paths:
              application/json:
                {
                   "bank_user_id":"10020102002306194",
-                  "savings_account_identifier":"123a46b75n432i",
+                  "default_savings_account_identifier":"123a46b75n432i",
                   "checking_account_identifier":"123t456t543y",
                   "transfers_active":true,
                   "safety_net_active":true,
@@ -878,7 +878,7 @@ paths:
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
-              savings_account_identifier:
+              default_savings_account_identifier:
                 type: string
                 description: System Id for Savings account that user will be moving money to.
               checking_account_identifier:
@@ -925,7 +925,7 @@ paths:
              application/json:
                {
                   "bank_user_id":"10020102002306194",
-                  "savings_account_identifier":"123a46b75n432i",
+                  "default_savings_account_identifier":"123a46b75n432i",
                   "checking_account_identifier":"123t456t543y",
                   "transfers_active": true,
                   "safety_net_active": true,
@@ -939,7 +939,7 @@ paths:
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
-              savings_account_identifier:
+              default_savings_account_identifier:
                 type: string
                 description: System Id for Savings account that user will be moving money to.
               checking_account_identifier:
@@ -973,7 +973,7 @@ paths:
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
-              savings_account_identifier:
+              default_savings_account_identifier:
                 type: string
                 description: System Id for Savings account that user will be moving money to.
               checking_account_identifier:
@@ -1007,7 +1007,7 @@ paths:
              application/json:
                {
                   "bank_user_id":"10020102002306194",
-                  "savings_account_identifier":"123a46b75n432i",
+                  "default_savings_account_identifier":"123a46b75n432i",
                   "checking_account_identifier":"123t456t543y",
                   "transfers_active":true,
                   "safety_net_active":true,
@@ -1021,7 +1021,7 @@ paths:
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
-              savings_account_identifier:
+              default_savings_account_identifier:
                 type: string
                 description: System Id for Savings account that user will be moving money to.
               checking_account_identifier:
@@ -1065,7 +1065,7 @@ paths:
              application/json:
                {
                   "bank_user_id":"10020102002306194",
-                  "savings_account_identifier":"123a46b75n432i",
+                  "default_savings_account_identifier":"123a46b75n432i",
                   "checking_account_identifier":"123t456t543y",
                   "transfers_active":true,
                   "safety_net_active":true,
@@ -1079,7 +1079,7 @@ paths:
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
-              savings_account_identifier:
+              default_savings_account_identifier:
                 type: string
                 description: System Id for Savings account that user will be moving money to.
               checking_account_identifier:
