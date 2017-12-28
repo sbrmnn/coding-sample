@@ -222,7 +222,8 @@ CREATE TABLE goals (
     updated_at timestamp without time zone NOT NULL,
     target_amount numeric(10,2) DEFAULT 0 NOT NULL,
     balance numeric(10,2) DEFAULT 0 NOT NULL,
-    xref_goal_type_id integer
+    xref_goal_type_id integer,
+    savings_account_identifier character varying
 );
 
 
@@ -481,7 +482,7 @@ CREATE TABLE users (
     id integer NOT NULL,
     financial_institution_id integer NOT NULL,
     bank_user_id character varying NOT NULL,
-    savings_account_identifier character varying NOT NULL,
+    default_savings_account_identifier character varying NOT NULL,
     checking_account_identifier character varying NOT NULL,
     transfers_active boolean DEFAULT true,
     safety_net_active boolean DEFAULT true,
@@ -1267,6 +1268,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171216203030'),
 ('20171217015239'),
 ('20171217015401'),
-('20171217021928');
+('20171217021928'),
+('20171228170133'),
+('20171228170243');
 
 
