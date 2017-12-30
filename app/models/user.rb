@@ -11,10 +11,10 @@ class User < ApplicationRecord
   validates_presence_of :financial_institution, :bank_user_id,
                         :default_savings_account_identifier, :checking_account_identifier
   
-  before_validation :generate_bank_user_id
+  
  
   protected
-
+=begin
   def generate_bank_user_id
     token = SecureRandom.urlsafe_base64(100)
     while User.exists?(:bank_user_id => token) # Making sure token hasn't been assigned for another user.
@@ -22,7 +22,7 @@ class User < ApplicationRecord
     end
     self.bank_user_id = token
   end
-
+=end
   def verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
     if self.max_transfer_amount.present?
       financial_institution_max_transfer = self.financial_institution.max_transfer_amount
