@@ -635,7 +635,8 @@ CREATE TABLE vendors (
     token character varying,
     token_created_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    public_key character varying
 );
 
 
@@ -1281,6 +1282,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171230053347'),
 ('20171230054020'),
 ('20171230054052'),
-('20171230054252');
+('20171230054252'),
+('20171230154246');
 
 
