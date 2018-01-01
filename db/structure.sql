@@ -185,7 +185,8 @@ CREATE TABLE financial_institutions (
     max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
     transfers_active boolean,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    vendor_id integer
 );
 
 
@@ -1287,6 +1288,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171230054252'),
 ('20171230154246'),
 ('20171231043851'),
-('20180101000322');
+('20180101000322'),
+('20180101003148');
 
 
