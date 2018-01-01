@@ -1,7 +1,7 @@
 class BankAdmins::OffersController < BankAdmins::ApplicationController
    
    def index
-     @offers = current_bank_admin.offer.where(offer_params)
+     @offers = current_bank_admin.offers.where(offer_params)
      json_response(@offers)
    end
 
