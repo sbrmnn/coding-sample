@@ -15,7 +15,15 @@ class Goal < ApplicationRecord
   belongs_to :user
   belongs_to :xref_goal_type
 
+  before_save :set_default_savings_account_if_none
+
   protected
+
+  def set_default_savings_account_if_none
+    if savings_account_identifier.blank?
+      self.savings_account_identifier = self.user.default_savings_account_identifier
+    end
+  end
   
   def validate_xref_goal_name
     if xref_goal_name
