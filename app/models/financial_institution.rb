@@ -8,7 +8,7 @@ class FinancialInstitution < ApplicationRecord
   has_many :historical_snapshots
   has_one :snapshot_summary
   has_many :historical_snapshot_stats
-  
+  belongs_to :vendor, optional: true
   delegate :average_user_balance, :sum_balance, :sum_message_clicks, 
            :total_messages, :total_users, to: :snapshot_summary
   
