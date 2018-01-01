@@ -1,6 +1,7 @@
 class Vendors::Users::GoalsController < Vendors::ApplicationController
-  before_action :find_user
-
+  skip_before_action :require_vendor_login
+  before_action :find_user_by_vendor_public_key
+  
   def index
     @goals = @user.try(:goals).where(params[:goal])
     json_response(@goals)

@@ -490,8 +490,7 @@ CREATE TABLE users (
     safety_net_active boolean DEFAULT true,
     max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    vendor_id integer
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1085,13 +1084,6 @@ CREATE UNIQUE INDEX index_users_on_bank_user_id_and_financial_institution_id ON 
 
 
 --
--- Name: index_users_on_bank_user_id_and_vendor_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_users_on_bank_user_id_and_vendor_id ON users USING btree (bank_user_id, vendor_id);
-
-
---
 -- Name: index_users_on_financial_institution_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1276,7 +1268,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171203225636'),
 ('20171203225708'),
 ('20171216201243'),
-('20171216203030'),
 ('20171217015239'),
 ('20171217015401'),
 ('20171217021928'),
@@ -1284,7 +1275,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171228170243'),
 ('20171230053347'),
 ('20171230054020'),
-('20171230054052'),
 ('20171230054252'),
 ('20171230154246'),
 ('20171231043851'),

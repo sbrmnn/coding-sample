@@ -13,10 +13,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :vendors, except: [:index, :create, :destroy, :show, :update] do
-    resources :users, param: :bank_user_id do
-      scope module: :users do
-        resources :goals
+  resources :vendors, param: :public_key, except: [:index, :create, :destroy, :show, :update] do
+    scope module: :vendors do
+      resources :users, param: :bank_user_id do
+        scope module: :users do
+          resources :goals
+        end
       end
     end
   end
