@@ -1,5 +1,5 @@
-class Vendors::Users::OffersController < ApplicationController
-  skip_before_action :require_vendor_login
+class Vendors::Users::OffersController < Vendors::ApplicationController
+  #skip_before_action :require_vendor_login
   before_action :find_user_by_vendor_public_key
   
   def index
