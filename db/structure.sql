@@ -518,6 +518,64 @@ CREATE VIEW snapshot_summaries AS
 
 
 --
+-- Name: transfers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE transfers (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    origin_account character varying NOT NULL,
+    destination_account character varying NOT NULL,
+    amount numeric(10,2) DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    transfer_amount_attempted numeric(10,2),
+    next_transfer_date date,
+    status status,
+    end_date timestamp without time zone
+);
+
+
+--
+-- Name: time_until_completions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW time_until_completions AS
+ WITH prev_transfers_tb AS (
+         SELECT transfers_in.user_id,
+            avg(transfers_in.diff) AS avg_days,
+            avg(transfers_in.transfer_amount_attempted) AS avg_amount
+           FROM ( SELECT DISTINCT transfers.user_id
+                   FROM transfers
+                  WHERE (((transfers.updated_at)::date = (CURRENT_TIMESTAMP)::date) AND (transfers.status = 'pending'::status))) transfer_out,
+            LATERAL ( SELECT transfers.user_id,
+                    transfers.updated_at,
+                    ((transfers.updated_at)::date - lag((transfers.updated_at)::date) OVER (ORDER BY transfers.updated_at)) AS diff,
+                    transfers.transfer_amount_attempted
+                   FROM transfers
+                  WHERE ((transfers.end_date <> 'infinity'::timestamp without time zone) AND (transfers.user_id = transfer_out.user_id))
+                  ORDER BY transfers.updated_at DESC
+                 LIMIT 3) transfers_in
+          GROUP BY transfers_in.user_id
+        ), amount_to_complete AS (
+         SELECT goals.user_id,
+            goals.xref_goal_type_id,
+            goals.priority,
+            rank() OVER (PARTITION BY goals.user_id ORDER BY goals.priority) AS rank_priority,
+            (goals.target_amount - goals.balance) AS remaining
+           FROM goals
+          WHERE ((goals.target_amount - goals.balance) > (0)::numeric)
+        )
+ SELECT p.user_id,
+    a.xref_goal_type_id,
+    a.priority,
+    round(((p.avg_days * a.remaining) / p.avg_amount), 2) AS days_until_completion
+   FROM prev_transfers_tb p,
+    amount_to_complete a
+  WHERE (p.user_id = a.user_id);
+
+
+--
 -- Name: transactions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -558,25 +616,6 @@ CREATE SEQUENCE transactions_id_seq
 --
 
 ALTER SEQUENCE transactions_id_seq OWNED BY transactions.id;
-
-
---
--- Name: transfers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE transfers (
-    id bigint NOT NULL,
-    user_id integer NOT NULL,
-    origin_account character varying NOT NULL,
-    destination_account character varying NOT NULL,
-    amount numeric(10,2) DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    transfer_amount_attempted numeric(10,2),
-    next_transfer_date date,
-    status status,
-    end_date timestamp without time zone
-);
 
 
 --
@@ -1279,6 +1318,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171230154246'),
 ('20171231043851'),
 ('20180101000322'),
-('20180101003148');
+('20180101003148'),
+('20180101205327');
 
 
