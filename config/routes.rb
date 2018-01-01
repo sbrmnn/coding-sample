@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       resources :users, param: :bank_user_id do
         scope module: :users do
           resources :goals
+          resources :offers
+          resources :transactions
         end
       end
     end
@@ -41,7 +43,7 @@ Rails.application.routes.draw do
     resources :snapshots, only: [:index]
     resources :users, param: :bank_user_id do
         scope module: :users do
-          resources :messages
+          resources :offers
           resources :demographics
           resources :goals
         end

@@ -2,24 +2,24 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
   before_action :find_user
 
   def index
-    @demographics = @user.try(:demographics).where(demographic_params)
+    @demographics = @user.demographics.where(demographic_params)
     json_response(@demographics)
   end
 
   def show
-    @demographic = @user.try(:demographics).find_by(id: params[:id])
+    @demographic = @user.demographics.find_by(id: params[:id])
     json_response(@demographic)
   end
 
   def create
-    @demographics = @user.try(:demographics)
+    @demographics = @user.demographics
     @demographic =  Demographic.new(demographic_params)
     @demographics << @demographic
     json_response(@demographic)
   end
 
   def update
-    @demographic = @user.try(:demographics).try{ |obj| obj.find_by(:id=> params[:id])}
+    @demographic = @user.demographics.try{ |obj| obj.find_by(:id=> params[:id])}
     if @demographic
       @demographic.update_attributes(demographic_params) 
     end 
@@ -27,7 +27,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
   end
 
   def destroy
-    @demographic = @user.try(:demographics).try{ |obj| obj.where(:id=> params[:id]).first }
+    @demographic = @user.demographics.try{ |obj| obj.where(:id=> params[:id]).first }
     if @demographic
       @demographic.destroy
     end

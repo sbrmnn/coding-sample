@@ -3,24 +3,24 @@ class Vendors::Users::GoalsController < Vendors::ApplicationController
   before_action :find_user_by_vendor_public_key
   
   def index
-    @goals = @user.try(:goals).where(params[:goal])
+    @goals = @user.goals.where(params[:goal])
     json_response(@goals)
   end
 
   def show
-    @goal = @user.try(:goals).find_by(id: params[:id])
+    @goal = @user.goals.find_by(id: params[:id])
     json_response(@goal)
   end
 
   def create
-    @goals = @user.try(:goals)
+    @goals = @user.goals
     @goal =  Goal.new(goal_params)
     @goals << @goal
     json_response(@goal)
   end
 
   def update
-    @goal = @user.try(:goals).try{ |obj| obj.find_by(:id=> params[:id])}
+    @goal = @user.goals.try{ |obj| obj.find_by(:id=> params[:id])}
     if @goal
       @goal.update_attributes(goal_params) 
     end 
@@ -28,7 +28,7 @@ class Vendors::Users::GoalsController < Vendors::ApplicationController
    end
 
   def destroy
-    @goal = @user.try(:goals).try{ |obj| obj.find_by(:id=> params[:id]) }
+    @goal = @user.goals.try{ |obj| obj.find_by(:id=> params[:id]) }
     if @goal
       @goal.destroy 
     end
