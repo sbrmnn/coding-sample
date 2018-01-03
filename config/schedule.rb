@@ -26,5 +26,5 @@ end
 
 
 every 5.minutes  do
-  rake "order:send_to_users"
+  rake "offers:send_to_users"
 end
