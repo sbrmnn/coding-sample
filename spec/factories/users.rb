@@ -6,5 +6,6 @@ FactoryGirl.define do
     safety_net_active true
     default_savings_account_identifier "ASDFASDGSDFGSDFGS"
     transfers_active true
+    bank_user_id "ADSFASDFKGDSF_ASDFASDF"
   end
 end

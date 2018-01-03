@@ -5,6 +5,9 @@ class FinancialInstitution < ApplicationRecord
   has_many :ads, dependent: :destroy
   has_many :bank_admins, dependent: :destroy
   has_many :xref_goal_types, dependent: :destroy
+  has_many :goals, through: :users 
+  has_many :historical_snapshots, dependent: :destroy
+  has_many :messages, through: :users 
   has_many :historical_snapshots
   has_one :snapshot_summary
   has_many :historical_snapshot_stats
@@ -20,8 +23,15 @@ class FinancialInstitution < ApplicationRecord
 
   before_save :cascade_down_max_transfer_price_to_users
 
+  after_commit :create_historical_snapshot_if_none
+
   protected
 
+  def create_historical_snapshot_if_none
+    if self.historical_snapshots.blank?
+      @snapshot_summary = SnapshotPresenter.new(self.id).create_historical_record
+    end
+  end
 
   def create_default_xref_goals
     self.xref_goal_types << XrefGoalType.new(code: "CAR",     name: "Car Goal")

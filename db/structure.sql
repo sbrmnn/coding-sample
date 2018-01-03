@@ -477,47 +477,6 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE users (
-    id integer NOT NULL,
-    financial_institution_id integer NOT NULL,
-    bank_user_id character varying NOT NULL,
-    default_savings_account_identifier character varying NOT NULL,
-    checking_account_identifier character varying NOT NULL,
-    transfers_active boolean DEFAULT true,
-    safety_net_active boolean DEFAULT true,
-    max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: snapshot_summaries; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW snapshot_summaries AS
- SELECT financial_institutions.id AS financial_institution_id,
-    COALESCE(avg(goals.balance), (0)::numeric) AS average_user_balance,
-    COALESCE(sum(goals.balance), (0)::numeric) AS sum_balance,
-    COALESCE(sum(messages.clicks), (0)::bigint) AS sum_message_clicks,
-    count(messages.*) AS total_messages,
-    count(goals.*) AS total_num_of_goals,
-    count(financial_institution_users.*) AS total_users,
-    count(last_seven_days_user_signup.*) AS last_seven_days_user_signup,
-    count(completed_goals_list.*) AS total_amount_of_completed_goals
-   FROM (((((financial_institutions
-     LEFT JOIN users financial_institution_users ON ((financial_institution_users.financial_institution_id = financial_institutions.id)))
-     LEFT JOIN goals ON ((goals.user_id = financial_institution_users.id)))
-     LEFT JOIN messages ON (((messages.user_id = financial_institution_users.id) AND ((messages.message_obj_type)::text = 'Offer'::text))))
-     LEFT JOIN users last_seven_days_user_signup ON (((last_seven_days_user_signup.financial_institution_id = financial_institutions.id) AND (last_seven_days_user_signup.created_at > ((now())::date - 7)))))
-     LEFT JOIN goal_statistics completed_goals_list ON (((completed_goals_list.goal_id = goals.id) AND (completed_goals_list.percent_saved >= (100)::numeric))))
-  GROUP BY financial_institutions.id;
-
-
---
 -- Name: transfers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -636,6 +595,24 @@ CREATE SEQUENCE transfers_id_seq
 --
 
 ALTER SEQUENCE transfers_id_seq OWNED BY transfers.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    financial_institution_id integer NOT NULL,
+    bank_user_id character varying NOT NULL,
+    default_savings_account_identifier character varying NOT NULL,
+    checking_account_identifier character varying NOT NULL,
+    transfers_active boolean DEFAULT true,
+    safety_net_active boolean DEFAULT true,
+    max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
 
 
 --
@@ -997,17 +974,17 @@ CREATE INDEX index_ads_on_financial_institution_id ON ads USING btree (financial
 
 
 --
+-- Name: index_bank_admins_on_email; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_bank_admins_on_email ON bank_admins USING btree (email);
+
+
+--
 -- Name: index_bank_admins_on_financial_institution_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_bank_admins_on_financial_institution_id ON bank_admins USING btree (financial_institution_id);
-
-
---
--- Name: index_bank_admins_on_financial_institution_id_and_email; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_bank_admins_on_financial_institution_id_and_email ON bank_admins USING btree (financial_institution_id, email);
 
 
 --
@@ -1133,7 +1110,7 @@ CREATE INDEX index_users_on_financial_institution_id ON users USING btree (finan
 -- Name: index_vendors_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_vendors_on_email ON vendors USING btree (email);
+CREATE UNIQUE INDEX index_vendors_on_email ON vendors USING btree (email);
 
 
 --
@@ -1141,6 +1118,13 @@ CREATE INDEX index_vendors_on_email ON vendors USING btree (email);
 --
 
 CREATE INDEX index_vendors_on_token_and_token_created_at ON vendors USING btree (token, token_created_at);
+
+
+--
+-- Name: unique_messages; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX unique_messages ON messages USING btree (message_obj_id, message_obj_type, user_id);
 
 
 --
@@ -1296,13 +1280,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171112045102'),
 ('20171117140039'),
 ('20171119210531'),
-('20171120050231'),
 ('20171121020210'),
-('20171126022622'),
 ('20171126025921'),
 ('20171126033613'),
 ('20171127222719'),
-('20171128133347'),
 ('20171203225536'),
 ('20171203225636'),
 ('20171203225708'),
@@ -1319,6 +1300,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171231043851'),
 ('20180101000322'),
 ('20180101003148'),
-('20180101205327');
+('20180101205327'),
+('20180103024953'),
+('20180103025133'),
+('20180103025137');
 
 

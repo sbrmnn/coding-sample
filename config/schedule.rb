@@ -23,3 +23,8 @@
 every :day, at: ["11am", "11pm"]  do
   rake "account_snapshot:generate_historical_snapshot"
 end
+
+
+every 5.minutes  do
+  rake "order:send_to_users"
+end

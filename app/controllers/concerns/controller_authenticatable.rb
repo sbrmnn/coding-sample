@@ -10,7 +10,7 @@ module ControllerAuthenticatable
   end
 
   def require_vendor_login
-    true #authenticate_token(Vendor) || render_unauthorized("Access denied")
+    authenticate_token(Vendor) || render_unauthorized("Access denied")
   end
 
   def require_monotto_user_login
@@ -26,9 +26,7 @@ module ControllerAuthenticatable
   end
 
   def current_vendor
-    # TODO 
-    @current_vendor ||= Vendor.first # Comment this line and uncomment second line later. 
-    #@current_vendor ||= authenticate_token(Vendor) 
+    @current_vendor ||= authenticate_token(Vendor) 
   end
 
 

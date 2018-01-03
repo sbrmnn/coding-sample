@@ -1,5 +1,0 @@
-version: 1
-cron:
- - name: "transfers"
-   url: "/cron/get_transfer_information_for_users"
-   schedule: "0 9 * * 0,6" # This job runs 9 am (UTC) on Monday-Friday of every month.

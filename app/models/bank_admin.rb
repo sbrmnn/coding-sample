@@ -7,6 +7,6 @@ class BankAdmin < ApplicationRecord
   has_many :xref_goal_types,      through: :financial_institution 
   has_many :historical_snapshots, through: :financial_institution
   belongs_to :financial_institution
-
   validates_presence_of :financial_institution, :email, :name, :title, :phone
+  validates_uniqueness_of :email
 end

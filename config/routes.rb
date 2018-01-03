@@ -13,18 +13,24 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :vendors, param: :public_key, except: [:index, :create, :destroy, :show, :update] do
+  resource :vendors, except: [:create, :destroy, :show, :update] do
     scope module: :vendors do
+      resource :me, only: :show, controller: :me
+      resources :financial_institutions do
+        scope module: :financial_institutions do
+          resources :users, only: :create
+        end
+      end
       resources :users, param: :bank_user_id do
         scope module: :users do
           resources :goals
-          resources :offers
-          resources :transactions
+          resources :offers, only: [:index, :show]
+          resources :transactions, only: [:index]
+          resource :ads, only: [:show]
         end
       end
     end
   end
-
 
   scope module: :bank_admins do
     post   "login"  => "sessions#create"
@@ -43,7 +49,7 @@ Rails.application.routes.draw do
     resources :snapshots, only: [:index]
     resources :users, param: :bank_user_id do
         scope module: :users do
-          resources :offers
+          #resources :offers
           resources :demographics
           resources :goals
         end

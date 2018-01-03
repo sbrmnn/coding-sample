@@ -3,24 +3,13 @@ class Vendors::Users::OffersController < Vendors::ApplicationController
   before_action :find_user_by_vendor_public_key
   
   def index
-    @messages = @user.messages.where(params[:message])
-    json_response(@messages)
+    @offer_ids = @user.messages.where(message_obj_type: "Offer").order('created_at DESC').limit(15).pluck(:message_obj_id)
+    @offers = Offer.where(id: @offer_ids) if @offer_ids.present?
+    json_response(@offers, :ad)
   end
 
   def show
-    @message = @user.messages.find_by(id: params[:id])
-    json_response(@message)
+    @offer = @user.messages.find_by(message_obj_type: "Offer", message_obj_id: params[:id]).try(:message_obj)
+    json_response(@offer, :ad)
   end
-
-
-
-   protected
-
-   def message_params
-     if params[:message].blank?
-       {}
-     else
-       params.require(:message).permit(:tag, :priority, :target_amount, :balance, :xref_message_name)
-     end
-   end
 end

@@ -38,5 +38,7 @@ module Monotto
     # Since we are using enums which isn't supported by Rails and breaks schema.rb, we are instead loading
     # the schema format from raw sql.
     config.active_record.schema_format = :sql
+
+    config.eager_load_paths << Rails.root.join('app')
   end
 end

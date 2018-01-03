@@ -19,7 +19,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
   end
 
   def update
-    @demographic = @user.demographics.try{ |obj| obj.find_by(:id=> params[:id])}
+    @demographic = @user.demographics.find_by(:id=> params[:id])
     if @demographic
       @demographic.update_attributes(demographic_params) 
     end 
@@ -27,7 +27,7 @@ class BankAdmins::Users::DemographicsController < BankAdmins::ApplicationControl
   end
 
   def destroy
-    @demographic = @user.demographics.try{ |obj| obj.where(:id=> params[:id]).first }
+    @demographic = @user.demographics.find_by(:id=> params[:id])
     if @demographic
       @demographic.destroy
     end
