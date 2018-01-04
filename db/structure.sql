@@ -225,7 +225,7 @@ CREATE TABLE goals (
     balance numeric(10,2) DEFAULT 0 NOT NULL,
     xref_goal_type_id integer,
     savings_account_identifier character varying,
-    savings_acct_balance numeric(10,2)
+    savings_acct_balance numeric(10,2) DEFAULT 0
 );
 
 
@@ -1058,6 +1058,13 @@ CREATE INDEX index_offers_on_financial_institution_id ON offers USING btree (fin
 
 
 --
+-- Name: index_offers_on_product_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_offers_on_product_id ON offers USING btree (product_id);
+
+
+--
 -- Name: index_offers_on_xref_goal_type_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1303,6 +1310,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180101205327'),
 ('20180103024953'),
 ('20180103025133'),
-('20180103025137');
+('20180103025137'),
+('20180104051629'),
+('20180104051827');
 
 
