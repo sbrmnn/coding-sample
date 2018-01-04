@@ -13,8 +13,7 @@ class Goal < ApplicationRecord
 
   belongs_to :user
   belongs_to :xref_goal_type
-  belongs_to :financial_institution, optional: true
-
+  has_one :financial_institution, through: :user
   before_save :set_default_savings_account_if_none
   before_save :set_default_savings_account_identifier_if_none
 
