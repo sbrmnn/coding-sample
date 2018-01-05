@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_many :demographics, dependent: :destroy
-  has_one :transfer, dependent: :destroy
+  has_many :transfers, dependent: :destroy
   has_many :goals, dependent: :destroy
   belongs_to :financial_institution
   has_many :messages, dependent: :destroy

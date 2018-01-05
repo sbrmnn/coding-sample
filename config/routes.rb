@@ -25,8 +25,8 @@ Rails.application.routes.draw do
         scope module: :users do
           resources :goals
           resources :offers, only: [:index, :show]
-          resources :transactions, only: [:index]
-          resource :ads, only: [:show]
+          resources :transfers, only: [:index]
+          resource  :savings_balances, only: [:show]
         end
       end
     end

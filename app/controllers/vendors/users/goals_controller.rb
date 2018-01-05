@@ -3,7 +3,7 @@ class Vendors::Users::GoalsController < Vendors::ApplicationController
   before_action :find_user_by_vendor_public_key
   
   def index
-    @goals = @user.goals
+    @goals = @user.goals.order(priority: :desc)
     json_response(@goals, :xref_goal_type)
   end
 
