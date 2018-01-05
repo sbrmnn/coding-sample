@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :demographics, dependent: :destroy
   has_many :transfers, dependent: :destroy
+  has_one :vendor, through: :financial_institution
   has_many :goals, dependent: :destroy
   belongs_to :financial_institution
   has_many :messages, dependent: :destroy
@@ -11,6 +12,10 @@ class User < ApplicationRecord
   validates_presence_of :financial_institution, :bank_user_id,
                         :default_savings_account_identifier, :checking_account_identifier
  
+  def bankjoy_user?
+     self.vendor.bankjoy?
+  end
+
   protected
 
   def verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount

@@ -13,20 +13,20 @@ class SnapshotPresenter
   
   def summary
     {
-     "financial_institution_id"=> @financial_institution.id, 
-     "average_user_balance"=> @average_user_balance, 
-     "sum_balance"=> @sum_balance, 
-     "sum_message_clicks"=> @sum_message_clicks, 
-     "total_messages"=> @total_messages, 
-     "total_num_of_goals"=> @total_num_of_goals, 
-     "total_users"=> @total_users, 
-     "last_seven_days_user_signup"=> @last_seven_days_user_signup, 
-     "total_amount_of_completed_goals"=> @total_amount_of_completed_goals, 
-     "historical_snapshot_stats" => [historical_snapshot.as_json]
+     "financial_institution_id"        => @financial_institution.id,
+     "average_user_balance"            => @average_user_balance,
+     "sum_balance"                     => @sum_balance,
+     "sum_message_clicks"              => @sum_message_clicks,
+     "total_messages"                  => @total_messages,
+     "total_num_of_goals"              => @total_num_of_goals,
+     "total_users"                     => @total_users,
+     "last_seven_days_user_signup"     => @last_seven_days_user_signup,
+     "total_amount_of_completed_goals" => @total_amount_of_completed_goals,
+     "historical_snapshot_stats"       => [historical_snapshot_stat.as_json]
     }
   end
 
-  def create_historical_record
+  def archive
     @snapshot_summary = self.summary
     ss_keys = @snapshot_summary.keys
     hs_keys = HistoricalSnapshot.new.attributes.keys
@@ -37,9 +37,7 @@ class SnapshotPresenter
     HistoricalSnapshot.new(@snapshot_summary).save
   end
 
-  protected
-
-  def historical_snapshot
+  def historical_snapshot_stat
     HistoricalSnapshotStat.find_by(financial_institution_id: @financial_institution.id)
   end
 

@@ -1002,6 +1002,13 @@ CREATE INDEX index_demographics_on_user_id ON demographics USING btree (user_id)
 
 
 --
+-- Name: index_financial_institutions_on_vendor_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_financial_institutions_on_vendor_id ON financial_institutions USING btree (vendor_id);
+
+
+--
 -- Name: index_goals_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1314,6 +1321,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180104051629'),
 ('20180104051827'),
 ('20180105160340'),
-('20180105171903');
+('20180105171903'),
+('20180105212035');
 
 

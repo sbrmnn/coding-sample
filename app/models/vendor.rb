@@ -5,6 +5,11 @@ class Vendor < ApplicationRecord
     before_save :create_public_key
     validates_presence_of :name, :location
     validates_uniqueness_of :email
+
+    def bankjoy?
+      self.name.downcase == 'bankjoy'
+    end
+
     protected
 
     def create_public_key

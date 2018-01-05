@@ -29,7 +29,7 @@ class FinancialInstitution < ApplicationRecord
 
   def create_historical_snapshot_if_none
     if self.historical_snapshots.blank?
-      @snapshot_summary = SnapshotPresenter.new(self.id).create_historical_record
+      @snapshot_summary = SnapshotPresenter.new(self.id).archive
     end
   end
 
