@@ -225,7 +225,7 @@ CREATE TABLE goals (
     balance numeric(10,2) DEFAULT 0 NOT NULL,
     xref_goal_type_id integer,
     savings_account_identifier character varying,
-    savings_acct_balance numeric(10,2) DEFAULT 0
+    savings_acct_balance numeric(10,2) DEFAULT 0 NOT NULL
 );
 
 
@@ -1312,6 +1312,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180103025133'),
 ('20180103025137'),
 ('20180104051629'),
-('20180104051827');
+('20180104051827'),
+('20180105160340');
 
 
