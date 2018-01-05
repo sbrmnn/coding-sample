@@ -26,7 +26,7 @@ Rails.application.routes.draw do
           resources :goals
           resources :offers, only: [:index, :show]
           resources :transfers, only: [:index]
-          resource  :savings_balances, only: [:show]
+          resource  :balances, only: [:show]
         end
       end
     end
