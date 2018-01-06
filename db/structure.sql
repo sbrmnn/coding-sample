@@ -1128,6 +1128,13 @@ CREATE UNIQUE INDEX index_vendors_on_email ON vendors USING btree (email);
 
 
 --
+-- Name: index_vendors_on_public_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_vendors_on_public_key ON vendors USING btree (public_key);
+
+
+--
 -- Name: index_vendors_on_token_and_token_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1322,6 +1329,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180104051827'),
 ('20180105160340'),
 ('20180105171903'),
-('20180105212035');
+('20180105212035'),
+('20180106161603');
 
 
