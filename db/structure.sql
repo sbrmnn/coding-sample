@@ -679,6 +679,20 @@ ALTER SEQUENCE vendors_id_seq OWNED BY vendors.id;
 
 
 --
+-- Name: view_vendor_users; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW view_vendor_users AS
+ SELECT v.name,
+    u.financial_institution_id,
+    u.id AS user_id
+   FROM vendors v,
+    financial_institutions f,
+    users u
+  WHERE ((v.id = f.vendor_id) AND (f.id = u.financial_institution_id));
+
+
+--
 -- Name: xref_goal_types; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1330,6 +1344,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180105160340'),
 ('20180105171903'),
 ('20180105212035'),
-('20180106161603');
+('20180106161603'),
+('20180106191258');
 
 

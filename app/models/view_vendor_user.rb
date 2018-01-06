@@ -1,0 +1,2 @@
+class ViewVendorUser < ApplicationRecord
+end
