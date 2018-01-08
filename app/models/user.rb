@@ -11,12 +11,21 @@ class User < ApplicationRecord
   validates :max_transfer_amount, numericality: { greater_than_or_equal_to: 0}
   validates_presence_of :financial_institution, :bank_user_id,
                         :default_savings_account_identifier, :checking_account_identifier
- 
-  def bankjoy_user?
-     self.vendor.bankjoy?
+  
+  validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id, :vendor]
+  validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present?}
+  
+  def bankjoy?
+    vendor.try(:bankjoy?).present?
   end
 
   protected
+
+  def ensure_one_bank_user_id_per_vendor
+    if vendor.users(bank_user_id: self.bank_user_id).present?
+      errors.add(:bank_user_id, 'already exists for another user.')
+    end
+  end
 
   def verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
     if self.max_transfer_amount.present?
