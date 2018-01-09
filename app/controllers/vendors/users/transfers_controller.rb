@@ -3,7 +3,7 @@ class Vendors::Users::TransfersController < Vendors::ApplicationController
   before_action :find_user_by_vendor_public_key
 
   def index
-    @transfers = @user.transfers.order(end_date: :desc).where(status: 'successful').limit(15)
+    @transfers = @user.transfers.order(created_at: :desc).where(status: :successful).limit(15)
     json_response(@transfers)
   end
 end
