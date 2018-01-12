@@ -1,16 +1,16 @@
 class Offer < ApplicationRecord
   attr_accessor :ad_name, :product_name, :xref_goal_name
   before_validation :downcase_columns
-  validates_presence_of :product_name, if: lambda { self.product_id.blank? }
-  validates_presence_of :ad_name, if: lambda { self.ad_id.blank? }
-  validates_presence_of :xref_goal_name, if: lambda { self.xref_goal_type_id.blank? }
-  validates :value, numericality: {less_than_or_equal_to: 100}, if: lambda { self.condition == 'percentage_complete' }
+  validates_presence_of :product_name, if: lambda { product_id.blank? }
+  validates_presence_of :ad_name, if: lambda { ad_id.blank? }
+  validates_presence_of :xref_goal_name, if: lambda { xref_goal_type_id.blank? }
+  validates :value, numericality: {less_than_or_equal_to: 100}, if: lambda { condition == 'percentage_complete' }
   validates :value, numericality: {greater_than_or_equal_to: 0}
   has_one :offer_summary
   validate :validate_ad
   validate :validate_product
   validate :validate_xref_goal_name
-
+  after_update :remove_messages, if: lambda {condition_changed? || symbol_changed? || value_changed?}
   validates_presence_of :value
 
   validates :symbol,
@@ -30,6 +30,10 @@ class Offer < ApplicationRecord
 
 
   protected 
+
+  def remove_messages
+    self.messages.destroy_all
+  end
 
   def downcase_columns
     self.condition = condition.try(:parameterize).try(:underscore)

@@ -17,21 +17,12 @@ class Goal < ApplicationRecord
   before_save :set_default_savings_account_identifier_if_none
   before_save :rearrange_priority, if: lambda {priority_changed? && skip_callback.blank?}
 
-  after_destroy { |record|
-     goals = Goal.where("user_id = ? and priority >= ?", record.user_id, record.priority).order("priority ASC")
-     ActiveRecord::Base.transaction do
-      goals.each do |goal|
-        goal.priority -=1
-        goal.skip_callback = true
-        goal.save
-      end
-     end
-  }
+  after_destroy { |record| rearrange_priority_on_destroy(record.user_id, record.priority)}
 
   protected
 
 
-  def rearrange_priority
+  def rearrange_priority_on_create
     if Goal.where(priority: priority, user_id: user_id).any?
       goals = Goal.where("user_id = ? and priority >= ?", user_id, priority).order("priority DESC")
       ActiveRecord::Base.transaction do
@@ -40,6 +31,17 @@ class Goal < ApplicationRecord
           goal.skip_callback = true
           goal.save
         end
+      end
+    end
+  end
+
+  def rearrange_priority_on_destroy(user_id, priority)
+    goals = Goal.where("user_id = ? and priority >= ?", record.user_id, record.priority).order("priority ASC")
+    ActiveRecord::Base.transaction do
+      goals.each do |goal|
+        goal.priority -=1
+        goal.skip_callback = true
+        goal.save
       end
     end
   end
