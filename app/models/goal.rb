@@ -36,7 +36,7 @@ class Goal < ApplicationRecord
   end
 
   def rearrange_priority_on_destroy(user_id, priority)
-    goals = Goal.where("user_id = ? and priority >= ?", record.user_id, record.priority).order("priority ASC")
+    goals = Goal.where("user_id = ? and priority >= ?", user_id, priority).order("priority ASC")
     ActiveRecord::Base.transaction do
       goals.each do |goal|
         goal.priority -=1
