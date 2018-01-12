@@ -5,11 +5,11 @@ class Vendors::Users::OffersController < Vendors::ApplicationController
   def index
     @offer_ids = @user.messages.where(message_obj_type: "Offer").order('created_at DESC').limit(15).pluck(:message_obj_id)
     @offers = Offer.where(id: @offer_ids) if @offer_ids.present?
-    json_response(@offers, :ad)
+    json_response(@offers, [:ad, :xref_goal_type])
   end
 
   def show
     @offer = @user.messages.find_by(message_obj_type: "Offer", message_obj_id: params[:id]).try(:message_obj)
-    json_response(@offer, :ad)
+    json_response(@offer, [:ad, :xref_goal_type])
   end
 end
