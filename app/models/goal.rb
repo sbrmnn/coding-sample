@@ -17,6 +17,17 @@ class Goal < ApplicationRecord
   before_save :set_default_savings_account_identifier_if_none
   before_save :rearrange_priority, if: lambda {priority_changed? && skip_callback.blank?}
 
+  after_destroy { |record|
+     goals = Goal.where("user_id = ? and priority >= ?", record.user_id, record.priority).order("priority ASC")
+     ActiveRecord::Base.transaction do
+      goals.each do |goal|
+        goal.priority -=1
+        goal.skip_callback = true
+        goal.save
+      end
+     end
+  }
+
   protected
 
 
