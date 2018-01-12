@@ -15,7 +15,7 @@ class Goal < ApplicationRecord
   has_one :financial_institution, through: :user
   before_save :set_default_savings_account_if_none
   before_save :set_default_savings_account_identifier_if_none
-  before_save :rearrange_priority, if: lambda {priority_changed? && skip_callback.blank?}
+  before_save :rearrange_priority_on_create, if: lambda {priority_changed? && skip_callback.blank?}
 
   after_destroy { |record| rearrange_priority_on_destroy(record.user_id, record.priority)}
 
@@ -45,7 +45,6 @@ class Goal < ApplicationRecord
       end
     end
   end
-
 
   def set_default_savings_account_identifier_if_none
     if self.savings_account_identifier.blank?
