@@ -1,11 +1,11 @@
 class SnapshotPresenter
   def initialize(financial_institution_id)
     @financial_institution = FinancialInstitution.find(financial_institution_id)
-    @average_user_balance  = @financial_institution.transfers.where(status: :successful).average(:amount) || 0
     @sum_balance           = @financial_institution.transfers.where(status: :successful).sum(:amount)
     @sum_message_clicks    = @financial_institution.messages.sum(:clicks)
     @total_messages        = @financial_institution.messages.count
     @total_users           = @financial_institution.users.count
+    @average_user_balance  = @sum_balance.to_f/@total_users.to_f
     @total_num_of_goals    = @financial_institution.goals.count
     @last_seven_days_user_signup     = @financial_institution.users.where("created_at>'#{7.days.ago}'").count
     @total_amount_of_completed_goals = GoalStatistic.where(goal_id: @financial_institution.goals.pluck(:id)).where("percent_saved >= 100").count
