@@ -3,8 +3,8 @@ class Vendors::Users::OffersController < Vendors::ApplicationController
   before_action :find_user_by_vendor_public_key
   
   def index
-    @offer_ids = @user.messages.where(message_obj_type: "Offer").order('created_at DESC').limit(15).pluck(:message_obj_id)
-    @offers = Offer.where(id: @offer_ids) if @offer_ids.present?
+    @offer_ids = @user.messages.where(message_obj_type: "Offer").limit(15).pluck(:message_obj_id)
+    @offers = Offer.where(id: @offer_ids).order(created_at: :desc) if @offer_ids.present?
     json_response(@offers, [:ad, :xref_goal_type])
   end
 
