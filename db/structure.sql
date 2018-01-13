@@ -260,6 +260,57 @@ ALTER SEQUENCE goals_id_seq OWNED BY goals.id;
 
 
 --
+-- Name: transfers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE transfers (
+    id bigint NOT NULL,
+    user_id integer NOT NULL,
+    origin_account character varying NOT NULL,
+    destination_account character varying NOT NULL,
+    amount numeric(10,2) DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    transfer_amount_attempted numeric(10,2),
+    next_transfer_date date,
+    status status,
+    end_date timestamp without time zone
+);
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE users (
+    id integer NOT NULL,
+    financial_institution_id integer NOT NULL,
+    bank_user_id character varying NOT NULL,
+    default_savings_account_identifier character varying NOT NULL,
+    checking_account_identifier character varying NOT NULL,
+    transfers_active boolean DEFAULT true,
+    safety_net_active boolean DEFAULT true,
+    max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: historical_snapshot_stats; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW historical_snapshot_stats AS
+ SELECT financial_institutions.id AS financial_institution_id,
+    sum(transfers.amount) AS thirty_day_savings
+   FROM ((financial_institutions
+     LEFT JOIN users ON ((users.financial_institution_id = financial_institutions.id)))
+     LEFT JOIN transfers ON ((transfers.user_id = users.id)))
+  WHERE ((transfers.status = 'successful'::status) AND (transfers.end_date < now()))
+  GROUP BY financial_institutions.id;
+
+
+--
 -- Name: historical_snapshots; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -278,18 +329,6 @@ CREATE TABLE historical_snapshots (
     last_seven_days_user_signup integer DEFAULT 0,
     total_amount_of_completed_goals integer DEFAULT 0
 );
-
-
---
--- Name: historical_snapshot_stats; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW historical_snapshot_stats AS
- SELECT financial_institutions.id AS financial_institution_id,
-    COALESCE((max(hs.sum_balance) - min(hs.sum_balance)), (0)::numeric) AS thirty_day_savings
-   FROM (financial_institutions
-     LEFT JOIN historical_snapshots hs ON (((hs.financial_institution_id = financial_institutions.id) AND (hs.created_at > ((now())::date - 31)))))
-  GROUP BY financial_institutions.id;
 
 
 --
@@ -477,25 +516,6 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: transfers; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE transfers (
-    id bigint NOT NULL,
-    user_id integer NOT NULL,
-    origin_account character varying NOT NULL,
-    destination_account character varying NOT NULL,
-    amount numeric(10,2) DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    transfer_amount_attempted numeric(10,2),
-    next_transfer_date date,
-    status status,
-    end_date timestamp without time zone
-);
-
-
---
 -- Name: time_until_completions; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -595,24 +615,6 @@ CREATE SEQUENCE transfers_id_seq
 --
 
 ALTER SEQUENCE transfers_id_seq OWNED BY transfers.id;
-
-
---
--- Name: users; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE users (
-    id integer NOT NULL,
-    financial_institution_id integer NOT NULL,
-    bank_user_id character varying NOT NULL,
-    default_savings_account_identifier character varying NOT NULL,
-    checking_account_identifier character varying NOT NULL,
-    transfers_active boolean DEFAULT true,
-    safety_net_active boolean DEFAULT true,
-    max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
 
 
 --
@@ -1345,6 +1347,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180105171903'),
 ('20180105212035'),
 ('20180106161603'),
-('20180106191258');
+('20180106191258'),
+('20180113001725');
 
 
