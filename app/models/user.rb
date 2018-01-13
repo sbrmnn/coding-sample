@@ -12,7 +12,7 @@ class User < ApplicationRecord
   validates_presence_of :financial_institution, :bank_user_id,
                         :default_savings_account_identifier, :checking_account_identifier
   
-  validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id, :vendor]
+  validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id]
   validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present?}
   
   def bankjoy?

@@ -38,7 +38,7 @@ class SnapshotPresenter
   end
 
   def historical_snapshot_stat
-    HistoricalSnapshotStat.find_by(financial_institution_id: @financial_institution.id)
+    HistoricalSnapshotStat.find_by(financial_institution_id: @financial_institution.id) || {"financial_institution_id"=>@financial_institution.id, "thirty_day_savings"=> 0}
   end
 
 end
