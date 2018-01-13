@@ -1,7 +1,7 @@
 class SnapshotPresenter
   def initialize(financial_institution_id)
     @financial_institution = FinancialInstitution.find(financial_institution_id)
-    @average_user_balance  = @financial_institution.transfers.average(:balance) || 0
+    @average_user_balance  = @financial_institution.transfers.where(status: :successful).average(:amount) || 0
     @sum_balance           = @financial_institution.transfers.where(status: :successful).sum(:amount)
     @sum_message_clicks    = @financial_institution.messages.sum(:clicks)
     @total_messages        = @financial_institution.messages.count
