@@ -11,6 +11,7 @@ class Offer < ApplicationRecord
   validate :validate_product
   validate :validate_xref_goal_name
   after_update :remove_messages, if: lambda {condition_changed? || symbol_changed? || value_changed?}
+  before_destroy :remove_messages
   validates_presence_of :value
 
   validates :symbol,
