@@ -22,7 +22,7 @@ class User < ApplicationRecord
   protected
 
   def ensure_one_bank_user_id_per_vendor
-    if vendor.users(bank_user_id: self.bank_user_id).present?
+    if vendor.users.find_by(bank_user_id: self.bank_user_id).present?
       errors.add(:bank_user_id, 'already exists for another user.')
     end
   end
