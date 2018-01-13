@@ -15,6 +15,8 @@ gem "fog-aws"
 
 gem 'bulk_insert'
 
+gem "paranoia", "~> 2.2"
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.1'
  

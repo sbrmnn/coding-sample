@@ -7,6 +7,7 @@ class FinancialInstitution < ApplicationRecord
   has_many :xref_goal_types, dependent: :destroy
   has_many :goals, through: :users 
   has_many :historical_snapshots, dependent: :destroy
+  has_many :transfers, through: :users , dependent: :destroy
   has_many :messages, through: :users 
   has_many :historical_snapshots
   has_one :snapshot_summary
