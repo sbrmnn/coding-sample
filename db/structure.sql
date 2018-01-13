@@ -302,7 +302,7 @@ CREATE TABLE users (
 
 CREATE VIEW historical_snapshot_stats AS
  SELECT financial_institutions.id AS financial_institution_id,
-    sum(transfers.amount) AS thirty_day_savings
+    COALESCE(sum(transfers.amount), (0)::numeric) AS thirty_day_savings
    FROM ((financial_institutions
      LEFT JOIN users ON ((users.financial_institution_id = financial_institutions.id)))
      LEFT JOIN transfers ON ((transfers.user_id = users.id)))
@@ -1348,6 +1348,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180105212035'),
 ('20180106161603'),
 ('20180106191258'),
-('20180113001725');
+('20180113001725'),
+('20180113004329');
 
 
