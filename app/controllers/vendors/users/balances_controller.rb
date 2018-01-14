@@ -1,6 +1,6 @@
 class Vendors::Users::BalancesController < Vendors::ApplicationController
   skip_before_action :require_vendor_login
-  before_action :find_user_by_vendor_public_key
+  before_action :find_user_by_vendor_key
 
   def show
     records = @user.goals.pluck(:savings_account_identifier, :savings_acct_balance).uniq

@@ -1,6 +1,6 @@
 class Vendors::Users::GoalsController < Vendors::ApplicationController
   skip_before_action :require_vendor_login
-  before_action :find_user_by_vendor_public_key
+  before_action :find_user_by_vendor_key
   
   def index
     @goals = @user.goals.order(priority: :asc)
@@ -25,7 +25,7 @@ class Vendors::Users::GoalsController < Vendors::ApplicationController
       @goal.update_attributes(goal_params) 
     end 
     json_response(@goal, :xref_goal_type)
-   end
+  end
 
   def destroy
     @goal = @user.goals.find_by(:id=> params[:id])
