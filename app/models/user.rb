@@ -14,12 +14,22 @@ class User < ApplicationRecord
   
   validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id]
   validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present? && bank_user_id_changed?}
-  
+  before_save :generate_token_if_none
   def bankjoy?
     vendor.try(:bankjoy?).present?
   end
 
   protected
+
+  def generate_token_if_none
+    if self.token.blank?
+      token_length = 50
+      self.token = SecureRandom.urlsafe_base64(token_length)
+      while User.exists?(:token => token, financial_institution_id: financial_institution_id) # Making sure token hasn't been assigned for another vendor.
+        self.token = SecureRandom.urlsafe_base64(token_length)
+      end
+    end
+  end
 
   def ensure_one_bank_user_id_per_vendor
     if vendor.users.where.not(id: id).where(bank_user_id: bank_user_id).any?
