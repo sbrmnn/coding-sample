@@ -292,7 +292,8 @@ CREATE TABLE users (
     safety_net_active boolean DEFAULT true,
     max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    token character varying
 );
 
 
@@ -1350,6 +1351,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180106191258'),
 ('20180113001725'),
 ('20180113004329'),
-('20180114022621');
+('20180114022621'),
+('20180115000934');
 
 
