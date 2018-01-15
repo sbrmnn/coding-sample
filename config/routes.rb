@@ -21,7 +21,7 @@ Rails.application.routes.draw do
           resources :users, only: :create
         end
       end
-      resources :users, param: :bank_user_id, only: [:index] do
+      resources :users, param: :bank_user_id, only: [:index, :show, :update] do
         scope module: :users do
           resources :goals
           resources :offers, only: [:index, :show] do

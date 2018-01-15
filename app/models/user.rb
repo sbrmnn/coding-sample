@@ -13,7 +13,7 @@ class User < ApplicationRecord
                         :default_savings_account_identifier, :checking_account_identifier
   
   validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id]
-  validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present?}
+  validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present? && bank_user_id_changed?}
   
   def bankjoy?
     vendor.try(:bankjoy?).present?
@@ -22,7 +22,7 @@ class User < ApplicationRecord
   protected
 
   def ensure_one_bank_user_id_per_vendor
-    if vendor.users.find_by(bank_user_id: self.bank_user_id).present?
+    if vendor.users.where.not(id: id).where(bank_user_id: bank_user_id).any?
       errors.add(:bank_user_id, 'already exists for another user.')
     end
   end

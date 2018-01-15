@@ -14,7 +14,7 @@ class Vendor < ApplicationRecord
 
     def create_key
       if self.key.blank?
-        token_length = 25
+        token_length = 50
         token = SecureRandom.urlsafe_base64(token_length)
         while Vendor.exists?(:key => token) # Making sure token hasn't been assigned for another vendor.
           token = SecureRandom.urlsafe_base64(token_length)
