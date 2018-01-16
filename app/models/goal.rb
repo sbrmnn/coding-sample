@@ -23,11 +23,12 @@ class Goal < ApplicationRecord
 
 
   def rearrange_priority_on_save
-    if Goal.where(priority: priority, user_id: user_id).any?
-      goals = Goal.where("user_id= ? and id!= ?", user_id, id).order(:priority).map{|g| g}
-      goals.map{|goal| goal.update_attribute(:priority, 1000 * goal.priority)}
+    all_user_goals = Goal.where(user_id: user_id)
+    if all_user_goals.where(priority: priority).any?
       index_num = priority - 1
       ActiveRecord::Base.transaction do
+        all_user_goals.map{|goal| goal.update_attribute(:priority, 1000 * goal.priority)}
+        goals = Goal.where("user_id= ? and id!= ?", user_id, id).order(:priority).map{|g| g}
         goals[index_num] = self
         goals.compact!
         counter = goals.count
