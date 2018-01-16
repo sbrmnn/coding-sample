@@ -27,6 +27,7 @@ class Goal < ApplicationRecord
       goals = Goal.where("user_id= ? and id!= ?", user_id, id).order(:priority).map{|g| g}
       index_num = priority - 1
       ActiveRecord::Base.transaction do
+        goals.map{|goal| goal.update_attribute(:priority, 1000 * goal.priority)}
         goals[index_num] = self
         goals.compact!
         counter = goals.count
