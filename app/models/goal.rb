@@ -27,8 +27,11 @@ class Goal < ApplicationRecord
     if all_user_goals.where(priority: priority).any?
       index_num = priority - 1
       ActiveRecord::Base.transaction do
-        all_user_goals.map{|goal| goal.skip_callback = true; goal.update_attribute(:priority, 1000 * goal.priority)}
-        goals = Goal.where("user_id= ? and id!=?", user_id, id).order(:priority).map{|g| g}
+        all_user_goals.each do |goal|
+          goal.skip_callback = true
+          goal.update_attribute(:priority, 1000 * goal.priority)
+        end
+        goals = Goal.where(user_id: user_id).where.not(id: id).order(:priority).map{|g| g}
         goals.insert(index_num, self)
         goals.compact!
         counter = 1
