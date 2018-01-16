@@ -29,13 +29,13 @@ class Goal < ApplicationRecord
       ActiveRecord::Base.transaction do
         all_user_goals.map{|goal| goal.skip_callback = true; goal.update_attribute(:priority, 1000 * goal.priority)}
         goals = Goal.where("user_id= ? and id!=?", user_id, id).order(:priority).map{|g| g}
-        goals[index_num] = self
+        goals.insert(index_num, self)
         goals.compact!
         counter = 1
         goals.each do |goal|
           goal.priority = counter
           goal.skip_callback = true
-          goal.save unless goal == self
+          goal.save
           counter = counter + 1
         end
       end
