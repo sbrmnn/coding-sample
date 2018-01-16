@@ -29,6 +29,18 @@ class Offer < ApplicationRecord
 
   has_many :messages, as: :message_obj
 
+  def user_qualifies?(user_id)
+    if condition == "percentage_complete"
+      sql_statement = "percent_saved #{symbol} #{value} and xref_goal_type_id = #{self.xref_goal_type_id}"
+      Goal.joins(:goal_statistic).where(sql_statement).where(user_id: user_id).any?
+    elsif condition == "time_until_completion"
+      sql_statement = "days_until_completion #{symbol} #{value}"
+      TimeUntilCompletion.where(sql_statement).where(xref_goal_type_id: xref_goal_type_id, user_id: user_id).any?
+    else
+      sql_statement = "#{condition} #{symbol} #{value} and xref_goal_type_id = #{self.xref_goal_type_id}"
+      Goal.where(sql_statement).where(user_id: user_id).any?
+    end
+  end
 
   protected 
 
