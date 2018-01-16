@@ -31,7 +31,7 @@ class Goal < ApplicationRecord
         goals = Goal.where("user_id= ? and id!=?", user_id, id).order(:priority).map{|g| g}
         goals[index_num] = self
         goals.compact!
-        counter = goals.count
+        counter = 1
         goals.each do |goal|
           goal.priority = counter
           goal.skip_callback = true
