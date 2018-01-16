@@ -15,14 +15,14 @@ class Goal < ApplicationRecord
   has_one :financial_institution, through: :user
   before_save :set_default_savings_account_if_none
   before_save :set_default_savings_account_identifier_if_none
-  before_save :rearrange_priority_on_create, if: lambda {priority_changed? && skip_callback.blank?}
+  before_save :rearrange_priority_on_save, if: lambda {priority_changed? && skip_callback.blank?}
 
   after_destroy { |record| rearrange_priority_on_destroy(record.user_id, record.priority)}
 
   protected
 
 
-  def rearrange_priority_on_create
+  def rearrange_priority_on_save
     if Goal.where(priority: priority, user_id: user_id).any?
       goals = Goal.where("user_id= ? and id!= ?", user_id, id).order(:priority).map{|g| g}
       index_num = priority - 1
