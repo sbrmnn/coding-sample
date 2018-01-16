@@ -24,12 +24,17 @@ class Goal < ApplicationRecord
 
   def rearrange_priority_on_create
     if Goal.where(priority: priority, user_id: user_id).any?
-      goals = Goal.where("user_id = ? and priority >= ?", user_id, priority).order("priority DESC")
+      goals = Goal.where("user_id= ? and id!= ?", user_id, id).order(:priority).map{|g| g}
+      index_num = priority - 1
       ActiveRecord::Base.transaction do
+        goals[index_num] = self
+        goals.compact!
+        counter = 1
         goals.each do |goal|
-          goal.priority +=1
+          goal.priority = counter
           goal.skip_callback = true
-          goal.save
+          goal.save unless goal == self
+          counter = counter + 1
         end
       end
     end
