@@ -10,8 +10,8 @@ end
 def send_offers_with_balance_condition
   Offer.where(condition: :balance).all.each do |offer|
     user_ids_who_havent_been_sent_offer = offer.financial_institution.users.pluck(:id) - offer.messages.pluck(:user_id)
-    condition = "balance #{offer.symbol} #{offer.value}"
-    user_ids = Goal.select(:user_id).distinct.where(condition).where(user_id: user_ids_who_havent_been_sent_offer).pluck(:user_id)
+    condition = "balance #{offer.symbol} #{offer.value} and xref_goal_type_id=#{offer.xref_goal_type_id}"
+    user_ids = Goal.where(condition).where(user_id: user_ids_who_havent_been_sent_offer).pluck(:user_id).uniq
     user_ids.each do |user_id| 
       offer.messages.create(user_id: user_id)
     end
@@ -22,8 +22,8 @@ end
 def send_offers_with_percentage_complete
   Offer.where(condition: :percentage_complete).all.each do |offer|
     user_ids_who_havent_been_sent_offer = offer.financial_institution.users.pluck(:id) - offer.messages.pluck(:user_id)
-    condition = "percent_saved #{offer.symbol} #{offer.value}"
-    user_ids = Goal.select(:user_id).distinct.joins(:goal_statistic).where(condition).where(user_id: user_ids_who_havent_been_sent_offer).pluck(:user_id)
+    condition = "percent_saved #{offer.symbol} #{offer.value} and offers.xref_goal_type_id=#{offer.xref_goal_type_id}"
+    user_ids = Goal.joins(:goal_statistic).where(condition).where(user_id: user_ids_who_havent_been_sent_offer).pluck(:user_id).uniq
     user_ids.each do |user_id|
       offer.messages.create(user_id: user_id)
     end
@@ -33,8 +33,8 @@ end
 def send_offers_with_time_until_completion
   Offer.where(condition: :time_until_completion).all.each do |offer|
     user_ids_who_havent_been_sent_offer = offer.financial_institution.users.pluck(:id) - offer.messages.pluck(:user_id)
-    condition = "days_until_completion #{offer.symbol} #{offer.value}"
-    user_ids  = TimeUntilCompletion.select("DISTINCT(user_id)").where(condition).where(user_id: user_ids_who_havent_been_sent_offer).pluck(:user_id)
+    condition = "days_until_completion #{offer.symbol} #{offer.value} and xref_goal_type_id=#{offer.xref_goal_type_id}"
+    user_ids  = TimeUntilCompletion.where(condition).where(user_id: user_ids_who_havent_been_sent_offer).pluck(:user_id).uniq
     user_ids.each do |user_id|
       offer.messages.create(user_id: user_id)
     end
