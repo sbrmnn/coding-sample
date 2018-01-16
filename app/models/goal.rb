@@ -29,12 +29,12 @@ class Goal < ApplicationRecord
       ActiveRecord::Base.transaction do
         goals[index_num] = self
         goals.compact!
-        counter = 1
-        goals.each do |goal|
+        counter = goals.count
+        goals.reverse.each do |goal|
           goal.priority = counter
           goal.skip_callback = true
           goal.save unless goal == self
-          counter = counter + 1
+          counter = counter - 1
         end
       end
     end
