@@ -22,7 +22,7 @@ end
 def send_offers_with_percentage_complete
   Offer.where(condition: :percentage_complete).all.each do |offer|
     user_ids_who_havent_been_sent_offer = offer.financial_institution.users.pluck(:id) - offer.messages.pluck(:user_id)
-    condition = "percent_saved #{offer.symbol} #{offer.value} and offers.xref_goal_type_id=#{offer.xref_goal_type_id}"
+    condition = "percent_saved #{offer.symbol} #{offer.value} and goals.xref_goal_type_id = #{offer.xref_goal_type_id}"
     user_ids = Goal.joins(:goal_statistic).where(condition).where(user_id: user_ids_who_havent_been_sent_offer).pluck(:user_id).uniq
     user_ids.each do |user_id|
       offer.messages.create(user_id: user_id)
