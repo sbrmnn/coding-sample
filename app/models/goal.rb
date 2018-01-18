@@ -1,5 +1,5 @@
 class Goal < ApplicationRecord
-  attr_accessor :xref_goal_name, :skip_callback
+  attr_accessor :xref_goal_name, :no_callback
   validates_presence_of :xref_goal_name, if: lambda {xref_goal_type_id.blank? }
   validate :validate_xref_goal_name, if: lambda {financial_institution.present?}
   validates_presence_of :user
@@ -15,7 +15,7 @@ class Goal < ApplicationRecord
   has_one :financial_institution, through: :user
   before_save :set_default_savings_account_if_none
   before_save :set_default_savings_account_identifier_if_none
-  before_save :rearrange_priority_on_save, if: lambda {priority_changed? && skip_callback.blank?}
+  before_save :rearrange_priority_on_save, if: lambda {priority_changed? && no_callback.blank?}
 
   after_destroy { |record| rearrange_priority_on_destroy(record.user_id, record.priority)}
 
@@ -27,8 +27,11 @@ class Goal < ApplicationRecord
     if all_user_goals.where(priority: priority).any?
       index_num = priority - 1
       ActiveRecord::Base.transaction do
+        # This code temporarily updates the priorities as a work around
+        # to make sure we don't run into database errors when recalculating
+        # and saving priorities for existing goals.
         all_user_goals.each do |goal|
-          goal.skip_callback = true
+          goal.no_callback = true
           goal.update_attribute(:priority, 1000 * goal.priority)
         end
         goals = Goal.where(user_id: user_id).where.not(id: id).order(:priority).map{|g| g}
@@ -37,7 +40,7 @@ class Goal < ApplicationRecord
         counter = 1
         goals.each do |goal|
           goal.priority = counter
-          goal.skip_callback = true
+          goal.no_callback = true
           goal.save
           counter = counter + 1
         end
@@ -50,7 +53,7 @@ class Goal < ApplicationRecord
     ActiveRecord::Base.transaction do
       goals.each do |goal|
         goal.priority -=1
-        goal.skip_callback = true
+        goal.no_callback = true
         goal.save
       end
     end
@@ -78,5 +81,4 @@ class Goal < ApplicationRecord
       end
     end
   end
-
 end
