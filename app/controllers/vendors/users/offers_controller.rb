@@ -12,4 +12,21 @@ class Vendors::Users::OffersController < Vendors::ApplicationController
     @offer = @user.messages.find_by(message_obj_type: "Offer", message_obj_id: params[:id]).try(:message_obj)
     json_response(@offer, [:ad, :xref_goal_type])
   end
+
+  def update
+    @offer= @user.messages.find_by(message_obj_id: params[:offer_id], message_obj_type: :Offer)
+    if @offer
+      @offer.update_attributes(offers)
+    end
+  end
+
+  protected
+
+  def offers
+    if params[:offers].blank?
+    {}
+    else
+     params.require(:offers).permit(:click)
+    end
+  end
 end
