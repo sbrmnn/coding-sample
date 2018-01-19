@@ -39,6 +39,6 @@ module Monotto
     # the schema format from raw sql.
     config.active_record.schema_format = :sql
 
-    config.eager_load_paths << Rails.root.join('app')
+    config.eager_load_paths << Rails.root.join('app/*')
   end
 end

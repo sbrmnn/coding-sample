@@ -1,5 +1,5 @@
 class BankAdmin < ApplicationRecord
-  include ModelAuthenticatable
+  include Loginable
   has_many :users,                through: :financial_institution
   has_many :offers,               through: :financial_institution
   has_many :products,             through: :financial_institution

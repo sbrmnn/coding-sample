@@ -1,6 +1,6 @@
 class Vendors::UsersController < Vendors::ApplicationController
   skip_before_action :require_vendor_login
-  before_action :find_user_by_vendor_key 
+  before_action :find_user_by_vendor_key
 
   def index
     @users = current_vendor.users

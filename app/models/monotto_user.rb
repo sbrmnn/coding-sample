@@ -1,4 +1,4 @@
 class MonottoUser < ApplicationRecord
-  include ModelAuthenticatable
+  include Loginable
   validates_presence_of :email
 end

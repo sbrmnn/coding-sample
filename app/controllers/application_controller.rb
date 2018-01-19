@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
-  include ControllerAuthenticatable
+  include Authenticatable
   include Response
   before_action :set_cache_headers
 

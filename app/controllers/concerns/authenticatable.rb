@@ -1,4 +1,4 @@
-module ControllerAuthenticatable
+module Authenticatable
   extend ActiveSupport::Concern
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include Response

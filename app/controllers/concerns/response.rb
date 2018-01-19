@@ -16,8 +16,8 @@ module Response
       object = { errors: record.errors}
       status = :unprocessable_entity
     else
-      status = :ok
       object = record
+      status = :ok
     end
     render json: object.to_json(:include => assoc), status: status
   end
