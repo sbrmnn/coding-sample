@@ -1,4 +1,4 @@
-module Response
+module Respondable
   extend ActiveSupport::Concern
   
   protected

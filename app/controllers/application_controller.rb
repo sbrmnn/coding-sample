@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
   include Authenticatable
-  include Response
+  include Respondable
   before_action :set_cache_headers
 
   private

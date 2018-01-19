@@ -1,7 +1,7 @@
 module Authenticatable
   extend ActiveSupport::Concern
   include ActionController::HttpAuthentication::Token::ControllerMethods
-  include Response
+  include Respondable
 
   TOKEN_EXPIRATION = 24.hours.ago
 
