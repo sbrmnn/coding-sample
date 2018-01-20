@@ -8,7 +8,7 @@ class AwsLambdaService
   end
 
   def call
-    lambda_object.invoke(function_name: @function_name)
+    lambda_object.invoke(function_name: @function_name, invocation_type: "RequestResponse")
   end
 
   private
@@ -25,3 +25,5 @@ class AwsLambdaService
     }.compact!
   end
 end
+
+
