@@ -6,7 +6,7 @@ class Vendor < ApplicationRecord
   validates_presence_of :name, :location
   validates_uniqueness_of :email
 
-  def bankjoy?
+  def bankjoy_vendor?
     self.name.try(:downcase) == 'bankjoy' || self.name.try(:downcase) == 'bank joy'
   end
 

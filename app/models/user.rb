@@ -15,8 +15,9 @@ class User < ApplicationRecord
   validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id]
   validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present? && bank_user_id_changed?}
   before_save :generate_token_if_none
-  def bankjoy?
-    vendor.try(:bankjoy?).present?
+  
+  def bankjoy_user?
+    vendor.try(:bankjoy_vendor?).present?
   end
 
   protected
