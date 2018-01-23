@@ -5,13 +5,26 @@ class AwsLambdaService
     @region = region
     @access_key_id = access_key_id
     @secret_access_key = secret_access_key
+    @payload = payload
   end
 
-  def call
-    lambda_object.invoke(function_name: @function_name, invocation_type: "RequestResponse")
+  def response
+    resp_payload = JSON.parse(call.payload.string)   
   end
 
   private
+
+  def call
+    lambda_object.invoke(arguments)
+  end
+
+  def arguments
+    @arguments ||= {
+      function_name: @function_name,
+      payload: JSON.generate(@payload),
+      invocation_type: "RequestResponse"
+    }.compact
+  end
 
   def lambda_object
     @lambda_object ||= Aws::Lambda::Client.new(lambda_creds)
@@ -22,7 +35,7 @@ class AwsLambdaService
       region: @region,
       access_key_id: @access_key_id,
       secret_access_key: @secret_access_key
-    }.compact!
+    }.compact
   end
 end
 

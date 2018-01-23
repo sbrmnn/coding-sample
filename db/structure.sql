@@ -83,6 +83,42 @@ ALTER SEQUENCE ads_id_seq OWNED BY ads.id;
 
 
 --
+-- Name: api_errors; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE api_errors (
+    id integer NOT NULL,
+    status character varying,
+    response character varying,
+    service character varying,
+    function character varying,
+    user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: api_errors_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE api_errors_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: api_errors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE api_errors_id_seq OWNED BY api_errors.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -750,6 +786,13 @@ ALTER TABLE ONLY ads ALTER COLUMN id SET DEFAULT nextval('ads_id_seq'::regclass)
 
 
 --
+-- Name: api_errors id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY api_errors ALTER COLUMN id SET DEFAULT nextval('api_errors_id_seq'::regclass);
+
+
+--
 -- Name: bank_admins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -853,6 +896,14 @@ ALTER TABLE ONLY xref_goal_types ALTER COLUMN id SET DEFAULT nextval('xref_goal_
 
 ALTER TABLE ONLY ads
     ADD CONSTRAINT ads_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: api_errors api_errors_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY api_errors
+    ADD CONSTRAINT api_errors_pkey PRIMARY KEY (id);
 
 
 --
@@ -988,6 +1039,13 @@ ALTER TABLE ONLY xref_goal_types
 --
 
 CREATE INDEX index_ads_on_financial_institution_id ON ads USING btree (financial_institution_id);
+
+
+--
+-- Name: index_api_errors_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_api_errors_on_user_id ON api_errors USING btree (user_id);
 
 
 --
@@ -1352,6 +1410,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180113001725'),
 ('20180113004329'),
 ('20180114022621'),
-('20180115000934');
+('20180115000934'),
+('20180120213335'),
+('20180121072949');
 
 

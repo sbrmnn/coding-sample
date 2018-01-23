@@ -15,12 +15,24 @@ class User < ApplicationRecord
   validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id]
   validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present? && bank_user_id_changed?}
   before_save :generate_token_if_none
+  has_many :api_errors
+  after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
   
   def bankjoy_user?
     vendor.try(:bankjoy_vendor?).present?
   end
 
   protected
+
+  def register_bankjoy_user
+    resp = BankJoy.register_user(checking_account_identifier)
+    if resp["Status"] == 'Failure'
+      self.api_errors << ApiError.new(status: resp["Status"], response: resp["Reason"], service: "aws_lambda", function: 'registration')
+    else
+      # Any previous errors associated with the registration should be removed if successful.
+      self.api_errors.where(service: :aws_lambda, function: :registration).destroy_all
+    end
+  end
 
   def generate_token_if_none
     if self.token.blank?

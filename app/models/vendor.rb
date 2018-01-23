@@ -7,7 +7,7 @@ class Vendor < ApplicationRecord
   validates_uniqueness_of :email
 
   def bankjoy_vendor?
-    self.name.try(:downcase) == 'bankjoy' || self.name.try(:downcase) == 'bank joy'
+    self.name.try(:downcase) == 'bankjoy'
   end
 
   protected
