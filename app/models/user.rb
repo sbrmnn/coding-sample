@@ -63,8 +63,6 @@ class User < ApplicationRecord
       if self.max_transfer_amount > financial_institution_max_transfer
         self.max_transfer_amount = financial_institution_max_transfer
       end
-    else
-      self.max_transfer_amount = 0 
     end
   end
 
