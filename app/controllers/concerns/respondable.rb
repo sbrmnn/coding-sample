@@ -25,8 +25,6 @@ module Respondable
     if record.blank?
       object = {}
       status = :not_found
-    elsif record.is_a? Hash
-      render json: record, status: status
     elsif record.try(:errors).present?
       object = { errors: record.errors}
       status = :unprocessable_entity

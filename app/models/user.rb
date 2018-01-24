@@ -14,6 +14,7 @@ class User < ApplicationRecord
   
   validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id]
   validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present? && bank_user_id_changed?}
+  validate :ensure_one_token_per_vendor,  if: lambda {vendor.present? && token_changed?}
   before_save :generate_token_if_none
   has_many :api_errors
   after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
@@ -47,6 +48,12 @@ class User < ApplicationRecord
   def ensure_one_bank_user_id_per_vendor
     if vendor.users.where.not(id: id).where(bank_user_id: bank_user_id).any?
       errors.add(:bank_user_id, 'already exists for another user.')
+    end
+  end
+
+  def ensure_one_token_per_vendor
+    if vendor.users.where.not(id: id).where(token: token).any?
+      errors.add(:token, 'already exists for another user.')
     end
   end
 

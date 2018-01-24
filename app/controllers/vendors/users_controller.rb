@@ -1,7 +1,5 @@
 class Vendors::UsersController < Vendors::ApplicationController
-  skip_before_action :require_vendor_login, except: [:index]
-  before_action :find_user_by_vendor_key,   except: [:index, :create]
-  before_action :find_vendor_by_key,        only: [:create]
+  before_action :ensure_financial_institution_belongs_to_vendor, if: financial_institution_id_present?, only: [:create, :update]
 
   def index
     @users = current_vendor.users
@@ -9,25 +7,21 @@ class Vendors::UsersController < Vendors::ApplicationController
   end
 
   def create
-    @user = User.where(checking_account_identifier: params[:checking_account_identifier], vendor_id: @vendor.id).first_or_create do |user|
-     user.default_savings_account_identifier = params[:default_savings_account_identifier]
-     user.token = params[:token]
-    end
-    @error = {error: "Please select another checking account."} if (@user.token != params[:token]) 
-    # If another user with the same checking account id within a vendor tries to signup,
-    # we want to block them from logging in and state that they need to choose a different checking account. 
-    # Users differ from each other by the token value; hence, the reason why are checking
-    # to make sure the token passed in matches with the existing record existing record.
-    @error.present? ? json_response(@error, nil, :bad_request) : json_response(@user)
+    @user = User.new(user_params)
+    current_vendor.users << @user
+    json_response(@user)
   end
-
-
+  
   def show
+    @user = current_vendor.users.find_by(token: params[:token]&.strip)
     json_response(@user)
   end
 
   def update
-    @user.update_attributes(user_params)
+    @user = current_vendor.users.find_by(token: params[:token]&.strip)
+    if @user
+      @user.update_attributes(user_params)
+    end
     json_response(@user) 
   end
 
@@ -35,9 +29,23 @@ class Vendors::UsersController < Vendors::ApplicationController
 
   def user_params
     if params[:user].blank?
-    {}
+     {}
     else
-    params.require(:user).permit(:checking_account_identifier, :default_savings_account_identifier, :transfers_active, :safety_net_active)
+     params.require(:user).permit(:token, :financial_institution_id, :checking_account_identifier,
+                                  :default_savings_account_identifier, :transfers_active,
+                                  :safety_net_active)
+    end
+  end
+
+  private
+
+  def financial_institution_id_present?
+    params[:user].present? && params[:user][:financial_institution_id].present?
+  end
+
+  def ensure_financial_institution_belongs_to_vendor
+    if current_vendor.financial_institutions.where(financial_institution_id: params[:user][:financial_institution_id]).empty?
+      json_response({:financial_institution => :not_found}, nil, :not_found) and return
     end
   end
 end
