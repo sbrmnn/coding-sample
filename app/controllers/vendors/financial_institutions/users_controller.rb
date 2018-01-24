@@ -4,10 +4,10 @@ class Vendors::FinancialInstitutions::UsersController < Vendors::ApplicationCont
    
    def create
      @user = User.where(checking_account_identifier: params[:checking_account_identifier], financial_institution_id: @financial_institution.id).first_or_create do |user|
-              user.default_savings_account_identifier = params[:default_savings_account_identifier]
-              user.token = params[:user][:token]
-              user.bank_user_id = params[:user][:bank_user_id]
-              user.max_transfer_amount = params[:user][:max_transfer_amount]
+               user.default_savings_account_identifier = params[:default_savings_account_identifier]
+               user.token = params[:user][:token]
+               user.bank_user_id = params[:user][:bank_user_id]
+               user.max_transfer_amount = params[:user][:max_transfer_amount]
              end
      @error = {error: "Please select another checking account."} if (@user.token != params[:token])
      # If another user with the same checking account id within a vendor tries to signup,
