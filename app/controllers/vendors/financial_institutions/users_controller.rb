@@ -9,7 +9,7 @@ class Vendors::FinancialInstitutions::UsersController < Vendors::ApplicationCont
                user.bank_user_id = user_params[:bank_user_id]
                user.max_transfer_amount = user_params[:max_transfer_amount]
              end
-     @error = {error: "Please select another checking account."} if (@user.token != params[:token])
+     @error = {error: "Please select another checking account."} if (@user.token != user_params[:token])
      # If another user with the same checking account id within a vendor tries to signup,
      # we want to block them from logging in and state that they need to choose a different checking account.
      # Users differ from each other by the token value; hence, the reason why are checking
@@ -24,7 +24,7 @@ class Vendors::FinancialInstitutions::UsersController < Vendors::ApplicationCont
       {}
     else
       params.require(:user).permit(:bank_user_id, :default_savings_account_identifier, :checking_account_identifier,
-                                  :transfers_active, :safety_net_active, :max_transfer_amount)
+                                   :transfers_active, :safety_net_active, :max_transfer_amount, :token)
     end
    end
 end
