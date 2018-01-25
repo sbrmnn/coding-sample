@@ -13,12 +13,12 @@ class Vendors::UsersController < Vendors::ApplicationController
   end
   
   def show
-    @user = current_vendor.users.find_by(token: params[:token]&.strip)
+    @user = current_vendor.users.find_by(token: user_params[:token]&.strip)
     json_response(@user)
   end
 
   def update
-    @user = current_vendor.users.find_by(token: params[:token]&.strip)
+    @user = current_vendor.users.find_by(token: user_params[:token]&.strip)
     if @user
       @user.update_attributes(user_params)
     end
@@ -40,11 +40,11 @@ class Vendors::UsersController < Vendors::ApplicationController
   private
 
   def financial_institution_id_present?
-    params[:user].present? && params[:user][:financial_institution_id].present?
+    user_params[:financial_institution_id].present?
   end
 
   def ensure_financial_institution_belongs_to_vendor
-    if current_vendor.financial_institutions.where(financial_institution_id: params[:user][:financial_institution_id]).empty?
+    if current_vendor.financial_institutions.where(financial_institution_id: user_params[:financial_institution_id]).empty?
       json_response({:financial_institution => :not_found}, nil, :not_found) and return
     end
   end
