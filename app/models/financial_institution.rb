@@ -17,7 +17,7 @@ class FinancialInstitution < ApplicationRecord
            :total_messages, :total_users, to: :snapshot_summary
   
   validates_presence_of :name, :location
-  validates :max_transfer_amount, numericality: { greater_than_or_equal_to: 0}
+  validates :max_transfer_amount, numericality: { greater_than: 0}
 
 
   after_create :create_default_xref_goals

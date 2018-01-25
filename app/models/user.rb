@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many :transactions, dependent: :destroy
   before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
   after_create :insert_transfer_record
-  validates :max_transfer_amount, numericality: { greater_than_or_equal_to: 0}
+  validates :max_transfer_amount, numericality: { greater_than: 0}
   validates_presence_of :bank_user_id,
                         :default_savings_account_identifier, :checking_account_identifier
   
