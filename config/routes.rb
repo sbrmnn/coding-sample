@@ -21,9 +21,7 @@ Rails.application.routes.draw do
         scope module: :users do
           resources :goals
           resources :offer_messages, param: :offer_id, only: [:update]
-          resources :offers, only: [:index, :show] do
-            resource :message, only: :update
-          end
+          resources :offers, only: [:index, :show]
           resources :transfers, only: [:index]
           resource  :balances, only: [:show]
         end
