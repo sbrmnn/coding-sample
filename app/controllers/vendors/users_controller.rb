@@ -1,8 +1,7 @@
 class Vendors::UsersController < Vendors::ApplicationController
-  before_action :ensure_financial_institution_belongs_to_vendor, if: :financial_institution_id_present?, only: [:update]
-  before_action :ensure_financial_institution_belongs_to_vendor, only: [:create]
   skip_before_action :require_vendor_login, only: [:create, :show, :update]
   before_action :find_user_by_vendor_key, only: [:show, :update]
+  before_action :find_financial_institution_by_vendor_key, only: [:create]
   
   def index
     @users = current_vendor.users
@@ -10,7 +9,7 @@ class Vendors::UsersController < Vendors::ApplicationController
   end
 
   def create
-    @user = User.where(checking_account_identifier: user_params[:checking_account_identifier], financial_institution_id: @financial_institution.id).first_or_create do |user|
+    @user = User.where(checking_account_identifier: user_params[:checking_account_identifier], financial_institution_id: params[:financial_institution_id]).first_or_create do |user|
               user.default_savings_account_identifier = user_params[:default_savings_account_identifier]
               user.token = user_params[:token]
               user.bank_user_id = user_params[:bank_user_id]
@@ -40,19 +39,7 @@ class Vendors::UsersController < Vendors::ApplicationController
      {}
    else
      params.require(:user).permit(:bank_user_id, :default_savings_account_identifier, :checking_account_identifier,
-                                  :transfers_active, :safety_net_active, :max_transfer_amount, :token, :financial_institution_id)
+                                  :transfers_active, :safety_net_active, :max_transfer_amount, :token)
    end
-  end
-
-  private
-
-  def financial_institution_id_present?
-    user_params[:financial_institution_id].present?
-  end
-
-  def ensure_financial_institution_belongs_to_vendor
-    if current_vendor.financial_institutions.where(financial_institution_id: user_params[:financial_institution_id]).empty?
-      json_response({:financial_institution => :not_found}, nil, :not_found) and return
-    end
   end
 end
