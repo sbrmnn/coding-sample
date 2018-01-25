@@ -16,15 +16,9 @@ Rails.application.routes.draw do
   resource :vendors, except: [:create, :destroy, :show, :update] do
     scope module: :vendors do
       resource :me, only: :show, controller: :me
-      resources :financial_institutions do
-        scope module: :financial_institutions do
-          resources :users, only: :create
-        end
-      end
-
+      resources :financial_institutions
       resources :users, param: :token do
         scope module: :users do
-          resource :me, controller: :me
           resources :goals
           resources :offer_messages, param: :offer_id, only: [:update]
           resources :offers, only: [:index, :show] do
