@@ -14,9 +14,9 @@ class Vendors::ApplicationController < ApplicationController
   end
 
   def find_user_by_vendor_key
-    bank_user_id =  params[:token] || params[:user_token]
+    token =  params[:token] || params[:user_token]
     @vendor = Vendor.find_by(key: params[:vendor_key].try(:strip))
-    @user ||= @vendor.try(:users).try{ |obj| obj.find_by(:bank_user_id => bank_user_id.try(:strip))}
+    @user ||= @vendor.try(:users).try{ |obj| obj.find_by(:token => token.try(:strip))}
     if @vendor.blank?
       json_response({:vendor => :not_found}, nil, :not_found) and return
     elsif @user.blank?
