@@ -1,6 +1,7 @@
 class Vendors::UsersController < Vendors::ApplicationController
-  before_action :ensure_financial_institution_belongs_to_vendor, if: :financial_institution_id_present?, only: [:create, :update]
-
+  before_action :ensure_financial_institution_belongs_to_vendor, if: :financial_institution_id_present?, only: [:create. :update]
+  skip_before_action :require_vendor_login, only: [:show, :update]
+  before_action :find_user_by_vendor_key, only: [:show, :update]
   def index
     @users = current_vendor.users
     json_response(@users)
@@ -13,15 +14,11 @@ class Vendors::UsersController < Vendors::ApplicationController
   end
   
   def show
-    @user = current_vendor.users.find_by(token: user_params[:token]&.strip)
     json_response(@user)
   end
 
   def update
-    @user = current_vendor.users.find_by(token: user_params[:token]&.strip)
-    if @user
-      @user.update_attributes(user_params)
-    end
+    @user.update_attributes(user_params)
     json_response(@user) 
   end
 

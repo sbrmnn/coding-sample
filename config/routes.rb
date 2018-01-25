@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
       resources :users, param: :token do
         scope module: :users do
+          resource :me, controller: :me
           resources :goals
           resources :offer_messages, param: :offer_id, only: [:update]
           resources :offers, only: [:index, :show] do
