@@ -4,7 +4,7 @@ class Vendors::FinancialInstitutions::UsersController < Vendors::ApplicationCont
    
    def create
      @user = User.where(checking_account_identifier: user_params[:checking_account_identifier], financial_institution_id: @financial_institution.id).first_or_create do |user|
-               user.default_savings_account_identifier = params[:default_savings_account_identifier]
+               user.default_savings_account_identifier = user_params[:default_savings_account_identifier]
                user.token = user_params[:token]
                user.bank_user_id = user_params[:bank_user_id]
                user.max_transfer_amount = user_params[:max_transfer_amount]
