@@ -1,7 +1,8 @@
 class Vendors::UsersController < Vendors::ApplicationController
-  before_action :ensure_financial_institution_belongs_to_vendor, if: :financial_institution_id_present?, only: [:create. :update]
+  before_action :ensure_financial_institution_belongs_to_vendor, if: :financial_institution_id_present?, only: [:create, :update]
   skip_before_action :require_vendor_login, only: [:show, :update]
   before_action :find_user_by_vendor_key, only: [:show, :update]
+  
   def index
     @users = current_vendor.users
     json_response(@users)
