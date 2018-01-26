@@ -10,7 +10,9 @@ class Vendors::Users::SettingsController < Vendors::ApplicationController
 
   def update
     @user.update_attributes(user_params)
-    json_response(@user) 
+    @settings = @user&.slice(:default_savings_account_identifier, :checking_account_identifier,
+                                  :transfers_active, :safety_net_active, :max_transfer_amount)
+    json_response(@settings) 
   end
 
   protected
