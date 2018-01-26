@@ -7,8 +7,7 @@ class User < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_many :transactions, dependent: :destroy
   before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
-  after_create :insert_transfer_record
-  validates :max_transfer_amount, numericality: { greater_than: 0}
+  validates :max_transfer_amount, numericality: {greater_than: 0}
   validates_presence_of :bank_user_id,
                         :default_savings_account_identifier, :checking_account_identifier
   
@@ -17,6 +16,7 @@ class User < ApplicationRecord
   validate :ensure_one_token_per_vendor,  if: lambda {vendor.present? && token_changed?}
   before_save :generate_token_if_none
   has_many :api_errors
+  after_create :insert_transfer_record
   after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
   
   def bankjoy_user?
@@ -58,11 +58,9 @@ class User < ApplicationRecord
   end
 
   def verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
-    if self.max_transfer_amount.present?
-      financial_institution_max_transfer = self.financial_institution.max_transfer_amount
-      if self.max_transfer_amount > financial_institution_max_transfer
-        self.max_transfer_amount = financial_institution_max_transfer
-      end
+    financial_institution_max_transfer = self.financial_institution.max_transfer_amount
+    if self.max_transfer_amount > financial_institution_max_transfer
+      self.max_transfer_amount = financial_institution_max_transfer
     end
   end
 

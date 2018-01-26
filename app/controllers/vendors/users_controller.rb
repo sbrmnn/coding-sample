@@ -1,6 +1,6 @@
 class Vendors::UsersController < Vendors::ApplicationController
-  skip_before_action :require_vendor_login, only: [:show, :update]
-  before_action :find_user_by_vendor_key, only: [:show, :update]
+  skip_before_action :require_vendor_login, only: [:show, :update], if: :vendor_key_exists?
+  before_action :find_user_by_vendor_key,   only: [:show, :update], if: :vendor_key_exists?
   
   def index
     @users = current_vendor.users
@@ -8,12 +8,18 @@ class Vendors::UsersController < Vendors::ApplicationController
   end
   
   def show
-    json_response(@user)
+   if current_vendor
+     @user = current_vendor.users.find_by(token: params[:token])
+   end
+   json_response(@user)
   end
 
   def update
-    @user.update_attributes(user_params)
-    json_response(@user) 
+   if current_vendor
+     @user = current_vendor.users.find_by(token: params[:token])
+   end
+   @user&.update_attributes(user_params)
+   json_response(@user) 
   end
 
   protected
@@ -23,7 +29,11 @@ class Vendors::UsersController < Vendors::ApplicationController
      {}
    else
      params.require(:user).permit(:bank_user_id, :default_savings_account_identifier, :checking_account_identifier,
-                                  :transfers_active, :safety_net_active, :max_transfer_amount)
+                                  :transfers_active, :safety_net_active, :max_transfer_amount, :financial_institution_id)
    end
+  end
+
+  def vendor_key_exists?
+    params[:vendor_key].present?
   end
 end

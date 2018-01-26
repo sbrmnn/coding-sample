@@ -14,17 +14,20 @@ Rails.application.routes.draw do
   end
 
   resource :vendors, except: [:create, :destroy, :show, :update] do
+    post   "login"  => "sessions#create"
+    delete "logout" => "sessions#destroy"
     scope module: :vendors do
       resource :me, only: :show, controller: :me
       resources :financial_institutions do
          scope module: :financial_institutions do
-           resources :users, only: :create
+           resources :users, param: :token, only: [:create, :show, :update]
          end
       end
       resources :financial_institutions
       resources :users, param: :token do
         scope module: :users do
           resources :goals
+          resource  :settings, only: [:show, :update]
           resources :offer_messages, param: :offer_id, only: [:update]
           resources :offers, only: [:index, :show]
           resources :transfers, only: [:index]
