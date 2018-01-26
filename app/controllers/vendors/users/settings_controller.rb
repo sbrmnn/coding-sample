@@ -3,9 +3,9 @@ class Vendors::Users::SettingsController < Vendors::ApplicationController
   before_action :find_user_by_vendor_key
   
   def show
-    @user&.slice(:default_savings_account_identifier, :checking_account_identifier,
+    @settings = @user&.slice(:default_savings_account_identifier, :checking_account_identifier,
                                   :transfers_active, :safety_net_active, :max_transfer_amount)
-    json_response(@user)
+    json_response(@settings)
   end
 
   def update
