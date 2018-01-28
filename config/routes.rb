@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       resource :me, only: :show, controller: :me
       resources :financial_institutions do
          scope module: :financial_institutions do
-           resources :users, param: :token, only: [:create, :show, :update]
+           resources :users, param: :token, only: [:create]
          end
       end
       resources :financial_institutions

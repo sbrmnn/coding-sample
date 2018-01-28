@@ -1,6 +1,6 @@
 class Vendors::UsersController < Vendors::ApplicationController
-  skip_before_action :require_vendor_login, only: [:show], if: :vendor_key_exists?
-  before_action :find_user_by_vendor_key,   only: [:show], if: :vendor_key_exists?
+  skip_before_action :require_vendor_login, if: -> { vendor_key_exists? && show_action? }
+  before_action :find_user_by_vendor_key,   if: -> { vendor_key_exists? && show_action? }
  
   def index
     @users = current_vendor.users
@@ -28,9 +28,5 @@ class Vendors::UsersController < Vendors::ApplicationController
      params.require(:user).permit(:bank_user_id, :default_savings_account_identifier, :checking_account_identifier,
                                   :transfers_active, :safety_net_active, :max_transfer_amount, :financial_institution_id)
    end
-  end
-
-  def vendor_key_exists?
-    params[:vendor_key].present?
   end
 end

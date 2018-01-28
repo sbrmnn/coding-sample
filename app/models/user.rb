@@ -53,7 +53,7 @@ class User < ApplicationRecord
 
   def ensure_one_token_per_vendor
     if vendor.users.where.not(id: id).where(token: token).any?
-      errors.add(:token, 'already exists for another user.')
+      errors.add(:token, 'not valid.')
     end
   end
 
@@ -63,6 +63,7 @@ class User < ApplicationRecord
       self.max_transfer_amount = financial_institution_max_transfer
     end
   end
+
 
   def insert_transfer_record
     Transfer.create(user: self, next_transfer_date: nil, amount: 0,
