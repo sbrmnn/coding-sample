@@ -5,8 +5,7 @@ class Vendors::FinancialInstitutions::UsersController < Vendors::ApplicationCont
   def create
     get_financial_institution
     @user = @financial_institution.users.where(checking_account_identifier: user_params[:checking_account_identifier]).first_or_create do |user|
-              # This block only runs if a new user is created. This block won't run if a user with the same checking account identifer within a
-              # financial institution already exists.
+              # This block only runs if a new user is created.
               user.default_savings_account_identifier = user_params[:default_savings_account_identifier]
               user.token = user_params[:token]
               user.bank_user_id = user_params[:bank_user_id]
@@ -43,13 +42,13 @@ class Vendors::FinancialInstitutions::UsersController < Vendors::ApplicationCont
       @financial_institution = @vendor.try(:financial_institutions)&.find_by(id: params[:financial_institution_id])
     end
     if @financial_institution.blank?
-     json_response({:financial_institution => :not_found}, nil, :not_found) and return
+      json_response({:financial_institution => :not_found}, nil, :not_found) and return
     end
   end
 
   def check_if_checking_account_exists_for_another_user
     # If another user with the same checking account id within a financial institution tries to signup,
-    # we want state that they need to choose a different checking account.
+    # we want to state that they need to choose a different checking account.
     @error = {error: "Please select another checking account."} if (@user.token != user_params[:token])
   end
 end
