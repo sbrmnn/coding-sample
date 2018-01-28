@@ -26,12 +26,12 @@ Rails.application.routes.draw do
       resources :financial_institutions
       resources :users, param: :token do
         scope module: :users do
+          resource  :balances, only: [:show]
           resources :goals
-          resource  :settings, only: [:show, :update]
           resources :offer_messages, param: :offer_id, only: [:update]
           resources :offers, only: [:index, :show]
+          resource  :settings, only: [:show, :update]
           resources :transfers, only: [:index]
-          resource  :balances, only: [:show]
         end
       end
     end
