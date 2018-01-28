@@ -18,11 +18,11 @@ class Vendors::Users::SettingsController < Vendors::ApplicationController
   protected
   
   def user_params
-    if params[:user].blank?
+    if params[:setting].blank?
      {}
     else
-     params.require(:user).permit(:default_savings_account_identifier, :checking_account_identifier,
-                                  :transfers_active, :safety_net_active, :max_transfer_amount)
+     params.require(:setting).permit(:default_savings_account_identifier, :checking_account_identifier,
+                                     :transfers_active, :safety_net_active, :max_transfer_amount)
     end
   end
 end
