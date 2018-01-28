@@ -66,7 +66,7 @@ class User < ApplicationRecord
 
   def insert_transfer_record
     Transfer.create(user: self, next_transfer_date: nil, amount: 0,
-                    end_date: 'infinity', status: :pending, origin_account: checking_account_identifier, :destination_account: default_savings_account_identifier)
+                    end_date: 'infinity', status: :pending, origin_account: checking_account_identifier, destination_account: default_savings_account_identifier)
   end
 end
 
