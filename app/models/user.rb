@@ -39,7 +39,7 @@ class User < ApplicationRecord
     if self.token.blank?
       token_length = 50
       self.token = SecureRandom.urlsafe_base64(token_length)
-      while User.exists?(:token => token, financial_institution_id: financial_institution_id) # Making sure token hasn't been assigned for another vendor.
+      while User.exists?(:token => token) # Making sure token hasn't been assigned for another vendor.
         self.token = SecureRandom.urlsafe_base64(token_length)
       end
     end
