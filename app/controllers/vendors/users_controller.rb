@@ -1,12 +1,12 @@
 class Vendors::UsersController < Vendors::ApplicationController
-  skip_before_action :require_vendor_login, only: [:show, :update], if: :vendor_key_exists?
-  before_action :find_user_by_vendor_key,   only: [:show, :update], if: :vendor_key_exists?
-  
+  skip_before_action :require_vendor_login, only: [:show], if: :vendor_key_exists?
+  before_action :find_user_by_vendor_key,   only: [:show], if: :vendor_key_exists?
+ 
   def index
     @users = current_vendor.users
     json_response(@users)
   end
-  
+ 
   def show
    if current_vendor
      @user = current_vendor.users.find_by(token: params[:token])
@@ -15,11 +15,8 @@ class Vendors::UsersController < Vendors::ApplicationController
   end
 
   def update
-   if current_vendor
-     @user = current_vendor.users.find_by(token: params[:token])
-   end
-   @user&.update_attributes(user_params)
-   json_response(@user) 
+    @user = current_vendor.users.find_by(token: params[:token])
+    json_response(@user) 
   end
 
   protected
