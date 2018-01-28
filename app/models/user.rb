@@ -16,9 +16,8 @@ class User < ApplicationRecord
   validate :ensure_one_token_per_vendor,  if: lambda {vendor.present? && token_changed?}
   before_save :generate_token_if_none
   has_many :api_errors
-  after_create :insert_transfer_record
   after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
-  
+  after_commit :insert_transfer_record
   def bankjoy_user?
     vendor.try(:bankjoy_vendor?).present?
   end
