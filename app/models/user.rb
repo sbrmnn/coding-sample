@@ -65,7 +65,7 @@ class User < ApplicationRecord
 
   def insert_transfer_record
     Transfer.create(user: self, next_transfer_date: nil, amount: 0,
-                    end_date: 'infinity')
+                    end_date: 'infinity', status: :pending)
   end
 end
 
