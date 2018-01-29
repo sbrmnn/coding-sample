@@ -1,6 +1,7 @@
 class Vendors::UsersController < Vendors::ApplicationController
   skip_before_action :require_vendor_login, if: -> { vendor_key_exists? && show_action? }
   before_action :find_user_by_vendor_key,   if: -> { vendor_key_exists? && show_action? }
+  
   def index
     @users = current_vendor.users
     json_response(@users)
@@ -10,7 +11,7 @@ class Vendors::UsersController < Vendors::ApplicationController
     if current_vendor
       @user = current_vendor.users.find_by(token: params[:token])
     end
-    BankJoy.user_login(@user.id) if @user.try(:id).present?
+    BankJoy.user_login(@user.id) if @user.try(:id).present? && @user.bankjoy_user?
     json_response(@user)
   end
 
