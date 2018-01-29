@@ -12,6 +12,7 @@ class User < ApplicationRecord
                         :default_savings_account_identifier, :checking_account_identifier
   
   validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id]
+  validates_uniqueness_of :checking_account_identifier, scope: [:financial_institution_id], :message => "Please select another checking account."
   validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present? && bank_user_id_changed?}
   validate :ensure_one_token_per_vendor,  if: lambda {vendor.present? && token_changed?}
   before_save :generate_token_if_none
