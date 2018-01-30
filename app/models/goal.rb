@@ -26,16 +26,16 @@ class Goal < ApplicationRecord
 
 
   def recalculate_goal_balance_for_new_goal
-     goals = Goal.all.where(user_id: self.user_id)
-     sum_balance_of_goals = goals.sum(:balance)
-     savings_acct_balance = goals.pluck(:savings_account_identifier, :savings_acct_balance).uniq.map{|r| r[1]}.sum
-     diff = savings_acct_balance - sum_balance_of_goals
-     return if diff < 0
-     if self.target_amount - diff >= 0
-       self.balance = diff
-     else
-       self.balance = target_amount
-     end
+    goals = Goal.all.where(user_id: self.user_id)
+    sum_balance_of_goals = goals.sum(:balance)
+    savings_acct_balance = goals.pluck(:savings_account_identifier, :savings_acct_balance).uniq.map{|r| r[1]}.sum
+    diff = savings_acct_balance - sum_balance_of_goals
+    return if diff < 0
+    if self.target_amount - diff >= 0
+      self.balance = diff
+    else
+      self.balance = target_amount
+    end
   end
 
   def recalculate_goal_balance_for_destroy_goal
