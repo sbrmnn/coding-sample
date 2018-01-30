@@ -18,9 +18,71 @@ class Goal < ApplicationRecord
   before_save :rearrange_priority_on_save, if: lambda {priority_changed? && no_callback.blank?}
 
   after_destroy { |record| rearrange_priority_on_destroy(record.user_id, record.priority)}
+  after_destroy :recalculate_goal_balance_for_destroy_goal
+  before_create :recalculate_goal_balance_for_new_goal
+  before_update :recalculate_goal_balance_for_updated_goal, if: lambda {target_amount_changed?}
 
   protected
 
+
+  def recalculate_goal_balance_for_new_goal
+     goals = Goal.all.where(user_id: self.user_id)
+     sum_balance_of_goals = goals.sum(:balance)
+     savings_acct_balance = goals.pluck(:savings_account_identifier, :savings_acct_balance).uniq.map{|r| r[1]}.sum
+     diff = savings_acct_balance - sum_balance_of_goals
+     return if diff < 0
+     if self.target_amount - diff >= 0
+       self.balance = diff
+     else
+       self.balance = target_amount
+     end
+  end
+
+  def recalculate_goal_balance_for_destroy_goal
+    goals = Goal.where(user_id: self.user_id).order(priority: :asc)
+    sum_balance_of_goals = goals.sum(:balance)
+    savings_acct_balance = goals.pluck(:savings_account_identifier, :savings_acct_balance).uniq.map{|r| r[1]}.sum
+    diff = self.balance
+    goals.each do |goal|
+      goal_diff = (goal.target_amount - goal.balance)
+      if diff >= goal_diff
+        goal.balance = goal.balance + goal_diff
+        goal.save
+        diff =  diff - goal_diff;
+      elsif diff < goal_diff
+        goal.balance = goal.balance + diff
+        goal.save
+        break;
+      end 
+    end
+  end
+
+  def recalculate_goal_balance_for_updated_goal
+    diff = target_amount - balance 
+    goals =  Goal.where(user_id: user_id)
+    if diff < 0
+      diff = diff.abs
+      self.balance = target_amount
+      goals.where.not(id: id).order(priority: :asc).each do |goal|
+        goal_diff = (goal.target_amount - goal.balance)
+        if diff >= goal_diff 
+          goal.balance = goal.balance + goal_diff
+          goal.save
+          diff =  diff - goal_diff;
+        elsif diff < goal_diff
+          goal.balance = goal.balance + diff
+          goal.save
+          break;
+        end 
+      end
+    elsif diff > 0
+      sum_balance_of_goals = goals.sum(:balance)
+      savings_acct_balance = goals.pluck(:savings_account_identifier, :savings_acct_balance).uniq.map{|r| r[1]}.sum
+      leftover = savings_acct_balance - sum_balance_of_goals
+      self.update_attribute(:balance,  target_amount) if ((balance + leftover) >= target_amount) 
+      self.increment(:balance,  leftover) if ((balance + leftover) < target_amount) 
+    end
+  end
 
   def rearrange_priority_on_save
     all_user_goals = Goal.where(user_id: user_id)

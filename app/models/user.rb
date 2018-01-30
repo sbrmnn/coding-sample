@@ -19,8 +19,7 @@ class User < ApplicationRecord
   has_many :api_errors
   after_create :insert_transfer_record
   after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
-  after_commit :login_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
-
+  
   def bankjoy_user?
     vendor.try(:bankjoy_vendor?).present?
   end
@@ -32,6 +31,7 @@ class User < ApplicationRecord
     if resp["Status"] == 'Failure'
       self.api_errors << ApiError.new(status: resp["Status"], response: resp["Reason"], service: :aws_lambda, function: :registration)
     elsif resp["Status"] == 'Success'
+      login_bankjoy_user
       goal = Goal.new(tag: "Safety Net", xref_goal_name: "Other Goal", financial_institution: financial_institution, 
                       priority: 1,  target_amount: resp["Result"]["safety_net"].to_i)
       self.goals << goal
