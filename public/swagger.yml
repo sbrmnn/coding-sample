@@ -66,6 +66,66 @@ paths:
           description: OK.
         '401':
           description: Unauthorized.
+  '/vendors/login':
+    post:
+      summary: (Vendor) Login endpoint to get authentication token.
+      tags:
+        - Authentication
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: login
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+            - email
+            - password
+            properties:
+              email:
+                type: string
+                description: Vendor email.
+              password:
+                type: string
+                description: Vendor password.
+      responses:
+        '200':
+          description: Authorized.
+          examples:
+             application/json:
+               {
+                 token: "TOKEN"
+               }
+          schema:
+            type: object
+            properties:
+              token: 
+                type: string
+                description: Authorization token. Expires in 24 hrs.
+        '401':
+          description: Unauthorized.
+  '/vendors/logout':
+    delete:
+      summary: (Vendor) Logout endpoint to delete authentication token.
+      tags:
+        - Authentication
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK.
+        '401':
+          description: Unauthorized.
   '/users/{user_identifier}/demographics':
     get:
       summary: Gets all user demographic data.
