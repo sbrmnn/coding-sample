@@ -1311,7 +1311,7 @@ paths:
         - Users
       parameters:
         - name: token
-          description: Bank identifier for the user.
+          description: Token for the user.
           in: path
           required: true
           type: string
@@ -1369,7 +1369,7 @@ paths:
         - Users
       parameters:
         - name: token
-          description: Bank identifier for the user.
+          description: Token for the user.
           in: path
           required: true
           type: string
@@ -1450,8 +1450,8 @@ paths:
       tags:
         - Users
       parameters:
-        - name: bank_user_id
-          description: Bank identifier for the user.
+        - name: token
+          description: Token for the user.
           in: path
           required: true
           type: string
