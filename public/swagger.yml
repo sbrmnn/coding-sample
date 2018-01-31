@@ -1779,7 +1779,8 @@ paths:
           required: true
           schema:
             type: object
-            required: true
+            required:
+            - user[vendor_key]
             properties:
               vendor_key:
                 type: string
