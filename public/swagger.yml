@@ -508,8 +508,6 @@ paths:
                 priority:
                   type: integer
                   description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
-                  minimum: 1
-                  maximum: 10
         '400':
           description: Not found
     post:
@@ -550,8 +548,6 @@ paths:
               goal[priority]:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
-                minimum: 1
-                maximum: 10
         - name: Content-Type
           default: application/json
           description: application/json
@@ -596,8 +592,6 @@ paths:
               priority:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
-                minimum: 1
-                maximum: 10
         '422':
           description: unprocessable entity
   '/users/{user_identifier}/goals/{id}':
@@ -662,8 +656,6 @@ paths:
               priority:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
-                minimum: 1
-                maximum: 10
     patch:
       summary: Updates user goal record.
       tags:
@@ -701,8 +693,6 @@ paths:
               goal[priority]:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
-                minimum: 1
-                maximum: 10
         - name: Content-Type
           default: application/json
           description: application/json
@@ -748,8 +738,6 @@ paths:
               priority:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
-                minimum: 1
-                maximum: 10
     delete:
       summary: Deletes user goal entry.
       tags:
@@ -809,8 +797,375 @@ paths:
               priority:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
-                minimum: 1
-                maximum: 10
+ '/vendors/users/{token}/goals':
+    get:
+      summary: Gets all user goal data.
+      tags:
+        - Goals
+      parameters:
+        - name: token
+          description: "Token for user."
+          in: path
+          required: true
+          type: integer
+        - name: goal
+          description: "Filter user goals by valid key/value pairs."
+          in: body
+          schema:
+            type: object
+            properties:
+              goal[xref_goal_name]:
+                type: string
+                description: Name of goal.
+              goal[tag]:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              goal[target_amount]:
+                type: number
+                description: Total amount to save for goal.
+              goal[balance]:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              goal[priority]:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: An array of user goal data.
+          examples:
+             application/json:
+               [
+                 {
+                    "id": 1,
+                    "tag": "Other",
+                    "priority": 10,
+                    "created_at": "2017-11-04T05:25:39.248Z",
+                    "updated_at": "2017-11-04T05:25:39.248Z",
+                    "target_amount": "7.0",
+                    "balance": "6.0"
+                 }
+               ]
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id: 
+                  type: integer
+                  description: Id of goal record.
+                tag:
+                  type: string
+                  description: Customizable value which can be used to group different goals.
+                target_amount:
+                  type: number
+                  description: Total amount to save for goal.
+                balance:
+                  type: number
+                  description: Total amount saved by the user towards the goal.
+                priority:
+                  type: integer
+                  description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+        '400':
+          description: Not found
+    post:
+      summary: Creates a user goal record.
+      tags:
+        - Goals
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          description: "Token for user."
+          in: path
+          required: true
+          type: integer
+        - name: goal
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+            - goal[xref_goal_name]
+            - goal[target_amount]
+            - goal[balance]
+            - goal[priority]
+            properties:
+              goal[xref_goal_name]:
+                type: string
+                description: Name of goal.
+              goal[tag]:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              goal[target_amount]:
+                type: number
+                description: Total amount to save for goal.
+              goal[balance]:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              goal[priority]:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Goal entry created.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+               }
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of goal record.
+              tag:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              target_amount:
+                type: number
+                description: Total amount to save for goal.
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              priority:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+        '422':
+          description: unprocessable entity
+  '/vendors/users/{token}/goals/{id}':
+    get:
+      summary: Gets user goal.
+      tags:
+        - Goals
+      parameters:
+        - name: id
+          description: Id of goal record for user.
+          in: path
+          required: true
+          type: integer
+          minimum: 1
+        - name: token
+          description: "Token for the user."
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User goal info returned.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+
+               }
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of goal record.
+              tag:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              target_amount:
+                type: number
+                description: Total amount to save for goal.
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              priority:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+    patch:
+      summary: Updates user goal record.
+      tags:
+        - Goals
+      parameters:
+        - name: id
+          description: Id of goal record for user.
+          in: path
+          required: true
+          type: integer
+          minimum: 1
+        - name: token
+          description: "Token for user."
+          in: path
+          required: true
+          type: integer
+        - name: goal
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              goal[xref_goal_name]:
+                type: string
+                description: Name of goal.
+              goal[tag]:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              goal[target_amount]:
+                type: number
+                description: Total amount to save for goal.
+              goal[balance]:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              goal[priority]:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User goal updated.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+
+               }
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of goal record.
+              tag:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              target_amount:
+                type: number
+                description: Total amount to save for goal.
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              priority:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+    delete:
+      summary: Deletes user goal entry.
+      tags:
+        - Goals
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          minimum: 1
+        - name: token
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User goal deleted.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+
+               }
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of goal record.
+              tag:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              target_amount:
+                type: number
+                description: Total amount to save for goal.
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              priority:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
   '/users':
     get:
       summary: Gets all user data.
