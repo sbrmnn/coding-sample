@@ -2539,7 +2539,7 @@ paths:
                 transfers_active:
                   type: boolean
                   description: Boolean that states whether user transfers should take place within a particular financial institution.
-  '/financial_institutions/:id':
+  '/financial_institutions/{id}':
       patch:
         summary: Updates financial institution record.
         tags:
