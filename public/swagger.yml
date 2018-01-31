@@ -1699,11 +1699,87 @@ paths:
                 description: Max amount that user's can transfer funds to their savings accounts.
         '400':
           description: Not found.
+  '/vendors/users/{token}/transfers':
+    get:
+      summary: (Vendor) Gets all successful transfers for user.
+      tags:
+        - Users
+      parameters:
+        - name: token
+          description: Token for the user.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: balance
+          in: body
+          schema:
+            type: object
+            properties:
+              vendor_key:
+                type: string
+                description: Vendor Key for user.
+      responses:
+        '200':
+          description: User transfer info returned.
+          examples:
+             application/json:
+              [
+                  {
+                      "id": 6,
+                      "user_id": 3,
+                      "origin_account": "0015107002-S10131",
+                      "destination_account": "0015107002-S10125",
+                      "amount": "9.0",
+                      "created_at": "2018-01-09T22:05:01.434Z",
+                      "updated_at": "2018-01-13T15:16:41.564Z",
+                      "transfer_amount_attempted": null,
+                      "next_transfer_date": "2018-01-13",
+                      "status": "successful",
+                      "end_date": "2017-12-31T00:00:00.000Z"
+                  },
+                  {
+                      "id": 5,
+                      "user_id": 3,
+                      "origin_account": "0015107002-S10131",
+                      "destination_account": "0015107002-S10125",
+                      "amount": "0.97",
+                      "created_at": "2018-01-09T00:00:00.000Z",
+                      "updated_at": "2018-01-16T19:50:39.684Z",
+                      "transfer_amount_attempted": null,
+                      "next_transfer_date": "2018-01-13",
+                      "status": "successful",
+                      "end_date": "2017-12-31T00:00:00.000Z"
+                  }
+              ]
+          schema:
+            type: object
+            properties:
+              origin_account:
+                type: string
+                description: Account where money was taken out of.
+              destination_account:
+                type: string
+                description: Account where money was transfered into.
+              amount:
+                type: number
+                description: Amount of money transfered.
+              next_transfer_date:
+                type: string
+                description: Date of next transfer.
+              end_date:
+                type: string
+                description: Date of transfer completion.
   '/vendors/users/{token}/offers':
     get:
       summary: (Vendor) Gets all offers for user.
       tags:
-        - User
+        - Users
       parameters:
         - name: token
           description: Token for the user.
