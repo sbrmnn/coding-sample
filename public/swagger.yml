@@ -1513,7 +1513,7 @@ paths:
     get:
       summary: (Vendor) Gets user savings account balance.
       tags:
-        - Users
+        - Balances
       parameters:
         - name: token
           description: Token for the user.
@@ -1703,7 +1703,7 @@ paths:
     get:
       summary: (Vendor) Gets all successful transfers for user.
       tags:
-        - Users
+        - Transfers
       parameters:
         - name: token
           description: Token for the user.
@@ -1779,7 +1779,7 @@ paths:
     get:
       summary: (Vendor) Gets all offers for user.
       tags:
-        - Users
+        - Offers
       parameters:
         - name: token
           description: Token for the user.
