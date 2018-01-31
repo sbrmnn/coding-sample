@@ -1729,16 +1729,75 @@ paths:
           description: User offer info returned.
           examples:
              application/json:
-                [
+              [
                   {
-                    "id": 1,
-                    "name": "Offer01",
-                    "condition": "balance",
-                    "symbol": ">=",
-                    "value": "50.0",
-                    "created_at": "2017-11-05T23:10:53.904Z",
-                    "updated_at": "2017-11-05T23:15:41.936Z"
-                }
+                      "id": 12,
+                      "xref_goal_type_id": 66,
+                      "financial_institution_id": 3,
+                      "ad_id": 14,
+                      "condition": "percentage_complete",
+                      "symbol": ">=",
+                      "value": "60.0",
+                      "created_at": "2018-01-16T06:57:52.102Z",
+                      "updated_at": "2018-01-19T21:57:56.153Z",
+                      "product_id": 57,
+                      "ad": {
+                          "id": 14,
+                          "financial_institution_id": 3,
+                          "header": "Over 60% Complete!",
+                          "body": "Wow, congrats on being over 60% of the way done with your house goal! \r\nClick \"Apply\" to begin the process of getting a mortgage!",
+                          "link": "www.mortgageclick.org",
+                          "image": {
+                              "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/14/green_house_icon_312519.jpg"
+                          },
+                          "created_at": "2018-01-16T06:57:50.205Z",
+                          "updated_at": "2018-01-19T19:13:37.459Z",
+                          "name": "60% Complete"
+                      },
+                      "xref_goal_type": {
+                          "id": 66,
+                          "code": "HOUSE",
+                          "name": "House Goal",
+                          "department": null,
+                          "created_at": "2018-01-03T00:17:36.000Z",
+                          "updated_at": "2018-01-03T00:17:36.000Z",
+                          "financial_institution_id": 3
+                      }
+                  },
+                  {
+                      "id": 4,
+                      "xref_goal_type_id": 66,
+                      "financial_institution_id": 3,
+                      "ad_id": 5,
+                      "condition": "percentage_complete",
+                      "symbol": ">",
+                      "value": "50.0",
+                      "created_at": "2018-01-08T14:53:31.279Z",
+                      "updated_at": "2018-01-19T21:57:47.974Z",
+                      "product_id": 57,
+                      "ad": {
+                          "id": 5,
+                          "financial_institution_id": 3,
+                          "header": "Halfway There!",
+                          "body": "Wow, you are already halfway done with you house goal!\r\n\r\nClick apply to start your application for a mortgage!\r\n\r\n",
+                          "link": "www.wffcu.org",
+                          "image": {
+                              "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/5/green_house_icon_312519.jpg"
+                          },
+                          "created_at": "2018-01-08T14:52:41.652Z",
+                          "updated_at": "2018-01-18T04:04:41.656Z",
+                          "name": "50% Complete"
+                      },
+                      "xref_goal_type": {
+                          "id": 66,
+                          "code": "HOUSE",
+                          "name": "House Goal",
+                          "department": null,
+                          "created_at": "2018-01-03T00:17:36.000Z",
+                          "updated_at": "2018-01-03T00:17:36.000Z",
+                          "financial_institution_id": 3
+                      }
+                  }
               ]
           schema:
             type: object
