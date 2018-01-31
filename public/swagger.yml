@@ -2544,7 +2544,7 @@ paths:
         tags:
           - Financial Institution
         parameters:
-          - name: xref_goal_type
+          - name: financial_institution
             in: body
             required: true
             schema:
@@ -2556,6 +2556,24 @@ paths:
                 financial_institution[transfers_active]:
                   type: boolean
                   description: Boolean that states whether user transfers should take place within a particular financial institution.
+                financial_institution[location]:
+                  type: string
+                  description: Location of Financial Institution.
+                financial_institution[mobile]:
+                  type: string
+                  description: Phone number.
+                financial_institution[name]:
+                  type: string
+                  description: Name of Financial Institution.
+                financial_institution[notes]:
+                  type: string
+                  description: Notes.
+                financial_institution[relationship_manager]:
+                  type: string
+                  description: Name of the point of contact.
+                financial_institution[web]:
+                  type: string
+                  description: Website of Financial Institution.
           - name: Content-Type
             default: application/json
             description: application/json
@@ -2570,7 +2588,7 @@ paths:
             type: string
         responses:
           '200':
-            description: Xref Goal Type updated.
+            description: Financial Institution updated.
             examples:
                application/json:
                 {
@@ -2590,12 +2608,21 @@ paths:
             schema:
               type: object
               properties:
-                code: 
+                location:
                   type: string
-                  description: Code for xref goal type.
+                  description: Location of Financial Institution.
+                mobile:
+                  type: string
+                  description: Phone number.
                 name:
                   type: string
-                  description: Name for xref goal type.
-                department:
+                  description: Name of Financial Institution.
+                notes:
                   type: string
-                  description: Department name of your organization that monitors this goal.
+                  description: Notes.
+                relationship_manager:
+                  type: string
+                  description: Name of the point of contact.
+                web:
+                  type: string
+                  description: Website of Financial Institution.
