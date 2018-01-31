@@ -797,7 +797,7 @@ paths:
               priority:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
- '/vendors/users/{token}/goals':
+  '/vendors/users/{token}/goals':
     get:
       summary: Gets all user goal data.
       tags:
