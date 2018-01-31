@@ -1509,6 +1509,46 @@ paths:
               max_transfer_amount:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
+  '/vendors/users/{token}/balances':
+    get:
+      summary: (Vendor) Gets user savings account balance.
+      tags:
+        - User
+      parameters:
+        - name: token
+          description: Token for the user.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: balance
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              vendor_key:
+                type: string
+                description: Vendor Key for user.
+      responses:
+        '200':
+          description: User balance info returned.
+          examples:
+             application/json:
+               {
+                 savings_balance: 5.00
+               }
+          schema:
+            type: object
+            properties:
+              savings_balance: 
+                type: string
+                description: Amount user has in their savings account.
   '/vendors/users':
     get:
       summary: (Vendor) Gets all user data.
