@@ -1718,7 +1718,6 @@ paths:
           type: string
         - name: balance
           in: body
-          required: true
           schema:
             type: object
             properties:
@@ -1776,7 +1775,6 @@ paths:
           type: string
         - name: offer
           in: body
-          required: true
           schema:
             type: object
             required:
