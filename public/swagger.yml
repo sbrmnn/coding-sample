@@ -1223,6 +1223,8 @@ paths:
         - name: financial_institution_id
           description: financial_institution id that the user is associated with.
           in: path
+          required: true
+          type: string
         - name: Content-Type
           default: application/json
           description: application/json
