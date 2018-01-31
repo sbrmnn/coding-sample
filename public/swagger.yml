@@ -1513,7 +1513,7 @@ paths:
     get:
       summary: (Vendor) Gets user savings account balance.
       tags:
-        - User
+        - Users
       parameters:
         - name: token
           description: Token for the user.
@@ -1699,6 +1699,116 @@ paths:
                 description: Max amount that user's can transfer funds to their savings accounts.
         '400':
           description: Not found.
+  '/vendors/users/{token}/offers':
+    get:
+      summary: (Vendor) Gets all offers for user.
+      tags:
+        - User
+      parameters:
+        - name: token
+          description: Token for the user.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: balance
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              vendor_key:
+                type: string
+                description: Vendor Key for user.
+      responses:
+        '200':
+          description: User offer info returned.
+          examples:
+             application/json:
+                [
+                  {
+                    "id": 1,
+                    "name": "Offer01",
+                    "condition": "balance",
+                    "symbol": ">=",
+                    "value": "50.0",
+                    "created_at": "2017-11-05T23:10:53.904Z",
+                    "updated_at": "2017-11-05T23:15:41.936Z"
+                }
+              ]
+          schema:
+            type: object
+            properties:
+              condition:
+                type: string
+                description: Condition applied to the user’s goal to send offer.
+              symbol:
+                type: string
+                description: "[ '=', '>', '<', '>=', '<=' ]."
+              value:
+                type: string
+                description: Value of the condition.
+  '/vendors/users/{token}/offers/{id}':
+    get:
+      summary: (Vendor) Gets offer.
+      tags:
+        - User
+      parameters:
+        - name: token
+          description: Token for the user.
+          in: path
+          required: true
+        - name: id
+          description: Offer id.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: balance
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              vendor_key:
+                type: string
+                description: Vendor Key for user.
+      responses:
+        '200':
+          description: User offer info returned.
+          examples:
+             application/json:
+                {
+                    "id": 1,
+                    "name": "Offer01",
+                    "condition": "balance",
+                    "symbol": ">=",
+                    "value": "50.0",
+                    "created_at": "2017-11-05T23:10:53.904Z",
+                    "updated_at": "2017-11-05T23:15:41.936Z"
+                }
+          schema:
+            type: object
+            properties:
+              condition:
+                type: string
+                description: Condition applied to the user’s goal to send offer.
+              symbol:
+                type: string
+                description: "[ '=', '>', '<', '>=', '<=' ]."
+              value:
+                type: string
+                description: Value of the condition.
   '/vendors/users/{token}':
     get:
       summary: (Vendor) Gets user.
