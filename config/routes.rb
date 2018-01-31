@@ -24,7 +24,7 @@ Rails.application.routes.draw do
          end
       end
       resources :financial_institutions
-      resources :users, param: :token do
+      resources :users, param: :token, only: [:index, :show, :update] do
         scope module: :users do
           resource  :balances, only: [:show]
           resources :goals
