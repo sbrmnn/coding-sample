@@ -2539,11 +2539,17 @@ paths:
                 transfers_active:
                   type: boolean
                   description: Boolean that states whether user transfers should take place within a particular financial institution.
+  '/financial_institutions/:id':
       patch:
         summary: Updates financial institution record.
         tags:
           - Financial Institution
         parameters:
+          - name: id
+            description: Identifier for the financial institution.
+            in: path
+            required: true
+            type: string
           - name: financial_institution
             in: body
             required: true
