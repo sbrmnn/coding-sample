@@ -799,7 +799,7 @@ paths:
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
   '/vendors/users/{token}/goals':
     get:
-      summary: Gets all user goal data.
+      summary: (Vendor) Gets all user goal data.
       tags:
         - Goals
       parameters:
@@ -880,7 +880,7 @@ paths:
         '400':
           description: Not found
     post:
-      summary: Creates a user goal record.
+      summary: (Vendor) Creates a user goal record.
       tags:
         - Goals
       consumes:
@@ -965,7 +965,7 @@ paths:
           description: unprocessable entity
   '/vendors/users/{token}/goals/{id}':
     get:
-      summary: Gets user goal.
+      summary: (Vendor) Gets user goal.
       tags:
         - Goals
       parameters:
@@ -1026,7 +1026,7 @@ paths:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
     patch:
-      summary: Updates user goal record.
+      summary: (Vendor) Updates user goal record.
       tags:
         - Goals
       parameters:
@@ -1108,7 +1108,7 @@ paths:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
     delete:
-      summary: Deletes user goal entry.
+      summary: (Vendor) Deletes user goal entry.
       tags:
         - Goals
       parameters:
@@ -1719,7 +1719,7 @@ paths:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
     patch:
-      summary: Updates user record.
+      summary: (Vendor) Updates user record.
       tags:
         - Users
       parameters:
@@ -1801,7 +1801,7 @@ paths:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
     delete:
-      summary: Deletes user entry.
+      summary: (Vendor) Deletes user entry.
       tags:
         - Users
       parameters:
