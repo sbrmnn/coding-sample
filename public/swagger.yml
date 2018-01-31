@@ -3320,10 +3320,61 @@ paths:
                   description: Website of Financial Institution.
   '/vendors/financial_institutions':
       get:
+        summary: (Vendor) Gets all financial institutions under a vendor.
+        tags:
+          - Financial Institution
+        parameters:
+          - name: Content-Type
+            default: application/json
+            description: application/json
+            in: header
+            required: true
+            type: string
+          - name: Authorization
+            in: header
+            default: Token token={TOKEN_VALUE}
+            description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+            required: true
+            type: string
+        responses:
+          '200':
+            description: Financial institution info returned.
+            examples:
+               application/json:
+                [{
+                  "id": 1,
+                  "name": "Bank Of America",
+                  "location": "Atlanta, Ga",
+                  "core": null,
+                  "web": null,
+                  "mobile": null,
+                  "notes": null,
+                  "relationship_manager": null,
+                  "max_transfer_amount": "0.0",
+                  "transfers_active": null,
+                  "created_at": "2017-10-27T19:55:29.123Z",
+                  "updated_at": "2017-10-27T19:55:29.123Z"
+                }]
+            schema:
+              type: object
+              properties:
+                max_transfer_amount: 
+                  type: number
+                  description: Max transfer amount a user initiate within a particular financial institution.
+                transfers_active:
+                  type: boolean
+                  description: Boolean that states whether user transfers should take place within a particular financial institution.
+  '/vendors/financial_institutions/{id}':
+      get:
         summary: (Vendor) Gets financial institution info.
         tags:
           - Financial Institution
         parameters:
+          - name: id
+            description: Identifier for the financial institution.
+            in: path
+            required: true
+            type: string
           - name: Content-Type
             default: application/json
             description: application/json
@@ -3364,7 +3415,6 @@ paths:
                 transfers_active:
                   type: boolean
                   description: Boolean that states whether user transfers should take place within a particular financial institution.
-  '/vendors/financial_institutions/{id}':
       patch:
         summary: (Vendor) Updates financial institution record.
         tags:
