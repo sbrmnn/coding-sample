@@ -1169,7 +1169,7 @@ paths:
         - name: Authorization
           default: Token token={TOKEN_VALUE}
           in: header
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call.. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
           required: true
           type: string
       responses:
