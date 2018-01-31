@@ -1774,13 +1774,13 @@ paths:
           in: header
           required: true
           type: string
-        - name: balance
+        - name: offer
           in: body
           required: true
           schema:
             type: object
             required:
-            - user[vendor_key]
+            - vendor_key
             properties:
               vendor_key:
                 type: string
@@ -1834,6 +1834,17 @@ paths:
           description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
           required: true
           type: string
+        - name: offer
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+            - vendor_key
+            properties:
+              vendor_key:
+                type: string
+                description: Vendor Key for user.
       responses:
         '200':
           description: User info returned.
