@@ -1779,6 +1779,7 @@ paths:
           required: true
           schema:
             type: object
+            required: true
             properties:
               vendor_key:
                 type: string
