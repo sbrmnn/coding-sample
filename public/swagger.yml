@@ -1154,6 +1154,353 @@ paths:
               max_transfer_amount:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
+  '/vendors/users':
+    get:
+      summary: (Vendor) Gets all user data.
+      tags:
+        - Users
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call.. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: An array of user data.
+          examples:
+             application/json:
+               [
+                 {
+                    "bank_user_id":"10020102002306194",
+                    "default_savings_account_identifier":"123a46b75n432i",
+                    "checking_account_identifier":"123t456t543y",
+                    "transfers_active":true,
+                    "safety_net_active":true,
+                    "max_transfer_amount":70.00,
+                    "created_at":"2017-04-09T04:22:28.106Z",
+                    "updated_at":"2017-04-09T04:22:28.106Z"
+                 }
+               ]
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                bank_user_id: 
+                  type: string
+                  description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+                default_savings_account_identifier:
+                  type: string
+                  description: System Id for Savings account that user will be moving money to.
+                checking_account_identifier:
+                  type: string
+                  description: System Id for Checking account that user will be moving money from.
+                transfers_active:
+                  type: boolean
+                  description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+                safety_net_active:
+                  type: boolean
+                  description: Flag for activating safety net goal. Default on user creation is TRUE. FALSE will remove the safety net goal from the goals array.
+                max_transfer_amount:
+                   type: number
+                   description: Max amount that user's can transfer funds to their savings accounts.
+        '400':
+          description: Not found.
+  '/vendors/financial_institutions/{financial_institution_id}/users':
+    post:
+      summary: (Vendor) Creates a user record.
+      tags:
+        - Users
+      parameters:
+        - name: financial_institution_id
+          description: financial_institution id that the user is associated with.
+          in: path
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          required: true
+          type: string
+        - name: user
+          description: "Key/value pair to create user record."
+          required: true
+          in: body
+          schema:
+            type: object
+            required:
+            - user[bank_user_id]
+            - user[checking_account_identifier]
+            - user[default_savings_account_identifier]
+            properties:
+              user[bank_user_id]: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              user[default_savings_account_identifier]:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              user[checking_account_identifier]:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              user[transfers_active]:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              user[safety_net_active]:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              user[max_transfer_amount]:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+      responses:
+        '200':
+          description: OK.
+          examples:
+             application/json:
+               {
+                  "bank_user_id":"10020102002306194",
+                  "default_savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active":true,
+                  "safety_net_active":true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+                }
+          schema:
+            type: object
+            properties:
+              bank_user_id: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              default_savings_account_identifier:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+        '400':
+          description: Not found.
+  '/vendors/users/{token}':
+    get:
+      summary: (Vendor) Gets user.
+      tags:
+        - Users
+      parameters:
+        - name: token
+          description: Bank identifier for the user.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User info returned.
+          examples:
+             application/json:
+               {
+                  "bank_user_id":"10020102002306194",
+                  "default_savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active": true,
+                  "safety_net_active": true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+                }
+          schema:
+            type: object
+            properties:
+              bank_user_id: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              default_savings_account_identifier:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+    patch:
+      summary: Updates user record.
+      tags:
+        - Users
+      parameters:
+        - name: token
+          description: Bank identifier for the user.
+          in: path
+          required: true
+          type: string
+        - name: user
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              bank_user_id: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              default_savings_account_identifier:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User updated.
+          examples:
+             application/json:
+               {
+                  "bank_user_id":"10020102002306194",
+                  "default_savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active":true,
+                  "safety_net_active":true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+               }
+          schema:
+            type: object
+            properties:
+              bank_user_id: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              default_savings_account_identifier:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+    delete:
+      summary: Deletes user entry.
+      tags:
+        - Users
+      parameters:
+        - name: bank_user_id
+          description: Bank identifier for the user.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User deleted.
+          examples:
+             application/json:
+               {
+                  "bank_user_id":"10020102002306194",
+                  "default_savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active":true,
+                  "safety_net_active":true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+               }
+          schema:
+            type: object
+            properties:
+              bank_user_id: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              default_savings_account_identifier:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
   '/ads':
     get:
       summary: Gets all ad data.
@@ -2802,7 +3149,7 @@ paths:
           - name: Authorization
             in: header
             default: Token token={TOKEN_VALUE}
-            description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+            description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
             required: true
             type: string
         responses:
