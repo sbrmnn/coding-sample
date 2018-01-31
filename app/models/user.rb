@@ -19,12 +19,18 @@ class User < ApplicationRecord
   has_many :api_errors
   after_create :insert_transfer_record
   after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
+  after_update :change_savings_account_in_user_goals, if: lambda {default_savings_account_identifier_changed?}
   
   def bankjoy_user?
     vendor.try(:bankjoy_vendor?).present?
   end
 
   protected
+
+  def change_savings_account_in_user_goals
+    self.goals.where(savings_account_identifier: default_savings_account_identifier_was)
+              .update_all(savings_account_identifier: default_savings_account_identifier)
+  end
 
   def register_bankjoy_user
     resp = BankJoy.register_user(checking_account_identifier)
