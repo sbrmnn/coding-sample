@@ -28,7 +28,7 @@ class Goal < ApplicationRecord
 
 
   def check_of_user_qualifies_for_offers
-    user = User.where(user_id: user_id).first
+    user = User.where(id: user_id).first
     if user
       messages = user.messages.where(message_obj_type: :Offer)
       messages.each do |msg|
