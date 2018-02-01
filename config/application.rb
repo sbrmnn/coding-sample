@@ -21,8 +21,7 @@ module Monotto
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins '*'
-        #origins 'localhost:3000', 'fc3bcb02.ngrok.io/','75372111.ngrok.io', 'us-demo.monotto.com', 'staging-bank-admin.monotto.com', 'us-bank-admin.monotto.com', 'eu-bank-admin.monotto.com'
+        origins /\A*.ngrok.io\z/,'localhost:3000', /\A*.monotto.com\z/
         resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options], credentials: true
       end
     end
