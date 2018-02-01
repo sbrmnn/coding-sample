@@ -21,9 +21,21 @@ class Goal < ApplicationRecord
   after_destroy :recalculate_goal_balance_for_destroy_goal
   before_create :recalculate_goal_balance_for_new_goal
   before_update :recalculate_goal_balance_for_updated_goal, if: lambda {target_amount_changed?}
+  after_destroy :check_of_user_qualifies_for_offers
+  after_update  :check_of_user_qualifies_for_offers, if: lambda {target_amount_changed?}
 
   protected
 
+
+  def check_of_user_qualifies_for_offers
+    user = User.where(user_id: user_id).first
+    if user
+      messages = user.messages.where(message_obj_type: :Offer)
+      messages.each do |msg|
+        msg.message_obj.destroy unless msg.message_obj.user_qualifies?(user.id)
+      end
+    end
+  end
 
   def recalculate_goal_balance_for_new_goal
     goals = Goal.all.where(user_id: self.user_id)
