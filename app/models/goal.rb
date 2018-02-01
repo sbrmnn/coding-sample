@@ -13,8 +13,8 @@ class Goal < ApplicationRecord
   belongs_to :user
   belongs_to :xref_goal_type
   has_one :financial_institution, through: :user
-  before_save :set_default_savings_account_if_none
   before_save :set_default_savings_account_identifier_if_none
+  before_save :set_savings_account_balance
   before_save :rearrange_priority_on_save, if: lambda {priority_changed? && no_callback.blank?}
 
   after_destroy { |record| rearrange_priority_on_destroy(record.user_id, record.priority)}
@@ -139,10 +139,8 @@ class Goal < ApplicationRecord
     end
   end
 
-  def set_default_savings_account_if_none
-    if savings_account_identifier.blank?
-      self.savings_account_identifier = self.user.default_savings_account_identifier
-    end
+  def set_savings_account_balance
+    self.savings_acct_balance = Goal.where(savings_account_identifier: savings_account_identifier, user_id: user_id).first.try(:savings_acct_balance).to_i
   end
   
   def validate_xref_goal_name
