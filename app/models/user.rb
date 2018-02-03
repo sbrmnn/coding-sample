@@ -37,9 +37,9 @@ class User < ApplicationRecord
     if resp["Status"] == 'Failure'
       self.api_errors << ApiError.new(status: resp["Status"], response: resp["Reason"], service: :aws_lambda, function: :registration)
     elsif resp["Status"] == 'Success'
-      savings_acct_balance = Goal.where(savings_account_identifier: default_savings_account_identifier, user_id: id).first.try(:savings_acct_balance).to_i
+      savings_acct_balance = Goal.where(savings_account_identifier: default_savings_account_identifier, user_id: id).first.try(:savings_acct_balance).to_f
       goal = Goal.new(tag: "Safety Net", xref_goal_name: "Other Goal", financial_institution: financial_institution, 
-                      priority: 1,  target_amount: resp["Result"]["safety_net"].to_i)
+                      priority: 1,  target_amount: resp["Result"]["safety_net"].to_f)
       self.goals << goal
       login_bankjoy_user
       # Any previous errors associated with the registration should be removed if successful.

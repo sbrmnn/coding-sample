@@ -140,7 +140,7 @@ class Goal < ApplicationRecord
   end
 
   def set_savings_account_balance
-    self.savings_acct_balance = Goal.where(savings_account_identifier: savings_account_identifier, user_id: user_id).first.try(:savings_acct_balance).to_i
+    self.savings_acct_balance = Goal.where(savings_account_identifier: savings_account_identifier, user_id: user_id).first.try(:savings_acct_balance).to_f
   end
   
   def validate_xref_goal_name

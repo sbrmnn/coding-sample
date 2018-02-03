@@ -39,7 +39,7 @@ class Vendors::FinancialInstitutionsController < Vendors::ApplicationController
       {}
     else
       params.require(:financial_institution).permit(:core, :location, :mobile, :name,
-                                                    :notes, :relationship_manager, :web)
+                                                    :notes, :relationship_manager, :web, :max_transfer_amount, :transfers_active)
     end
    end
 end
