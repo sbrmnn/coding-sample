@@ -1,4 +1,4 @@
-class Vendors::Users::BalancesController < Vendors::ApplicationController
+class Vendors::Dashboard::Users::BalancesController < Vendors::ApplicationController
   skip_before_action :require_vendor_login
   before_action :find_user_by_vendor_key
 

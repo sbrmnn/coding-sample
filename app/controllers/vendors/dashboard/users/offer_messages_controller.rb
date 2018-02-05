@@ -1,4 +1,4 @@
-class Vendors::Users::OfferMessagesController < Vendors::ApplicationController
+class Vendors::Dashboard::Users::OfferMessagesController < Vendors::ApplicationController
   skip_before_action :require_vendor_login
   before_action :find_user_by_vendor_key
 

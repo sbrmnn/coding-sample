@@ -1,4 +1,4 @@
-class Vendors::FinancialInstitutions::UsersController < Vendors::ApplicationController
+class Vendors::Dashboard::FinancialInstitutions::UsersController < Vendors::ApplicationController
   skip_before_action :require_vendor_login, if: -> { vendor_key_exists? && create_action? }
   before_action :get_financial_institution, if: -> { create_action? }
 

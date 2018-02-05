@@ -1,4 +1,4 @@
-class Vendors::Users::OffersController < Vendors::ApplicationController
+class Vendors::Dashboard::OffersController < Vendors::ApplicationController
   skip_before_action :require_vendor_login
   before_action :find_user_by_vendor_key
   

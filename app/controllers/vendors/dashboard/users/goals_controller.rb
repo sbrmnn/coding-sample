@@ -1,4 +1,4 @@
-class Vendors::Users::GoalsController < Vendors::ApplicationController
+class Vendors::Dashboard::Users::GoalsController < Vendors::ApplicationController
   skip_before_action :require_vendor_login
   before_action :find_user_by_vendor_key
   
