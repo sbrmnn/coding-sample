@@ -18,26 +18,26 @@ Rails.application.routes.draw do
   resource :vendors, except: [:create, :destroy, :show, :update] do
     post   "login"  => "sessions#create"
     delete "logout" => "sessions#destroy"
-    resource :dashboard, except: [:create, :destroy, :show, :update] do
-      scope module: :dashboard do
-        resources :financial_institutions, except: [:index, :create, :destroy, :show, :update] do
-          scope module: :financial_institutions do
-            resources :users, param: :token, only: [:create]
+    scope module: :vendors do
+      resource :dashboard, except: [:create, :destroy, :show, :update] do
+        scope module: :dashboard do
+          resources :financial_institutions, except: [:index, :create, :destroy, :show, :update] do
+            scope module: :financial_institutions do
+              resources :users, param: :token, only: [:create]
+            end
           end
-        end
-        resources :users, param: :token, only: [:show] do
-          scope module: :users do
-            resource  :balances, only: [:show]
-            resources :goals
-            resources :offer_messages, param: :offer_id, only: [:update]
-            resources :offers, only: [:index, :show]
-            resource  :settings, only: [:show, :update]
-            resources :transfers, only: [:index]
+          resources :users, param: :token, only: [:show] do
+            scope module: :users do
+              resource  :balances, only: [:show]
+              resources :goals
+              resources :offer_messages, param: :offer_id, only: [:update]
+              resources :offers, only: [:index, :show]
+              resource  :settings, only: [:show, :update]
+              resources :transfers, only: [:index]
+            end
           end
         end
       end
-    end
-    scope module: :vendors do
       resource :me, only: :show, controller: :me
       resources :financial_institutions
       resources :users, param: :token, only: [:index, :show, :update]
