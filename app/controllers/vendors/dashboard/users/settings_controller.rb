@@ -3,19 +3,22 @@ class Vendors::Users::SettingsController < Vendors::ApplicationController
   before_action :find_user_by_vendor_key
   
   def show
-    @settings = @user&.slice(:default_savings_account_identifier, :checking_account_identifier,
-                                  :transfers_active, :safety_net_active, :max_transfer_amount)
+    @settings = settings
     json_response(@settings)
   end
 
   def update
     @user.update_attributes(user_params)
-    @settings = @user&.slice(:default_savings_account_identifier, :checking_account_identifier,
-                                  :transfers_active, :safety_net_active, :max_transfer_amount)
+    @settings = settings
     json_response(@settings) 
   end
 
   protected
+
+  def settings
+    @settings = @user&.slice(:default_savings_account_identifier, :checking_account_identifier,
+                              :transfers_active, :safety_net_active, :max_transfer_amount)
+  end
   
   def user_params
     if params[:setting].blank?
