@@ -562,14 +562,13 @@ CREATE VIEW time_until_completions AS
             avg(transfers_in.diff) AS avg_days,
             avg(transfers_in.transfer_amount_attempted) AS avg_amount
            FROM ( SELECT DISTINCT transfers.user_id
-                   FROM transfers
-                  WHERE (((transfers.updated_at)::date = (CURRENT_TIMESTAMP)::date) AND (transfers.status = 'pending'::status))) transfer_out,
+                   FROM transfers) transfer_out,
             LATERAL ( SELECT transfers.user_id,
                     transfers.updated_at,
                     ((transfers.updated_at)::date - lag((transfers.updated_at)::date) OVER (ORDER BY transfers.updated_at)) AS diff,
                     transfers.transfer_amount_attempted
                    FROM transfers
-                  WHERE ((transfers.end_date <> 'infinity'::timestamp without time zone) AND (transfers.user_id = transfer_out.user_id))
+                  WHERE ((transfers.end_date <> 'infinity'::timestamp without time zone) AND (transfers.status = 'successful'::status) AND (transfers.user_id = transfer_out.user_id))
                   ORDER BY transfers.updated_at DESC
                  LIMIT 3) transfers_in
           GROUP BY transfers_in.user_id
@@ -1412,6 +1411,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180114022621'),
 ('20180115000934'),
 ('20180120213335'),
-('20180121072949');
+('20180121072949'),
+('20180206164856');
 
 
