@@ -8,10 +8,8 @@ class Vendors::UsersController < Vendors::ApplicationController
   end
  
   def show
-    if current_vendor
-      @user = current_vendor.users.find_by(token: params[:token])
-    end
-    BankJoy.user_login(@user.id) if @user.try(:id).present? && @user.bankjoy_user?
+    @user = current_vendor.users.find_by(token: params[:token])
+    third_party_login(@user)
     json_response(@user)
   end
 

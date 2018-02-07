@@ -3,7 +3,7 @@ class Vendors::Dashboard::UsersController < Vendors::ApplicationController
   before_action :find_user_by_vendor_key
   
   def show
-    BankJoy.user_login(@user.id) if @user.try(:id).present? && @user.bankjoy_user?
+  	third_party_login(@user)
     json_response(@user)
   end
 end
