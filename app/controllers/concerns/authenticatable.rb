@@ -32,7 +32,7 @@ module Authenticatable
   def third_party_login(user_obj)
     raise "Argument must be a user object." unless user_obj.is_a? User
     case user_obj
-    when @user.bankjoy_user?
+    when user_obj.bankjoy_user?
       BankJoy.user_login(@user.id)
     end
   end
