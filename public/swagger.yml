@@ -68,7 +68,7 @@ paths:
           description: Unauthorized.
   '/vendors/login':
     post:
-      summary: (Vendor) Login endpoint to get authentication token.
+      summary: Login endpoint to get authentication token.
       tags:
         - Vendor
       parameters:
@@ -111,7 +111,7 @@ paths:
           description: Unauthorized.
   '/vendors/logout':
     delete:
-      summary: (Vendor) Logout endpoint to delete authentication token.
+      summary: Logout endpoint to delete authentication token.
       tags:
         - Vendor
       parameters:
@@ -499,7 +499,7 @@ paths:
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
   '/vendors/users/{token}/goals':
     get:
-      summary: (Vendor) Gets all user goal data.
+      summary: Gets all user goal data.
       tags:
         - Vendor
       parameters:
@@ -580,9 +580,9 @@ paths:
         '400':
           description: Not found
     post:
-      summary: (Vendor) Creates a user goal record.
+      summary: Creates a user goal record.
       tags:
-        - Goals
+        - Vendor
       consumes:
         - application/json
       parameters:
@@ -665,7 +665,7 @@ paths:
           description: unprocessable entity
   '/vendors/users/{token}/goals/{id}':
     get:
-      summary: (Vendor) Gets user goal.
+      summary: Gets user goal.
       tags:
         - Vendor
       parameters:
@@ -726,9 +726,9 @@ paths:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
     patch:
-      summary: (Vendor) Updates user goal record.
+      summary: Updates user goal record.
       tags:
-        - Goals
+        - Vendor
       parameters:
         - name: id
           description: Id of goal record for user.
@@ -808,9 +808,9 @@ paths:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
     delete:
-      summary: (Vendor) Deletes user goal entry.
+      summary: Deletes user goal entry.
       tags:
-        - Goals
+        - Vendor
       parameters:
         - name: id
           in: path
@@ -1211,7 +1211,7 @@ paths:
                 description: Max amount that user's can transfer funds to their savings accounts.
   '/vendors/users/{token}/balances':
     get:
-      summary: (Vendor) Gets user savings account balance.
+      summary: Gets user savings account balance.
       tags:
         - Vendor
       parameters:
@@ -1251,7 +1251,7 @@ paths:
                 description: Amount user has in their savings account.
   '/vendors/users':
     get:
-      summary: (Vendor) Gets all user data.
+      summary: Gets all user data.
       tags:
         - Vendor
       parameters:
@@ -1311,7 +1311,7 @@ paths:
           description: Not found.
   '/vendors/financial_institutions/{financial_institution_id}/users':
     post:
-      summary: (Vendor) Creates a user record.
+      summary: Creates a user record.
       tags:
         - Vendor
       parameters:
@@ -1401,7 +1401,7 @@ paths:
           description: Not found.
   '/vendors/users/{token}/transfers':
     get:
-      summary: (Vendor) Gets all successful transfers for user.
+      summary: Gets all successful transfers for user.
       tags:
         - Vendor
       parameters:
@@ -1477,7 +1477,7 @@ paths:
                 description: Date of transfer completion.
   '/vendors/users/{token}/offers':
     get:
-      summary: (Vendor) Gets all offers for user.
+      summary: Gets all offers for user.
       tags:
         - Vendor
       parameters:
@@ -1589,7 +1589,7 @@ paths:
                 description: Value of the condition.
   '/vendors/users/{token}':
     get:
-      summary: (Vendor) Gets user.
+      summary: Gets user.
       tags:
         - Vendor
       parameters:
@@ -1658,9 +1658,9 @@ paths:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
     patch:
-      summary: (Vendor) Updates user record.
+      summary: Updates user record.
       tags:
-        - Users
+        - Vendor
       parameters:
         - name: token
           description: Token for the user.
@@ -1740,9 +1740,9 @@ paths:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
     delete:
-      summary: (Vendor) Deletes user entry.
+      summary: Deletes user entry.
       tags:
-        - Users
+        - Vendor
       parameters:
         - name: token
           description: Token for the user.
@@ -3259,7 +3259,7 @@ paths:
                   description: Website of Financial Institution.
   '/vendors/financial_institutions':
       get:
-        summary: (Vendor) Gets all financial institutions under a vendor.
+        summary: Gets all financial institutions under a vendor.
         tags:
           - Vendor
         parameters:
@@ -3305,7 +3305,7 @@ paths:
                   description: Boolean that states whether user transfers should take place within a particular financial institution.
   '/vendors/financial_institutions/{id}':
       get:
-        summary: (Vendor) Gets financial institution info.
+        summary: Gets financial institution info.
         tags:
           - Vendor
         parameters:
@@ -3355,9 +3355,9 @@ paths:
                   type: boolean
                   description: Boolean that states whether user transfers should take place within a particular financial institution.
       patch:
-        summary: (Vendor) Updates financial institution record.
+        summary: Updates financial institution record.
         tags:
-          - Financial Institution
+          - Vendor
         parameters:
           - name: id
             description: Identifier for the financial institution.
@@ -3447,9 +3447,9 @@ paths:
                   type: string
                   description: Website of Financial Institution.
       post:
-        summary: (Vendor) Creates financial institution record.
+        summary: Creates financial institution record.
         tags:
-          - Financial Institution
+          - Vendor
         parameters:
           - name: id
             description: Identifier for the financial institution.
