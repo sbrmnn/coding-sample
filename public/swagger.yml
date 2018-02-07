@@ -70,7 +70,7 @@ paths:
     post:
       summary: (Vendor) Login endpoint to get authentication token.
       tags:
-        - Authentication
+        - Vendor
       parameters:
         - name: Content-Type
           default: application/json
@@ -113,7 +113,7 @@ paths:
     delete:
       summary: (Vendor) Logout endpoint to delete authentication token.
       tags:
-        - Authentication
+        - Vendor
       parameters:
         - name: Content-Type
           default: application/json
@@ -501,7 +501,7 @@ paths:
     get:
       summary: (Vendor) Gets all user goal data.
       tags:
-        - Goals
+        - Vendor
       parameters:
         - name: token
           description: "Token for user."
@@ -667,7 +667,7 @@ paths:
     get:
       summary: (Vendor) Gets user goal.
       tags:
-        - Goals
+        - Vendor
       parameters:
         - name: id
           description: Id of goal record for user.
@@ -1213,7 +1213,7 @@ paths:
     get:
       summary: (Vendor) Gets user savings account balance.
       tags:
-        - Balances
+        - Vendor
       parameters:
         - name: token
           description: Token for the user.
@@ -1253,7 +1253,7 @@ paths:
     get:
       summary: (Vendor) Gets all user data.
       tags:
-        - Users
+        - Vendor
       parameters:
         - name: Content-Type
           default: application/json
@@ -1313,7 +1313,7 @@ paths:
     post:
       summary: (Vendor) Creates a user record.
       tags:
-        - Users
+        - Vendor
       parameters:
         - name: financial_institution_id
           description: financial_institution id that the user is associated with.
@@ -1403,7 +1403,7 @@ paths:
     get:
       summary: (Vendor) Gets all successful transfers for user.
       tags:
-        - Transfers
+        - Vendor
       parameters:
         - name: token
           description: Token for the user.
@@ -1479,7 +1479,7 @@ paths:
     get:
       summary: (Vendor) Gets all offers for user.
       tags:
-        - Offers
+        - Vendor
       parameters:
         - name: token
           description: Token for the user.
@@ -1591,7 +1591,7 @@ paths:
     get:
       summary: (Vendor) Gets user.
       tags:
-        - Users
+        - Vendor
       parameters:
         - name: token
           description: Token for the user.
@@ -3261,7 +3261,7 @@ paths:
       get:
         summary: (Vendor) Gets all financial institutions under a vendor.
         tags:
-          - Financial Institution
+          - Vendor
         parameters:
           - name: Content-Type
             default: application/json
@@ -3307,7 +3307,7 @@ paths:
       get:
         summary: (Vendor) Gets financial institution info.
         tags:
-          - Financial Institution
+          - Vendor
         parameters:
           - name: id
             description: Identifier for the financial institution.
