@@ -1,0 +1,2 @@
+class RecurringTransferRule < ApplicationRecord
+end

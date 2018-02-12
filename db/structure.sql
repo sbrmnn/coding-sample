@@ -544,6 +544,24 @@ ALTER SEQUENCE products_id_seq OWNED BY products.id;
 
 
 --
+-- Name: recurring_transfer_rules; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE recurring_transfer_rules (
+    id integer NOT NULL,
+    goals_id integer NOT NULL,
+    amount character varying(50) NOT NULL,
+    frequency character varying(10),
+    repeats integer,
+    start_dt timestamp without time zone NOT NULL,
+    end_dt timestamp without time zone NOT NULL,
+    deleted_at timestamp without time zone,
+    CONSTRAINT check_frequency CHECK (((frequency)::text = ANY ((ARRAY['day'::character varying, 'week'::character varying, 'month'::character varying])::text[]))),
+    CONSTRAINT check_repeat CHECK ((repeats = ANY (ARRAY[1, 2, 3])))
+);
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -559,21 +577,25 @@ CREATE TABLE schema_migrations (
 CREATE VIEW time_until_completions AS
  WITH prev_transfers_tb AS (
          SELECT transfers_in.user_id,
+            transfer_out.amount,
             avg(transfers_in.diff) AS avg_days,
             avg(transfers_in.transfer_amount_attempted) AS avg_amount
-           FROM ( SELECT DISTINCT transfers.user_id
-                   FROM transfers) transfer_out,
+           FROM ( SELECT DISTINCT ON (transfers.user_id) transfers.user_id,
+                    transfers.amount
+                   FROM transfers
+                  ORDER BY transfers.user_id, transfers.id DESC) transfer_out,
             LATERAL ( SELECT transfers.user_id,
                     transfers.updated_at,
                     ((transfers.updated_at)::date - lag((transfers.updated_at)::date) OVER (ORDER BY transfers.updated_at)) AS diff,
                     transfers.transfer_amount_attempted
                    FROM transfers
-                  WHERE ((transfers.end_date <> 'infinity'::timestamp without time zone) AND (transfers.status = 'successful'::status) AND (transfers.user_id = transfer_out.user_id))
+                  WHERE (transfers.user_id = transfer_out.user_id)
                   ORDER BY transfers.updated_at DESC
                  LIMIT 3) transfers_in
-          GROUP BY transfers_in.user_id
+          GROUP BY transfers_in.user_id, transfer_out.amount
         ), amount_to_complete AS (
-         SELECT goals.user_id,
+         SELECT goals.id,
+            goals.user_id,
             goals.xref_goal_type_id,
             goals.priority,
             rank() OVER (PARTITION BY goals.user_id ORDER BY goals.priority) AS rank_priority,
@@ -581,10 +603,26 @@ CREATE VIEW time_until_completions AS
            FROM goals
           WHERE ((goals.target_amount - goals.balance) > (0)::numeric)
         )
- SELECT p.user_id,
+ SELECT a.id AS goal_id,
+    p.user_id,
     a.xref_goal_type_id,
     a.priority,
-    round(((p.avg_days * a.remaining) / p.avg_amount), 2) AS days_until_completion
+    p.amount,
+        CASE
+            WHEN (p.avg_days IS NULL) THEN (3)::numeric
+            ELSE p.avg_days
+        END AS avg_days,
+        CASE
+            WHEN (p.avg_amount IS NULL) THEN (
+            CASE
+                WHEN (p.amount > (50000)::numeric) THEN 10
+                WHEN (p.amount > (10000)::numeric) THEN 8
+                WHEN (p.amount > (5000)::numeric) THEN 6
+                WHEN (p.amount > (500)::numeric) THEN 4
+                ELSE 0
+            END)::numeric
+            ELSE p.avg_amount
+        END AS avg_amount
    FROM prev_transfers_tb p,
     amount_to_complete a
   WHERE (p.user_id = a.user_id);
@@ -983,6 +1021,14 @@ ALTER TABLE ONLY offers
 
 ALTER TABLE ONLY products
     ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: recurring_transfer_rules recurring_transfer_rules_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY recurring_transfer_rules
+    ADD CONSTRAINT recurring_transfer_rules_pkey PRIMARY KEY (id);
 
 
 --
@@ -1412,6 +1458,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180115000934'),
 ('20180120213335'),
 ('20180121072949'),
-('20180206164856');
+('20180206164856'),
+('20180208153235'),
+('20180210172917'),
+('20180212070432');
 
 

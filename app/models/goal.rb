@@ -7,7 +7,7 @@ class Goal < ApplicationRecord
   validates :target_amount, numericality: { greater_than: 0}
   validates :balance, numericality: { greater_than_or_equal_to: 0}
   has_one :goal_statistic
-
+  has_one :time_until_completion
   delegate :percent_saved, to: :goal_statistic
 
   belongs_to :user
