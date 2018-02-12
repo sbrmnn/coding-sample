@@ -4,7 +4,7 @@ class Vendors::Dashboard::Users::GoalsController < Vendors::ApplicationControlle
   
   def index
     @goals = @user.goals.order(priority: :asc)
-    json_response(@goals, :xref_goal_type)
+    json_response(@goals, included_models)
   end
 
   def show
