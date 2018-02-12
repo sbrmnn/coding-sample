@@ -9,14 +9,14 @@ class Vendors::Dashboard::Users::GoalsController < Vendors::ApplicationControlle
 
   def show
     @goal = @user.goals.find_by(id: params[:id])
-    json_response(@goal, :xref_goal_type)
+    json_response(@goal, included_models)
   end
 
   def create
     @goals = @user.goals
     @goal =  Goal.new(goal_params)
     @goals << @goal
-    json_response(@goal, :xref_goal_type)
+    json_response(@goal, included_models)
   end
 
   def update
@@ -24,7 +24,7 @@ class Vendors::Dashboard::Users::GoalsController < Vendors::ApplicationControlle
     if @goal
       @goal.update_attributes(goal_params) 
     end 
-    json_response(@goal, :xref_goal_type)
+    json_response(@goal, included_models)
   end
 
   def destroy
@@ -32,7 +32,7 @@ class Vendors::Dashboard::Users::GoalsController < Vendors::ApplicationControlle
     if @goal
       @goal.destroy 
     end
-    json_response(@goal, :xref_goal_type) 
+    json_response(@goal, included_models)
    end
 
    protected
@@ -43,5 +43,11 @@ class Vendors::Dashboard::Users::GoalsController < Vendors::ApplicationControlle
      else
        params.require(:goal).permit(:tag, :priority, :target_amount, :xref_goal_name)
      end
+   end
+
+   private
+
+   def included_models
+    [:xref_goal_type. :time_until_completion]
    end
 end

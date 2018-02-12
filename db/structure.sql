@@ -310,7 +310,8 @@ CREATE TABLE transfers (
     transfer_amount_attempted numeric(10,2),
     next_transfer_date date,
     status status,
-    end_date timestamp without time zone
+    end_date timestamp without time zone,
+    rule_id integer
 );
 
 
@@ -1461,6 +1462,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180206164856'),
 ('20180208153235'),
 ('20180210172917'),
-('20180212070432');
+('20180212070432'),
+('20180212072704');
 
 
