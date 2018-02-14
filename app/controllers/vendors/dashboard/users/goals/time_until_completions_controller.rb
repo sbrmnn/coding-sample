@@ -19,7 +19,7 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
       time_until_completion_params[:amount].to_f/(time_until_completion_params[:repeats].to_f*frequency_to_days(time_until_completion_params[:frequency])).to_f rescue 0
     else
       recurring_transfers = RecurringTransferRule.where(goal: @goal).first
-      recurring_transfers.amount.to_f/(repeats*frequency_to_days(recurring_transfers.frequency)).to_f rescue 0
+      recurring_transfers.amount.to_f/(recurring_transfers.repeats*frequency_to_days(recurring_transfers.frequency)).to_f rescue 0
     end
   end 
  
@@ -34,11 +34,11 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
 
   def frequency_to_days(frequency)
     case frequency
-    when 'days'
+    when 'day'
         1
-    when 'weeks'
+    when 'week'
         7
-    when 'months'
+    when 'month'
         30
     end
   end

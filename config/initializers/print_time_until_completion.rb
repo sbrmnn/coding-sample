@@ -1,12 +1,13 @@
  class Object
   def print_time_until_completion(days)
+     days = days.ceil
      years = days/365
-     days_left_yr = days - (years*365)
-     months = days_left_yr/30
-     days_left_mth = days_left_yr  - (months*30)
-     weeks = days_left_mth/7
-     days_left_week = days_left_mth - (weeks*7)
-     days_left = days_left_week
+     days = years >= 1 ? days - (years*365) : days
+     months = days/30
+     days = months >= 1 ? days  - (months*30) : days
+     weeks = days/7
+     days = weeks >=1 ? days - (weeks*7) : days
+     days_left = days
      str = ""
 
      if years ==1
@@ -23,13 +24,13 @@
 
      if weeks == 1
          str << " 1 week"
-     elsif weeks >=1
+     elsif weeks >1
          str << " #{weeks} weeks"
      end
 
      if days_left == 1
          str << " 1 day"
-     elsif days_left >=1
+     elsif days_left >1
          str << " #{days_left} days"
      end
      
