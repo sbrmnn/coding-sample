@@ -7,7 +7,7 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Applica
     time_until_completion = TimeUntilCompletion.where(goal: @goal).first
     algo_rate = time_until_completion.amount.to_f/time_until_completion.avg_amount.to_f rescue 0
     total_rate = algo_rate + recurring_transfers_rate
-    return json_response({:time_until_completion => 'unavailable'}, nil, :ok) and return  if total_rate == 0
+    json_response({:time_until_completion => 'unavailable'}, nil, :ok) and return  if total_rate == 0
     json_response({:time_until_completion => time_until_completion.amount/total_rate}, nil, :ok)   
   end
 
