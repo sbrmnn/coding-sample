@@ -32,6 +32,7 @@ Rails.application.routes.draw do
               resources :goals do
                scope module: :goals do
                  resource :recurring_transfer_rules, only: [:update, :show]
+                 resource :time_until_completions, only: [:show]
                end
               end
               resources :offer_messages, param: :offer_id, only: [:update]
