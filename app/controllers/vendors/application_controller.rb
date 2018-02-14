@@ -3,6 +3,13 @@ class Vendors::ApplicationController < ApplicationController
   
   protected
 
+  def find_goal
+    @goal = @user.goals.find_by(id: params[:goal_id])
+    if @goal.blank? 
+      json_response({:goal => :not_found}, nil, :not_found) and return 
+    end
+  end
+
   def vendor_key_exists?
     params[:vendor_key].present?
   end
