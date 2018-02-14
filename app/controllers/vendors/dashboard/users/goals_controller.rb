@@ -48,6 +48,6 @@ class Vendors::Dashboard::Users::GoalsController < Vendors::ApplicationControlle
    private
 
    def included_models
-    [:xref_goal_type, :time_until_completion]
+    [:xref_goal_type, :time_until_completion, :recurring_transfer_rule]
    end
 end

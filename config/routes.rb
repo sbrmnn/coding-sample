@@ -29,7 +29,11 @@ Rails.application.routes.draw do
           resources :users, param: :token, only: [:show] do
             scope module: :users do
               resource  :balances, only: [:show]
-              resources :goals
+              resources :goals do
+               scope module: :goals do
+                 resource :recurring_transfer_rules, only: [:update, :show]
+               end
+              end
               resources :offer_messages, param: :offer_id, only: [:update]
               resources :offers, only: [:index, :show]
               resource  :settings, only: [:show, :update]

@@ -550,16 +550,38 @@ ALTER SEQUENCE products_id_seq OWNED BY products.id;
 
 CREATE TABLE recurring_transfer_rules (
     id integer NOT NULL,
-    goals_id integer NOT NULL,
+    goal_id integer NOT NULL,
     amount character varying(50) NOT NULL,
     frequency character varying(10),
     repeats integer,
     start_dt timestamp without time zone NOT NULL,
     end_dt timestamp without time zone NOT NULL,
     deleted_at timestamp without time zone,
-    CONSTRAINT check_frequency CHECK (((frequency)::text = ANY ((ARRAY['day'::character varying, 'week'::character varying, 'month'::character varying])::text[]))),
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT check_frequency CHECK (((frequency)::text = ANY (ARRAY[('day'::character varying)::text, ('week'::character varying)::text, ('month'::character varying)::text]))),
     CONSTRAINT check_repeat CHECK ((repeats = ANY (ARRAY[1, 2, 3])))
 );
+
+
+--
+-- Name: recurring_transfer_rules_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE recurring_transfer_rules_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: recurring_transfer_rules_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE recurring_transfer_rules_id_seq OWNED BY recurring_transfer_rules.id;
 
 
 --
@@ -894,6 +916,13 @@ ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq':
 
 
 --
+-- Name: recurring_transfer_rules id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY recurring_transfer_rules ALTER COLUMN id SET DEFAULT nextval('recurring_transfer_rules_id_seq'::regclass);
+
+
+--
 -- Name: transactions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1214,6 +1243,13 @@ CREATE UNIQUE INDEX index_products_on_name_and_financial_institution_id ON produ
 
 
 --
+-- Name: index_recurring_transfer_rules_on_goal_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recurring_transfer_rules_on_goal_id ON recurring_transfer_rules USING btree (goal_id);
+
+
+--
 -- Name: index_transactions_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1412,7 +1448,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171026154034'),
 ('20171029050448'),
 ('20171030042401'),
-('20171031032104'),
 ('20171031061024'),
 ('20171031215220'),
 ('20171102035919'),
@@ -1460,9 +1495,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180120213335'),
 ('20180121072949'),
 ('20180206164856'),
-('20180208153235'),
-('20180210172917'),
 ('20180212070432'),
-('20180212072704');
+('20180212072704'),
+('20180213213955');
 
 
