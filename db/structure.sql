@@ -555,7 +555,7 @@ CREATE TABLE recurring_transfer_rules (
     frequency character varying(10),
     repeats integer,
     start_dt timestamp without time zone NOT NULL,
-    end_dt timestamp without time zone NOT NULL,
+    end_dt timestamp without time zone DEFAULT 'infinity'::timestamp without time zone NOT NULL,
     deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -1505,6 +1505,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180212070432'),
 ('20180212072704'),
 ('20180213213955'),
-('20180214005558');
+('20180214005558'),
+('20180214061600');
 
 

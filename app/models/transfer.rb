@@ -9,5 +9,5 @@ class Transfer < ApplicationRecord
 
   validates :amount, numericality: { greater_than_or_equal_to: 0}
 
-  belongs_to :recurring_transfer_rule, foreign_key: :rule_id
+  belongs_to :recurring_transfer_rule, foreign_key: :rule_id, optional: true
 end
