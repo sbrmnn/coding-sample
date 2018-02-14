@@ -8,7 +8,7 @@ class Goal < ApplicationRecord
   validates :balance, numericality: { greater_than_or_equal_to: 0}
   has_one :goal_statistic
   has_one :time_until_completion
-  has_one :recurring_transfer_rule
+  has_one :recurring_transfer_rule, dependent: :destroy
   delegate :percent_saved, to: :goal_statistic
 
   belongs_to :user

@@ -1243,6 +1243,13 @@ CREATE UNIQUE INDEX index_products_on_name_and_financial_institution_id ON produ
 
 
 --
+-- Name: index_recurring_transfer_rules_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recurring_transfer_rules_on_deleted_at ON recurring_transfer_rules USING btree (deleted_at);
+
+
+--
 -- Name: index_recurring_transfer_rules_on_goal_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1497,6 +1504,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180206164856'),
 ('20180212070432'),
 ('20180212072704'),
-('20180213213955');
+('20180213213955'),
+('20180214005558');
 
 
