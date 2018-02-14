@@ -8,8 +8,7 @@ class Vendors::Dashboard::Users::Goals::RecurringTransferRulesController < Vendo
     if @recurring_transfer_rule
       @recurring_transfer_rule.update_attributes(recurring_transfer_rules_param)
     else
-     @recurring_transfer_rule = RecurringTransferRule.new(recurring_transfer_rules_param)
-     @recurring_transfer_rule.goal_id = @goal.id
+     @recurring_transfer_rule = @goal.build_recurring_transfer_rule(recurring_transfer_rules_param)
      @recurring_transfer_rule.save
     end
     json_response(@recurring_transfer_rule) 
