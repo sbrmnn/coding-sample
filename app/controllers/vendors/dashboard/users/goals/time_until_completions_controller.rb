@@ -5,7 +5,6 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Applica
   
   def show
     time_until_completion = TimeUntilCompletion.where(goal: @goal).first
-    recurring_transfers_rate = time_until_completion_params[:amount].to_f/(time_until_completion_params[:repeats]*frequency_to_days(time_until_completion_params[:frequency])).to_f rescue 0
     algo_rate = time_until_completion.amount.to_f/time_until_completion.avg_amount.to_f rescue 0
     total_rate = algo_rate + recurring_transfers_rate
     return json_response({:time_until_completion => 'unavailable'}, nil, :ok) and return  if total_rate == 0
@@ -15,6 +14,15 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Applica
 
   
   private 
+
+  def recurring_transfers_rate 
+  	if params[:calculate].present?
+  	  time_until_completion_params[:amount].to_f/(time_until_completion_params[:repeats]*frequency_to_days(time_until_completion_params[:frequency])).to_f rescue 0
+  	else
+  	  recurring_transfers = RecurringTransferRule.where(goal: @goal).first
+  	  recurring_transfers.amount.to_f/(repeats*frequency_to_days(recurring_transfers.frequency)).to_f rescue 0
+  	end
+  end 
 
 
   def time_until_completion_params
