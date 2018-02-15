@@ -34,7 +34,7 @@ class Vendors::Dashboard::Users::Goals::RecurringTransferRulesController < Vendo
     if params[:recurring_transfer_rules].blank?
      {}
     else
-     params.require(:recurring_transfer_rules).permit(:amount, :frequency, :repeats, :start_dt, :end_dt)
+     params.require(:recurring_transfer_rules).permit(:amount, :frequency, :repeats, :start_dt)
     end
   end
 end
