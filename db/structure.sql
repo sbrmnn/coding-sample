@@ -461,6 +461,61 @@ ALTER SEQUENCE monotto_users_id_seq OWNED BY monotto_users.id;
 
 
 --
+-- Name: recurring_transfer_rules; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE recurring_transfer_rules (
+    id integer NOT NULL,
+    goal_id integer NOT NULL,
+    amount character varying(50) NOT NULL,
+    frequency character varying(10),
+    repeats integer,
+    start_dt timestamp without time zone NOT NULL,
+    end_dt timestamp without time zone DEFAULT 'infinity'::timestamp without time zone NOT NULL,
+    deleted_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT check_frequency CHECK (((frequency)::text = ANY (ARRAY[('day'::character varying)::text, ('week'::character varying)::text, ('month'::character varying)::text]))),
+    CONSTRAINT check_repeat CHECK ((repeats = ANY (ARRAY[1, 2, 3])))
+);
+
+
+--
+-- Name: next_recurring_transfers; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW next_recurring_transfers AS
+ WITH last_dt_table AS (
+         SELECT t.rule_id,
+            max(t.created_at) AS last_dt
+           FROM transfers t,
+            recurring_transfer_rules r
+          WHERE ((t.status = 'successful'::status) AND (t.rule_id = r.id) AND (r.deleted_at IS NULL))
+          GROUP BY t.rule_id
+        ), all_rules AS (
+         SELECT r.id,
+            r.goal_id,
+            r.repeats,
+            r.frequency,
+            r.start_dt
+           FROM recurring_transfer_rules r,
+            goals g
+          WHERE ((g.id = r.goal_id) AND (r.deleted_at IS NULL))
+        )
+ SELECT a.id AS rule_id,
+    a.goal_id,
+    a.repeats,
+    (
+        CASE
+            WHEN (l.last_dt IS NULL) THEN a.start_dt
+            WHEN (l.last_dt > a.start_dt) THEN l.last_dt
+            ELSE a.start_dt
+        END + ((a.repeats || (a.frequency)::text))::interval) AS next_trasnfer
+   FROM (all_rules a
+     LEFT JOIN last_dt_table l ON ((l.rule_id = a.id)));
+
+
+--
 -- Name: offers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -542,26 +597,6 @@ CREATE SEQUENCE products_id_seq
 --
 
 ALTER SEQUENCE products_id_seq OWNED BY products.id;
-
-
---
--- Name: recurring_transfer_rules; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE recurring_transfer_rules (
-    id integer NOT NULL,
-    goal_id integer NOT NULL,
-    amount character varying(50) NOT NULL,
-    frequency character varying(10),
-    repeats integer,
-    start_dt timestamp without time zone NOT NULL,
-    end_dt timestamp without time zone DEFAULT 'infinity'::timestamp without time zone NOT NULL,
-    deleted_at timestamp without time zone,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    CONSTRAINT check_frequency CHECK (((frequency)::text = ANY (ARRAY[('day'::character varying)::text, ('week'::character varying)::text, ('month'::character varying)::text]))),
-    CONSTRAINT check_repeat CHECK ((repeats = ANY (ARRAY[1, 2, 3])))
-);
 
 
 --
@@ -1506,6 +1541,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180212072704'),
 ('20180213213955'),
 ('20180214005558'),
-('20180214061600');
+('20180214061600'),
+('20180215055818');
 
 
