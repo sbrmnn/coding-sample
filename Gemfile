@@ -12,6 +12,8 @@ gem "paranoia", "~> 2.2"
 
 gem 'rack-cors', :require => 'rack/cors'
 
+gem 'wannabe_bool'
+
 # GEMS for S3 File uploads to work
 #------------------------------->
 gem 'carrierwave', '~> 1.0'

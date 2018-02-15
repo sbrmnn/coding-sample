@@ -15,7 +15,7 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
   private 
 
   def recurring_transfers_rate 
-    if params[:calculate].present?
+    if params[:calculate].to_b
       time_until_completion_params[:amount].to_f/(time_until_completion_params[:repeats].to_f*frequency_to_days(time_until_completion_params[:frequency])).to_f rescue 0
     else
       recurring_transfers = RecurringTransferRule.where(goal: @goal).first

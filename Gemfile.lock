@@ -721,6 +721,7 @@ GEM
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     useragent (0.16.8)
+    wannabe_bool (0.7.0)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -754,6 +755,7 @@ DEPENDENCIES
   sqlite3
   to_factory
   tzinfo-data
+  wannabe_bool
   whenever
 
 BUNDLED WITH
