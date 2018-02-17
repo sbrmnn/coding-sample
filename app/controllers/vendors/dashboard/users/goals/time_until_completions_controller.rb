@@ -9,7 +9,8 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
     algo_rate = 0.0 if algo_rate.infinite?.present? 
     total_rate = algo_rate + recurring_transfers_rate
     json_response({:time_until_completion => 'unavailable'}, nil, :ok) and return  if total_rate == 0.0
-    json_response({:time_until_completion => print_time_until_completion(time_until_completion.amount/total_rate)}, nil, :ok)
+    amount_left = GoalStatistic.find(@goal).amount_left
+    json_response({:time_until_completion => print_time_until_completion(amount_left/total_rate)}, nil, :ok)
   end
 
   private 
