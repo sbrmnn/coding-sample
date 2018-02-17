@@ -14,6 +14,8 @@ gem 'rack-cors', :require => 'rack/cors'
 
 gem 'wannabe_bool'
 
+gem 'time_difference'
+
 # GEMS for S3 File uploads to work
 #------------------------------->
 gem 'carrierwave', '~> 1.0'

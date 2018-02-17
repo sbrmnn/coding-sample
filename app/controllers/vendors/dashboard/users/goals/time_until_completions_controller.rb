@@ -5,10 +5,10 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
   
   def show
     time_until_completion = TimeUntilCompletion.where(goal: @goal).first
-    algo_rate = time_until_completion.amount.to_f/time_until_completion.avg_amount.to_f rescue 0
-    algo_rate = 0 if algo_rate.infinite?.present? 
+    algo_rate = time_until_completion.amount.to_f/time_until_completion.avg_amount.to_f rescue 0.0
+    algo_rate = 0.0 if algo_rate.infinite?.present? 
     total_rate = algo_rate + recurring_transfers_rate
-    json_response({:time_until_completion => 'unavailable'}, nil, :ok) and return  if total_rate == 0
+    json_response({:time_until_completion => 'unavailable'}, nil, :ok) and return  if total_rate == 0.0
     json_response({:time_until_completion => print_time_until_completion(time_until_completion.amount/total_rate)}, nil, :ok)
   end
 
@@ -28,7 +28,7 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
      if params[:time_until_completion].blank?
        {}
      else
-       params.require(:time_until_completion).permit(:frequency, :repeats, :amount)
+       params.require(:time_until_completion).permit(:frequency, :repeats, :amount, :delete_at)
      end
   end
 
