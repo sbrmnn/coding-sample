@@ -4,23 +4,16 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
   before_action :find_goal
   
   def show
-    time_until_completion = TimeUntilCompletion.where(goal: @goal).first
-    algo_rate = time_until_completion.amount.to_f/time_until_completion.avg_amount.to_f rescue 0.0
-    algo_rate = 0.0 if algo_rate.infinite?.present? 
-    total_rate = algo_rate + recurring_transfers_rate
-    json_response({:time_until_completion => 'unavailable'}, nil, :ok) and return  if total_rate == 0.0
-    amount_left = GoalStatistic.find(@goal).amount_left
-    json_response({:time_until_completion => print_time_until_completion(amount_left/total_rate)}, nil, :ok)
+    json_response({:time_until_completion => print_time_until_completion(days_to_completion)}, nil, :ok)
   end
 
   private 
 
-  def recurring_transfers_rate 
+  def days_to_completion 
     if params[:calculate].to_b
-      time_until_completion_params[:amount].to_f/(time_until_completion_params[:repeats].to_f*frequency_to_days(time_until_completion_params[:frequency])).to_f rescue 0
+      GoalCompletion.new(@goal.id, time_until_completion_params[:frequency], time_until_completion_params[:repeats], time_until_completion_params[:amount].to_f).calculate
     else
-      recurring_transfers = RecurringTransferRule.where(goal: @goal).first
-      recurring_transfers.amount.to_f/(recurring_transfers.repeats*frequency_to_days(recurring_transfers.frequency)).to_f rescue 0
+      GoalCompletion.new(@goal.id).calculate
     end
   end 
  
@@ -31,16 +24,5 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
      else
        params.require(:time_until_completion).permit(:frequency, :repeats, :amount, :delete_at)
      end
-  end
-
-  def frequency_to_days(frequency)
-    case frequency
-    when 'day'
-        1
-    when 'week'
-        7
-    when 'month'
-        30
-    end
   end
 end
