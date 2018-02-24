@@ -1,4 +1,4 @@
-class BankJoy
+class BankJoyService
   def self.register_user(checking_account_identifier)
     payload = {"account_id": checking_account_identifier, "function": "registration"}
     lambda_response(payload)

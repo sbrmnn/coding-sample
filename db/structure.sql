@@ -271,7 +271,8 @@ CREATE TABLE goals (
 
 CREATE VIEW goal_statistics AS
  SELECT goals.id AS goal_id,
-    ((goals.balance * (100)::numeric) / goals.target_amount) AS percent_saved
+    ((goals.balance * (100)::numeric) / goals.target_amount) AS percent_saved,
+    (goals.target_amount - goals.balance) AS amount_left
    FROM goals;
 
 
@@ -1545,6 +1546,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180215055818'),
 ('20180215070202'),
 ('20180215221653'),
-('20180216051711');
+('20180216051711'),
+('20180217013206');
 
 
