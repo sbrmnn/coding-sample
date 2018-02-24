@@ -1,12 +1,16 @@
 class GoalCompletion
-  attr_reader :recurring_rate, :algo_rate, :amount_left, :goal_id
+  attr_reader :recurring_rate, :algo_rate, :amount_left, :goal_id, :input_frequency, :input_repeats, :input_amount
   
-  def initialize(goal_id)
+  def initialize(goal_id, frequency=nil, repeats=nil, amount=nil)
+    validate_inputs(frequency, repeats, amount)
     @goal_id = goal_id
     raise "Goal with ID not found" if goal.blank?
     @algo_rate = calculate_algo_rate
-    @amount_left = goal_statistic.amount_left.to_f
-    @recurring_rate = calculate_recurring_rate  
+    @amount_left = goal_statistic.amount_left.to_f 
+    @input_frequency = frequency
+    @input_repeats =    repeats
+    @input_amount =    amount
+    @recurring_rate = calculate_recurring_rate
   end
 
 
@@ -16,42 +20,51 @@ class GoalCompletion
       if recurring_rate == 0.0
         return 'unavailable'
       else
-         return (amount_left/recurring_rate).ceil
+         return sanitize_days((amount_left/recurring_rate).ceil) 
       end
     elsif recurring_rate == 0.0
-      return (amount_left/algo_rate).ceil
+      return sanitize_days((amount_left/algo_rate).ceil)  
     end
     
     if recurring_transfer_rule.frequency == 'day' && recurring_transfer_rule.repeats == 1
-      return (amount_left/(algo_rate + recurring_rate)).ceil
+      return sanitize_days((amount_left/(algo_rate + recurring_rate)).ceil) 
     end
     new_end_date = algo_end_date
     total = 0
     i = 0
-    (algo_transfer_dates.count-1).times do
+    (algo_transfer_dates.count).times do
       ad = algo_transfer_dates[i]
       if recurring_transfer_dates.include?(ad)
         total = total + recurring_transfer_rule.amount.to_f + algo_rate
       else
         total = total + algo_rate
       end
-      new_end_date = ad.to_datetime
-      if total >= amount_left
+      new_end_date = ad
+      if total >= amount_left    
        break
       end
       i = i + 1
     end
-    return (new_end_date - Date.today).to_f
+    return sanitize_days((new_end_date - today).to_i)  
   end
 
   private
+
+  def validate_inputs(frequency, repeats, amount)
+   if (!frequency && repeats && amount) || (frequency && !repeats && !amount) || (!repeats && amount) || (repeats && !amount)
+      raise "Please specify all arguments."
+   end
+   if frequency.present? && !['day', 'month', 'year'].include?(frequency)
+     raise "Valid frequency values are ['day', 'month', 'year']" 
+   end
+  end
 
   def recurring_start_dt
     recurring_transfer_rule.start_dt.beginning_of_day   
   end
 
   def today
-    Date.today.beginning_of_day
+    Date.today.beginning_of_day.to_datetime
   end
 
   def recurring_transfer_dates
@@ -59,17 +72,22 @@ class GoalCompletion
     if recurring_transfer_rule.repeats == 0
       return @recurring_transfer_dates ||= [recurring_start_dt].to_set &  algo_transfer_dates
     else
-     @recurring_transfer_dates ||= ActiveRecord::Base.connection.execute("SELECT generate_series(date '#{recurring_start_dt}', '#{algo_end_date}', '#{recurring_transfer_rule.repeats} #{recurring_transfer_rule.frequency}') :: date").map{|l| l[
+     @recurring_transfer_dates ||= ActiveRecord::Base.connection.execute("SELECT generate_series(timestamp '#{recurring_start_dt}', '#{algo_end_date}', '#{recurring_transfer_rule.repeats} #{recurring_transfer_rule.frequency}') :: timestamp").map{|l| l[
         "generate_series"].to_date}.to_set & algo_transfer_dates
     end
   end
 
   def algo_transfer_dates
-    @algo_transfer_dates ||=  (today.to_date..algo_end_date.to_date).to_a
+    @algo_transfer_dates ||=  (today..algo_end_date).to_a
   end
 
   def algo_end_date
-    today + ((amount_left/algo_rate).ceil).days
+    days =  ((amount_left/algo_rate).ceil)
+    if days >= max_days
+     today + max_days.days
+    else
+      today + ((amount_left/algo_rate).ceil).days
+    end
   end
 
   def calculate_recurring_rate
@@ -89,6 +107,18 @@ class GoalCompletion
     rate
   end
 
+  def sanitize_days(days)
+   if max_days < days
+     max_days
+   else
+    days
+   end
+  end
+
+  def max_days
+    18250
+  end
+
   def goal_statistic
     @goal_statistic ||= GoalStatistic.find_by(goal: goal)
   end
@@ -98,6 +128,10 @@ class GoalCompletion
   end
 
   def recurring_transfer_rule
-    @recurring_transfer_rule ||= RecurringTransferRule.find_by(goal: goal)
+    if input_frequency || input_repeats || input_amount
+      @recurring_transfer_rule ||= RecurringTransferRule.new(frequency: input_frequency, repeats: input_repeats, amount: input_amount)
+    else
+      @recurring_transfer_rule ||= RecurringTransferRule.find_by(goal: goal)
+    end
   end
 end
