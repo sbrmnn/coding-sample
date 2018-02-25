@@ -54,8 +54,8 @@ class GoalCompletion
    if (!frequency && repeats && amount) || (frequency && !repeats && !amount) || (!repeats && amount) || (repeats && !amount)
       raise "Please specify all arguments."
    end
-   if frequency.present? && !['day', 'month', 'year'].include?(frequency)
-     raise "Valid frequency values are ['day', 'month', 'year']" 
+   if frequency.present? && !['day', 'week', 'month'].include?(frequency)
+     raise "Valid frequency values are ['day','week','month']" 
    end
   end
 
