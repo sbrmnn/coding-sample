@@ -1,5 +1,8 @@
  class Object
   def print_time_until_completion(days)
+     if days >= MAX_TIME_UNTIL_COMPLETION
+        return "> 50 years"
+     end
      days = days.ceil
      years = days/365
      days = years >= 1 ? days - (years*365) : days

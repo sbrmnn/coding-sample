@@ -116,7 +116,7 @@ class GoalCompletion
   end
 
   def max_days
-    18250
+    MAX_TIME_UNTIL_COMPLETION
   end
 
   def goal_statistic
