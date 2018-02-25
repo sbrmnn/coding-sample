@@ -37,6 +37,7 @@ class GoalCompletion
     new_end_date = algo_end_date
     total = 0
     i = 0
+
     (algo_transfer_dates.count).times do
       ad = algo_transfer_dates[i]
       if recurring_transfer_dates.include?(ad)
