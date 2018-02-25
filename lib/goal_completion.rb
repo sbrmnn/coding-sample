@@ -1,8 +1,8 @@
 class GoalCompletion
-  attr_reader :recurring_rate, :algo_rate, :amount_left, :goal_id, :input_frequency, :input_repeats, :input_amount
+  attr_reader :recurring_rate, :algo_rate, :amount_left, :goal_id, :input_frequency, :input_repeats, :input_amount, :input_start_dt
   
-  def initialize(goal_id, frequency=nil, repeats=nil, amount=nil)
-    validate_inputs(frequency, repeats, amount)
+  def initialize(goal_id, frequency=nil, repeats=nil, amount=nil, start_dt=nil)
+    validate_inputs(frequency, repeats, amount, start_dt)
     @goal_id = goal_id
     raise "Goal with ID not found" if goal.blank?
     @algo_rate = calculate_algo_rate
@@ -10,6 +10,7 @@ class GoalCompletion
     @input_frequency = frequency
     @input_repeats =    repeats
     @input_amount =    amount
+    @input_start_dt =  start_dt
     @recurring_rate = calculate_recurring_rate
   end
 
@@ -54,8 +55,8 @@ class GoalCompletion
 
   private
 
-  def validate_inputs(frequency, repeats, amount)
-   if (!frequency && repeats && amount) || (frequency && !repeats && !amount) || (!repeats && amount) || (repeats && !amount)
+  def validate_inputs(frequency, repeats, amount, start_dt)
+   if (!frequency && repeats && amount && start_dt) || (frequency && !repeats && !amount && !start_dt) || (!repeats && amount && start_dt) || (repeats && !amount && start_dt) || (repeats && amount && !start_dt) 
       raise "Please specify all arguments."
    end
    if frequency.present? && !['day', 'week', 'month'].include?(frequency)
@@ -134,8 +135,8 @@ class GoalCompletion
   end
 
   def recurring_transfer_rule
-    if input_frequency || input_repeats || input_amount
-      @recurring_transfer_rule ||= RecurringTransferRule.new(frequency: input_frequency, repeats: input_repeats, amount: input_amount)
+    if input_frequency || input_repeats || input_amount || input_start_dt
+      @recurring_transfer_rule ||= RecurringTransferRule.new(frequency: input_frequency, repeats: input_repeats, amount: input_amount, start_dt: input_start_dt)
     else
       @recurring_transfer_rule ||= RecurringTransferRule.find_by(goal: goal)
     end

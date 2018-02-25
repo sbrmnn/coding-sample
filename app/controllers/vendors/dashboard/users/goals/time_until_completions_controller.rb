@@ -14,7 +14,8 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
 
   def days_to_completion 
     if params[:calculate].to_b
-      GoalCompletion.new(@goal.id, time_until_completion_params[:frequency], time_until_completion_params[:repeats], time_until_completion_params[:amount].to_f).calculate
+      start_dt = time_until_completion_params[:start_dt] || Date.today
+      GoalCompletion.new(@goal.id, time_until_completion_params[:frequency], time_until_completion_params[:repeats], time_until_completion_params[:amount].to_f, start_dt).calculate
     else
       GoalCompletion.new(@goal.id).calculate
     end
@@ -25,7 +26,7 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
      if params[:time_until_completion].blank?
        {}
      else
-       params.require(:time_until_completion).permit(:frequency, :repeats, :amount, :delete_at)
+       params.require(:time_until_completion).permit(:frequency, :repeats, :amount, :delete_at, :start_dt)
      end
   end
 end
