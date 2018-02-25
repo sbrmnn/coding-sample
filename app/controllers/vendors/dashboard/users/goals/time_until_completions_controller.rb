@@ -4,6 +4,9 @@ class Vendors::Dashboard::Users::Goals::TimeUntilCompletionsController < Vendors
   before_action :find_goal
   
   def show
+    if days_to_completion == 'unavailable'
+      json_response({:time_until_completion => 'unavailable'}, nil, :ok) and return
+    end
     json_response({:time_until_completion => print_time_until_completion(days_to_completion)}, nil, :ok)
   end
 
