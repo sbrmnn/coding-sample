@@ -25,9 +25,13 @@ class GoalCompletion
     elsif recurring_rate == 0.0
       return sanitize_days((amount_left/algo_rate).ceil)  
     end
-    
     if recurring_transfer_rule.frequency == 'day' && recurring_transfer_rule.repeats == 1
       return sanitize_days((amount_left/(algo_rate + recurring_rate)).ceil) 
+    end
+    if algo_transfer_dates.count > max_days
+      if (recurring_transfer_dates.count * recurring_transfer_rule.amount.to_f) < amount_left
+        return sanitize_days(max_days)
+      end
     end
     new_end_date = algo_end_date
     total = 0
@@ -114,6 +118,8 @@ class GoalCompletion
     days
    end
   end
+
+
 
   def max_days
     MAX_TIME_UNTIL_COMPLETION
