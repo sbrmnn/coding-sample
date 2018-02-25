@@ -21,13 +21,13 @@ class GoalCompletion
       if recurring_rate == 0.0
         return 'unavailable'
       else
-         return sanitize_days((amount_left/recurring_rate).ceil) 
+         return sanitize_days((amount_left/recurring_rate).round(1).ceil) 
       end
     elsif recurring_rate == 0.0
-      return sanitize_days((amount_left/algo_rate).ceil)  
+      return sanitize_days((amount_left/algo_rate).round(1).ceil)  
     end
     if recurring_transfer_rule.frequency == 'day' && recurring_transfer_rule.repeats == 1
-      return sanitize_days((amount_left/(algo_rate + recurring_rate)).ceil) 
+      return sanitize_days((amount_left/(algo_rate + recurring_rate)).round(1).ceil) 
     end
     if algo_transfer_dates.count > max_days
       if (recurring_transfer_dates.count * recurring_transfer_rule.amount.to_f) < amount_left
@@ -37,7 +37,7 @@ class GoalCompletion
     new_end_date = algo_end_date
     total = 0
     i = 0
-
+    
     (algo_transfer_dates.count).times do
       ad = algo_transfer_dates[i]
       if recurring_transfer_dates.include?(ad)
