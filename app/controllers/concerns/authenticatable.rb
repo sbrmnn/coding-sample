@@ -33,7 +33,7 @@ module Authenticatable
     raise "Argument must be a user object." unless user_obj.is_a? User
     case user_obj
     when user_obj.bankjoy_user?
-      BankJoy.user_login(@user.id)
+      BankJoyService.user_login(@user.id)
     end
   end
 

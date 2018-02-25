@@ -33,7 +33,7 @@ class User < ApplicationRecord
   end
 
   def register_bankjoy_user
-    resp = BankJoy.register_user(checking_account_identifier)
+    resp = BankJoyService.register_user(checking_account_identifier)
     if resp["Status"] == 'Failure'
       self.api_errors << ApiError.new(status: resp["Status"], response: resp["Reason"], service: :aws_lambda, function: :registration)
     elsif resp["Status"] == 'Success'
@@ -48,7 +48,7 @@ class User < ApplicationRecord
   end
 
   def login_bankjoy_user
-    resp = BankJoy.user_login(id)
+    resp = BankJoyService.user_login(id)
     if resp["Status"] == 'Failure'
       self.api_errors << ApiError.new(status: resp["Status"], response: resp["Reason"], service: :aws_lambda, function: :login)
     elsif resp["Status"] == 'Success'
