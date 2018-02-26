@@ -26,18 +26,16 @@ class GoalCompletion
     elsif recurring_rate == 0.0
       return sanitize_days((amount_left/algo_rate).round(1).ceil)  
     end
-    if recurring_transfer_rule.frequency == 'day' && recurring_transfer_rule.repeats == 1
-      return sanitize_days((amount_left/(algo_rate + recurring_rate)).round(1).ceil) 
-    end
-    if algo_transfer_dates.count > max_days
-      if (recurring_transfer_dates.count * recurring_transfer_rule.amount.to_f) < amount_left
+
+    algo_transfer_date_count = algo_transfer_dates.count
+    if algo_transfer_date_count > max_days
+      if ((recurring_transfer_dates.count * recurring_transfer_rule.amount.to_f) + (algo_transfer_date_count*algo_rate))  <= amount_left
         return sanitize_days(max_days)
       end
     end
     new_end_date = algo_end_date
     total = 0
     i = 0
-    
     (algo_transfer_dates.count).times do
       ad = algo_transfer_dates[i]
       if recurring_transfer_dates.include?(ad)
@@ -83,28 +81,43 @@ class GoalCompletion
     end
   end
 
+
   def algo_transfer_dates
-    @algo_transfer_dates ||=  (today..algo_end_date).to_a
+    @algo_transfer_dates ||= (start_date..algo_end_date).to_a
   end
 
   def algo_end_date
     days =  ((amount_left/algo_rate).ceil)
     if days >= max_days
-     today + max_days.days
+     start_date + max_days.days
     else
-      today + ((amount_left/algo_rate).ceil).days
+      start_date + ((amount_left/algo_rate).ceil).days
+    end
+  end
+  
+  def start_date
+    if transfer_happend_today?
+      start_date = today + 1.day
+    else
+      start_date = today
     end
   end
 
   def calculate_recurring_rate
     return 0.0 if recurring_transfer_rule.blank?
     multiple = (amount_left/recurring_transfer_rule.amount.to_f).ceil
-    days = Date.today+((multiple*recurring_transfer_rule.repeats).send("#{recurring_transfer_rule.frequency.pluralize}")) - Date.today
+    end_date = start_date + ((multiple*recurring_transfer_rule.repeats).send("#{recurring_transfer_rule.frequency.pluralize}"))
+    latest_transfer_date = ActiveRecord::Base.connection.execute("SELECT generate_series(timestamp '#{recurring_start_dt}', '#{start_date}', '#{recurring_transfer_rule.repeats} #{recurring_transfer_rule.frequency}') :: timestamp").map{|l| l}.map{|l| l["generate_series"].to_datetime}.last
+    days = (end_date - (start_date - latest_transfer_date).days - today).to_i
     (amount_left.to_f/days.to_f) rescue 0.0
   end
 
   def goal
     @goal ||= Goal.find_by(id: goal_id)
+  end
+
+  def transfer_happend_today?
+    Transfer.where("created_at >= ? and created_at <= ?", today.beginning_of_day,  today.end_of_day).any?
   end
 
   def calculate_algo_rate
