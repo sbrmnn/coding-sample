@@ -54,12 +54,12 @@ class GoalCompletion
   private
 
   def validate_inputs(frequency, repeats, amount, start_dt)
-   if (!frequency && repeats && amount && start_dt) || (frequency && !repeats && !amount && !start_dt) || (!repeats && amount && start_dt) || (repeats && !amount && start_dt) || (repeats && amount && !start_dt) 
+    if (!frequency && repeats && amount && start_dt) || (frequency && !repeats && !amount && !start_dt) || (!repeats && amount && start_dt) || (repeats && !amount && start_dt) || (repeats && amount && !start_dt) 
       raise "Please specify all arguments."
-   end
-   if frequency.present? && !['day', 'week', 'month'].include?(frequency)
-     raise "Valid frequency values are ['day','week','month']" 
-   end
+    end
+    if frequency.present? && !['day', 'week', 'month'].include?(frequency)
+      raise "Valid frequency values are ['day','week','month']" 
+    end
   end
 
   def recurring_start_dt
@@ -132,11 +132,11 @@ class GoalCompletion
   end
 
   def sanitize_days(days)
-   if max_days < days
-     max_days
-   else
-    days
-   end
+    if max_days < days
+      max_days
+    else
+      days
+    end
   end
 
   def max_days
