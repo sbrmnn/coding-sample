@@ -17,8 +17,8 @@ class User < ApplicationRecord
   validate :ensure_one_token_per_vendor,  if: lambda {vendor.present? && token_changed?}
   before_save :generate_token_if_none
   has_many :api_errors
-  after_create :insert_transfer_record
   after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
+  after_commit :insert_transfer_record, on: :create
   after_update :change_savings_account_in_user_goals, if: lambda {default_savings_account_identifier_changed?}
   
   def bankjoy_user?
@@ -87,8 +87,9 @@ class User < ApplicationRecord
 
 
   def insert_transfer_record
-    Transfer.create(user: self, next_transfer_date: nil, amount: nil,
-                    end_date: 'infinity', status: :successful, origin_account: checking_account_identifier, destination_account: default_savings_account_identifier)
+    if self.api_errors.blank?
+      Transfer.create(user: self, next_transfer_date: nil, amount: 0, end_date: 'infinity', status: :successful, origin_account: checking_account_identifier, destination_account: default_savings_account_identifier)
+    end
   end
 end
 
