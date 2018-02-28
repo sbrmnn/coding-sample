@@ -45,7 +45,7 @@ Rails.application.routes.draw do
       end
       resource :me, only: :show, controller: :me
       resources :financial_institutions
-      resources :users, param: :token, only: [:index, :show, :update] do
+      resources :users, param: :bank_user_id, only: [:index, :show, :update] do
         resource :dashboard_urls, only: [:create]
       end
     end

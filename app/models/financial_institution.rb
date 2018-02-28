@@ -16,7 +16,7 @@ class FinancialInstitution < ApplicationRecord
   delegate :average_user_balance, :sum_balance, :sum_message_clicks, 
            :total_messages, :total_users, to: :snapshot_summary
   
-  validates_presence_of :name, :location
+  validates_presence_of :name
   validates :max_transfer_amount, numericality: { greater_than: 0}
 
 

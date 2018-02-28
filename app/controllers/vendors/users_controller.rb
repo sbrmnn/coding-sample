@@ -6,13 +6,13 @@ class Vendors::UsersController < Vendors::ApplicationController
   end
  
   def show
-    @user = current_vendor.users.find_by(token: params[:token])
+    @user = current_vendor.users.find_by(bank_user_id: params[:user_bank_user_id])
     third_party_login(@user)
     json_response(@user)
   end
 
   def update
-    @user = current_vendor.users.find_by(token: params[:token])
+    @user = current_vendor.users.find_by(bank_user_id: params[:user_bank_user_id])
     json_response(@user) 
   end
 
