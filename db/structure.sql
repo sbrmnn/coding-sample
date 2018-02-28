@@ -475,7 +475,6 @@ CREATE TABLE recurring_transfer_rules (
     deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    active boolean DEFAULT true,
     CONSTRAINT check_frequency CHECK (((frequency)::text = ANY (ARRAY[('day'::character varying)::text, ('week'::character varying)::text, ('month'::character varying)::text]))),
     CONSTRAINT check_repeat CHECK ((repeats = ANY (ARRAY[0, 1, 2, 3])))
 );
@@ -1613,6 +1612,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180217013206'),
 ('20180228044257'),
 ('20180228074327'),
-('20180228202033');
+('20180228202033'),
+('20180228212924');
 
 
