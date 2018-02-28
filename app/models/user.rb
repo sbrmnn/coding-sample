@@ -18,11 +18,17 @@ class User < ApplicationRecord
   before_save :generate_token_if_none
   has_many :api_errors
   after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
-  after_commit :insert_transfer_record, on: :create
+  after_commit :insert_init_transfer_record, on: :create
   after_update :change_savings_account_in_user_goals, if: lambda {default_savings_account_identifier_changed?}
   
   def bankjoy_user?
     vendor.try(:bankjoy_vendor?).present?
+  end
+
+  def insert_init_transfer_record
+    if self.api_errors.blank?
+      Transfer.where(user: self, next_transfer_date: nil, amount: 0, end_date: 'infinity', status: :successful, origin_account: checking_account_identifier, destination_account: default_savings_account_identifier).first_or_create
+    end
   end
 
   protected
@@ -82,13 +88,6 @@ class User < ApplicationRecord
     financial_institution_max_transfer = self.financial_institution.max_transfer_amount
     if self.max_transfer_amount > financial_institution_max_transfer
       self.max_transfer_amount = financial_institution_max_transfer
-    end
-  end
-
-
-  def insert_transfer_record
-    if self.api_errors.blank?
-      Transfer.create(user: self, next_transfer_date: nil, amount: 0, end_date: 'infinity', status: :successful, origin_account: checking_account_identifier, destination_account: default_savings_account_identifier)
     end
   end
 end
