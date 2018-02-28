@@ -26,7 +26,7 @@ Rails.application.routes.draw do
               resources :users, param: :token, only: [:create]
             end
           end
-          resources :users, param: :token, only: [:show] do
+          resource :users, only: [:show] do
             scope module: :users do
               resource  :balances, only: [:show]
               resources :goals do
@@ -45,7 +45,9 @@ Rails.application.routes.draw do
       end
       resource :me, only: :show, controller: :me
       resources :financial_institutions
-      resources :users, param: :token, only: [:index, :show, :update]
+      resources :users, param: :token, only: [:index, :show, :update] do
+        resource :dashboard_urls, only: [:create]
+      end
     end
   end
 

@@ -1,9 +1,10 @@
 class Vendors::Dashboard::FinancialInstitutions::UsersController < Vendors::ApplicationController
-  skip_before_action :require_vendor_login, if: -> { vendor_key_exists? && create_action? }
-  before_action :get_financial_institution, if: -> { create_action? }
+  skip_before_action :require_vendor_login
+  before_action :get_financial_institution
 
   def create
     @user = User.new(user_params)
+    @user.vendor_key = params[:vendor_key]
     @financial_institution.users << @user
     json_response(@user)
   end
@@ -15,14 +16,14 @@ class Vendors::Dashboard::FinancialInstitutions::UsersController < Vendors::Appl
       {}
     else
       params.require(:user).permit(:bank_user_id, :default_savings_account_identifier, :checking_account_identifier,
-                                   :transfers_active, :safety_net_active, :max_transfer_amount, :token)
+                                   :transfers_active, :safety_net_active, :max_transfer_amount)
     end
   end
 
   private
 
   def get_financial_institution
-    @vendor = current_vendor || Vendor.find_by(key: params[:vendor_key].try(:strip))
+    @vendor = VendorKey.find_by(key: params[:vendor_key].try(:strip)).try(:vendor)
     if @vendor.blank?
       json_response({:vendor => :not_found}, nil, :not_found) and return
     end

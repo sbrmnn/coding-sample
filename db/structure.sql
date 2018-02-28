@@ -771,6 +771,40 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
+-- Name: vendor_keys; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE vendor_keys (
+    id integer NOT NULL,
+    vendor_id integer,
+    key character varying,
+    user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: vendor_keys_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE vendor_keys_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: vendor_keys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE vendor_keys_id_seq OWNED BY vendor_keys.id;
+
+
+--
 -- Name: vendors; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -980,6 +1014,13 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
+-- Name: vendor_keys id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY vendor_keys ALTER COLUMN id SET DEFAULT nextval('vendor_keys_id_seq'::regclass);
+
+
+--
 -- Name: vendors id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1127,6 +1168,14 @@ ALTER TABLE ONLY transfers
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: vendor_keys vendor_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY vendor_keys
+    ADD CONSTRAINT vendor_keys_pkey PRIMARY KEY (id);
 
 
 --
@@ -1318,6 +1367,20 @@ CREATE UNIQUE INDEX index_users_on_bank_user_id_and_financial_institution_id ON 
 --
 
 CREATE INDEX index_users_on_financial_institution_id ON users USING btree (financial_institution_id);
+
+
+--
+-- Name: index_vendor_keys_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vendor_keys_on_user_id ON vendor_keys USING btree (user_id);
+
+
+--
+-- Name: index_vendor_keys_on_vendor_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_vendor_keys_on_vendor_id ON vendor_keys USING btree (vendor_id);
 
 
 --
@@ -1547,6 +1610,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180215070202'),
 ('20180215221653'),
 ('20180216051711'),
-('20180217013206');
+('20180217013206'),
+('20180228044257');
 
 

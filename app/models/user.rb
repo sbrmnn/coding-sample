@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  attr_accessor :vendor_key
   has_many :demographics, dependent: :destroy
   has_many :transfers, dependent: :destroy
   has_one :vendor, through: :financial_institution
@@ -8,19 +9,20 @@ class User < ApplicationRecord
   has_many :transactions, dependent: :destroy
   before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
   validates :max_transfer_amount, numericality: {greater_than: 0}
+  validate :vendor_key_with_no_user, on: :create, if: lambda {vendor.present?}
   validates_presence_of :bank_user_id,
                         :default_savings_account_identifier, :checking_account_identifier
   
-  validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id]
+  validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id], unless: lambda {vendor.present?}
   validates_uniqueness_of :checking_account_identifier, scope: [:financial_institution_id], :message => "Please select another checking account."
   validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present? && bank_user_id_changed?}
-  validate :ensure_one_token_per_vendor,  if: lambda {vendor.present? && token_changed?}
-  before_save :generate_token_if_none
   has_many :api_errors
   after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
   after_commit :insert_init_transfer_record, on: :create
+  after_create :assign_user_to_vendor_key  
   after_update :change_savings_account_in_user_goals, if: lambda {default_savings_account_identifier_changed?}
-  
+  has_one :vendor_key
+
   def bankjoy_user?
     vendor.try(:bankjoy_vendor?).present?
   end
@@ -62,25 +64,22 @@ class User < ApplicationRecord
     end
   end
 
-  def generate_token_if_none
-    if self.token.blank?
-      token_length = 50
-      self.token = SecureRandom.urlsafe_base64(token_length)
-      while User.exists?(:token => token) # Making sure token hasn't been assigned for another user.
-        self.token = SecureRandom.urlsafe_base64(token_length)
-      end
+  def vendor_key_with_no_user
+    if VendorKey.where(key: vendor_key).where("user_id is not null").present?
+      errors.add(:vendor_key, 'user has already been assigned to key')
+    elsif VendorKey.where(key: vendor_key, user_id: nil).empty?
+      errors.add(:vendor_key, 'doesn\'t exist')
     end
+  end
+
+  def assign_user_to_vendor_key
+    vendor_key_obj = VendorKey.find_by(key: vendor_key, user_id: nil)
+    vendor_key_obj.update_attributes(user: self)
   end
 
   def ensure_one_bank_user_id_per_vendor
     if vendor.users.where.not(id: id).where(bank_user_id: bank_user_id).any?
       errors.add(:bank_user_id, 'already exists for another user within vendor.')
-    end
-  end
-
-  def ensure_one_token_per_vendor
-    if vendor.users.where.not(id: id).where(token: token).any?
-      errors.add(:token, 'not valid.')
     end
   end
 
