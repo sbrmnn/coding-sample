@@ -16,9 +16,9 @@ Rails.application.routes.draw do
 
 
   resource :vendors, except: [:create, :destroy, :show, :update] do
-    post   "login"  => "sessions#create"
-    delete "logout" => "sessions#destroy"
     scope module: :vendors do
+      post   "login"  => "sessions#create"
+      delete "logout" => "sessions#destroy"
       resource :dashboard, except: [:create, :destroy, :show, :update] do
         scope module: :dashboard do
           resources :financial_institutions, except: [:index, :create, :destroy, :show, :update] do
@@ -46,7 +46,12 @@ Rails.application.routes.draw do
       resource :me, only: :show, controller: :me
       resources :financial_institutions
       resources :users, param: :bank_user_id, only: [:index, :show, :update] do
-        resource :dashboard_urls, only: [:create]
+        
+      end
+      resource :user,  except: [:index, :create, :destroy, :show, :update] do
+        scope module: :users do
+          resource :dashboard_urls, only: [:create]
+        end
       end
     end
   end

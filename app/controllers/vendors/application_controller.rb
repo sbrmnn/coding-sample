@@ -14,10 +14,10 @@ class Vendors::ApplicationController < ApplicationController
     action_name == "show"
   end
 
-  def find_user_by_vendor_key
-    @vendor_key = VendorKey.find_by(key: params[:vendor_key].try(:strip))
-    @user ||= @vendor_key.try(:user)
-    if @vendor_key.blank?
+  def find_user_by_vendor_user_key
+    @vendor_user_key = VendorUserKey.find_by(key: params[:vendor_user_key].try(:strip))
+    @user ||= @vendor_user_key.try(:user)
+    if @vendor_user_key.blank?
       json_response({:vendor => :not_found}, nil, :not_found) and return
     elsif @user.blank?
       json_response({:user => :not_found}, nil, :not_found) and return

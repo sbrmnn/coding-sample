@@ -2,10 +2,11 @@ class Vendor < ApplicationRecord
   include Loginable
   has_many :users, through: :financial_institutions
   has_many :financial_institutions
-  has_many :vendor_keys
+  has_many :vendor_user_keys
   before_save :create_key
   validates_presence_of :name, :location
   validates_uniqueness_of :email
+
 
   def bankjoy_vendor?
     self.name.try(:downcase) == 'bankjoy'

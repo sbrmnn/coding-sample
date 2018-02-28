@@ -1,6 +1,6 @@
 class Vendors::Dashboard::Users::OfferMessagesController < Vendors::ApplicationController
   skip_before_action :require_vendor_login
-  before_action :find_user_by_vendor_key
+  before_action :find_user_by_vendor_user_key
 
   def update
   	@offer_message = @user.messages.find_by(message_obj_id: params[:offer_id], message_obj_type: :Offer)

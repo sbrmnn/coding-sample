@@ -1,6 +1,6 @@
 class Vendors::Dashboard::Users::OffersController < Vendors::ApplicationController
   skip_before_action :require_vendor_login
-  before_action :find_user_by_vendor_key
+  before_action :find_user_by_vendor_user_key
   
   def index
     @offer_ids = @user.messages.where(message_obj_type: :Offer).limit(15).pluck(:message_obj_id)

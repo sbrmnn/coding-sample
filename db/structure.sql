@@ -212,7 +212,7 @@ ALTER SEQUENCE demographics_id_seq OWNED BY demographics.id;
 CREATE TABLE financial_institutions (
     id integer NOT NULL,
     name character varying NOT NULL,
-    location character varying NOT NULL,
+    location character varying,
     core character varying,
     web character varying,
     mobile character varying,
@@ -771,10 +771,10 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: vendor_keys; Type: TABLE; Schema: public; Owner: -
+-- Name: vendor_user_keys; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE vendor_keys (
+CREATE TABLE vendor_user_keys (
     id integer NOT NULL,
     vendor_id integer,
     key character varying,
@@ -785,10 +785,10 @@ CREATE TABLE vendor_keys (
 
 
 --
--- Name: vendor_keys_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: vendor_user_keys_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE vendor_keys_id_seq
+CREATE SEQUENCE vendor_user_keys_id_seq
     AS integer
     START WITH 1
     INCREMENT BY 1
@@ -798,10 +798,10 @@ CREATE SEQUENCE vendor_keys_id_seq
 
 
 --
--- Name: vendor_keys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: vendor_user_keys_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE vendor_keys_id_seq OWNED BY vendor_keys.id;
+ALTER SEQUENCE vendor_user_keys_id_seq OWNED BY vendor_user_keys.id;
 
 
 --
@@ -1014,10 +1014,10 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
--- Name: vendor_keys id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: vendor_user_keys id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vendor_keys ALTER COLUMN id SET DEFAULT nextval('vendor_keys_id_seq'::regclass);
+ALTER TABLE ONLY vendor_user_keys ALTER COLUMN id SET DEFAULT nextval('vendor_user_keys_id_seq'::regclass);
 
 
 --
@@ -1171,11 +1171,11 @@ ALTER TABLE ONLY users
 
 
 --
--- Name: vendor_keys vendor_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: vendor_user_keys vendor_user_keys_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY vendor_keys
-    ADD CONSTRAINT vendor_keys_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY vendor_user_keys
+    ADD CONSTRAINT vendor_user_keys_pkey PRIMARY KEY (id);
 
 
 --
@@ -1370,17 +1370,17 @@ CREATE INDEX index_users_on_financial_institution_id ON users USING btree (finan
 
 
 --
--- Name: index_vendor_keys_on_user_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_vendor_user_keys_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_vendor_keys_on_user_id ON vendor_keys USING btree (user_id);
+CREATE INDEX index_vendor_user_keys_on_user_id ON vendor_user_keys USING btree (user_id);
 
 
 --
--- Name: index_vendor_keys_on_vendor_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_vendor_user_keys_on_vendor_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_vendor_keys_on_vendor_id ON vendor_keys USING btree (vendor_id);
+CREATE INDEX index_vendor_user_keys_on_vendor_id ON vendor_user_keys USING btree (vendor_id);
 
 
 --
@@ -1611,6 +1611,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180215221653'),
 ('20180216051711'),
 ('20180217013206'),
-('20180228044257');
+('20180228044257'),
+('20180228074327'),
+('20180228202033');
 
 

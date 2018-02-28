@@ -1,4 +1,4 @@
-class VendorKey < ApplicationRecord
+class VendorUserKey < ApplicationRecord
   belongs_to :vendor 
   belongs_to :user, optional: true
   validates_uniqueness_of :user, allow_blank: true

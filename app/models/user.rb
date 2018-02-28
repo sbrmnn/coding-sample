@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  attr_accessor :vendor_key
+  attr_accessor :vendor_user_key
   has_many :demographics, dependent: :destroy
   has_many :transfers, dependent: :destroy
   has_one :vendor, through: :financial_institution
@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :transactions, dependent: :destroy
   before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
   validates :max_transfer_amount, numericality: {greater_than: 0}
-  validate :vendor_key_with_no_user, on: :create, if: lambda {vendor.present?}
+  validate :vendor_user_key_with_no_user, on: :create, if: lambda {vendor.present?}
   validates_presence_of :bank_user_id,
                         :default_savings_account_identifier, :checking_account_identifier
   
@@ -19,9 +19,9 @@ class User < ApplicationRecord
   has_many :api_errors
   after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
   after_commit :insert_init_transfer_record, on: :create
-  after_create :assign_user_to_vendor_key  
+  after_create :assign_user_to_vendor_user_key  
   after_update :change_savings_account_in_user_goals, if: lambda {default_savings_account_identifier_changed?}
-  has_one :vendor_key
+  has_one :vendor_user_key
 
   def bankjoy_user?
     vendor.try(:bankjoy_vendor?).present?
@@ -64,17 +64,17 @@ class User < ApplicationRecord
     end
   end
 
-  def vendor_key_with_no_user
-    if VendorKey.where(key: vendor_key).where("user_id is not null").present?
-      errors.add(:vendor_key, 'user has already been assigned to key')
-    elsif VendorKey.where(key: vendor_key, user_id: nil).empty?
-      errors.add(:vendor_key, 'doesn\'t exist')
+  def vendor_user_key_with_no_user
+    if VendorUserKey.where(key: vendor_user_key).where("user_id is not null").present?
+      errors.add(:vendor_user_key, 'user has already been assigned to key')
+    elsif VendorUserKey.where(key: vendor_user_key, user_id: nil).empty?
+      errors.add(:vendor_user_key, 'doesn\'t exist')
     end
   end
 
-  def assign_user_to_vendor_key
-    vendor_key_obj = VendorKey.find_by(key: vendor_key, user_id: nil)
-    vendor_key_obj.update_attributes(user: self)
+  def assign_user_to_vendor_user_key
+    vendor_user_key_obj = VendorUserKey.find_by(key: vendor_user_key, user_id: nil)
+    vendor_user_key_obj.update_attributes(user: self)
   end
 
   def ensure_one_bank_user_id_per_vendor
