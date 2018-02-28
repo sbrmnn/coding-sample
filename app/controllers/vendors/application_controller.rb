@@ -10,10 +10,6 @@ class Vendors::ApplicationController < ApplicationController
     end
   end
 
-  def vendor_key_with_no_user_exists?
-    VendorKey.find_by(key: params[:vendor_key], user_id: nil).any?
-  end
-
   def show_action?
     action_name == "show"
   end
