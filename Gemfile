@@ -8,7 +8,7 @@ end
 gem 'seed_dump'
 gem 'whenever'
 gem 'time_difference'
-gem "paranoia", "~> 2.2"
+
 
 gem 'rack-cors', :require => 'rack/cors'
 
