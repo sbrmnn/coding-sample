@@ -1,6 +1,4 @@
 class Vendors::UsersController < Vendors::ApplicationController
-  skip_before_action :require_vendor_login, if: -> { vendor_key_exists? && show_action? }
-  before_action :find_user_by_vendor_key,   if: -> { vendor_key_exists? && show_action? }
   
   def index
     @users = current_vendor.users
