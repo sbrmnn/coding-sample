@@ -21,7 +21,7 @@ class User < ApplicationRecord
   after_commit :insert_init_transfer_record, on: :create
   after_create :assign_user_to_vendor_user_key  
   after_update :change_savings_account_in_user_goals, if: lambda {default_savings_account_identifier_changed?}
-  has_one :vendor_user_key
+  has_one :vendor_user_key, dependent: :destroy
 
   def bankjoy_user?
     vendor.try(:bankjoy_vendor?).present?
