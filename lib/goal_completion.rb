@@ -29,7 +29,7 @@ class GoalCompletion
         else
           return 'unavailable'
         end
-      elsif recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount < amount_left
+      elsif recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount.to_f < amount_left
         return 'unavailable'
       else
          return sanitize_days(recurring_days) 
