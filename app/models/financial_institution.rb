@@ -15,14 +15,13 @@ class FinancialInstitution < ApplicationRecord
   belongs_to :vendor, optional: true
   delegate :average_user_balance, :sum_balance, :sum_message_clicks, 
            :total_messages, :total_users, to: :snapshot_summary
-  
+
   validates_presence_of :name
+  
   validates :max_transfer_amount, numericality: { greater_than: 0}
 
-
-  after_create :create_default_xref_goals
-
   before_save :cascade_down_max_transfer_price_to_users
+  after_create :create_default_xref_goals
 
   after_commit :create_historical_snapshot_if_none
 

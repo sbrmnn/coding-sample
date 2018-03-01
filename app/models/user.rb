@@ -7,7 +7,6 @@ class User < ApplicationRecord
   belongs_to :financial_institution
   has_many :messages, dependent: :destroy
   has_many :transactions, dependent: :destroy
-  before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
   validates :max_transfer_amount, numericality: {greater_than: 0}
   validate :vendor_user_key_with_no_user, on: :create, if: lambda {vendor.present?}
   validates_presence_of :bank_user_id,
@@ -17,10 +16,11 @@ class User < ApplicationRecord
   validates_uniqueness_of :checking_account_identifier, scope: [:financial_institution_id], :message => "Please select another checking account."
   validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present? && bank_user_id_changed?}
   has_many :api_errors
-  after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
-  after_commit :insert_init_transfer_record, on: :create
+  before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
   after_create :assign_user_to_vendor_user_key  
   after_update :change_savings_account_in_user_goals, if: lambda {default_savings_account_identifier_changed?}
+  after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
+  after_commit :insert_init_transfer_record, on: :create
   has_one :vendor_user_key, dependent: :destroy
 
   def bankjoy_user?

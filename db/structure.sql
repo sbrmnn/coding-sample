@@ -218,7 +218,7 @@ CREATE TABLE financial_institutions (
     mobile character varying,
     notes text,
     relationship_manager character varying,
-    max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
+    max_transfer_amount numeric(10,2) DEFAULT 25 NOT NULL,
     transfers_active boolean,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -328,7 +328,7 @@ CREATE TABLE users (
     checking_account_identifier character varying NOT NULL,
     transfers_active boolean DEFAULT true,
     safety_net_active boolean DEFAULT true,
-    max_transfer_amount numeric(10,2) DEFAULT 0 NOT NULL,
+    max_transfer_amount numeric(10,2) DEFAULT 25 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     token character varying
@@ -1613,6 +1613,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180228044257'),
 ('20180228074327'),
 ('20180228202033'),
-('20180228212924');
+('20180228212924'),
+('20180301025423');
 
 
