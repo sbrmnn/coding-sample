@@ -19,12 +19,12 @@ class GoalCompletion
   def calculate
     return 0 if amount_left <= 0
     if algo_rate == 0.0
-      if recurring_days == 0.0
+      if recurring_days == nil
         return 'unavailable'
       else
          return sanitize_days(recurring_days) 
       end
-    elsif recurring_days == 0.0
+    elsif recurring_days == nil
       return sanitize_days((amount_left/algo_rate).round(1).ceil)  
     end
     algo_transfer_date_count = algo_transfer_dates.count
@@ -104,7 +104,7 @@ class GoalCompletion
   end
 
   def calculate_recurring_days
-    return 0.0 if recurring_transfer_rule.blank?
+    return nil if recurring_transfer_rule.blank?
     multiple = (amount_left/recurring_transfer_rule.amount.to_f).ceil
     add_days = ((multiple*recurring_transfer_rule.repeats).send("#{recurring_transfer_rule.frequency.pluralize}"))
     if start_date > recurring_start_dt
