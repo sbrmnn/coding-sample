@@ -12,11 +12,10 @@ class Vendors::Users::DashboardUrlsController < Vendors::ApplicationController
      if @vendor_user_key.blank?
         @vendor_user_key = VendorUserKey.create(vendor_id: current_vendor.id).key
      end
-     query_arr << "vendor_user_key=#{@vendor_user_key}" 
      query_arr << "financial_institution_id=#{@financial_institution_id}"
      query_arr << "bank_user_id=#{@bank_user_id}"
      query_string = query_arr.join("&")
-     resp = {url: "#{request.env["HTTP_HOST"]}?#{query_string}"}
+     resp = {url: "#{ENV['DASHBOARD_URL']}/#{@vendor_user_key}?#{query_string}"}
      status = :ok
    else
     resp = {error: "JSON malformed."}
