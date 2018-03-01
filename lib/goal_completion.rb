@@ -29,7 +29,7 @@ class GoalCompletion
     end
     if recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount >= amount_left
       if recurring_transfer_rule.start_dt.beginning_of_day.to_datetime > today
-        return 0
+        return (recurring_transfer_rule.start_dt.beginning_of_day.to_datetime - today).to_i
       elsif  recurring_transfer_rule.start_dt.beginning_of_day.to_datetime == today && Transfer.where("created_at >= ? and created_at <= ?", today.beginning_of_day,  today.end_of_day, rule_id: recurring_transfer_rule.id ).empty?
         return 0
       else
