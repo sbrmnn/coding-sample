@@ -27,6 +27,17 @@ class GoalCompletion
     elsif recurring_days == nil
       return sanitize_days((amount_left/algo_rate).round(1).ceil)  
     end
+    if recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount >= amount_left
+      if recurring_transfer_rule.start_dt.beginning_of_day.to_datetime > today
+        return 0
+      elsif  recurring_transfer_rule.start_dt.beginning_of_day.to_datetime == today && Transfer.where("created_at >= ? and created_at <= ?", today.beginning_of_day,  today.end_of_day, rule_id: recurring_transfer_rule.id ).empty?
+        return 0
+      else
+        return 'unavailable'
+      end
+    elsif recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount < amount_left
+      return 'unavailable'
+    end
     algo_transfer_date_count = algo_transfer_dates.count
     if algo_transfer_date_count > max_days
       if ((recurring_transfer_dates.count * recurring_transfer_rule.amount.to_f) + (algo_transfer_date_count*algo_rate))  <= amount_left
