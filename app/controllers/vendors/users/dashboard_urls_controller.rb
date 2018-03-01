@@ -1,6 +1,6 @@
 class Vendors::Users::DashboardUrlsController < Vendors::ApplicationController
   def create
-    if JSON::Validator.validate(schema, params["dashboard_url"])
+    if JSON::Validator.validate(json_schema, params["dashboard_url"])
      @financial_institution_id = FinancialInstitution.where(name: params["dashboard_url"]["FinancialInstitutionId"], vendor_id: current_vendor.id).first_or_create.id
      @checking_accounts =  params["dashboard_url"]["Accounts"].map{|l| l["AccountNumber"] if l["AccountType"] == 'checking'}.compact
      @savings_accounts  =  params["dashboard_url"]["Accounts"].map{|l| l["AccountNumber"] if l["AccountType"] == 'savings'}.compact
