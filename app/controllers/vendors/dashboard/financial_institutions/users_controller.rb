@@ -4,7 +4,7 @@ class Vendors::Dashboard::FinancialInstitutions::UsersController < Vendors::Appl
 
   def create
     @user = User.new(user_params)
-    @user.vendor_user_key = params[:vendor_user_key]
+    @user.vendor_user_key_val = params[:vendor_user_key]
     @financial_institution.users << @user
     json_response(@user)
   end

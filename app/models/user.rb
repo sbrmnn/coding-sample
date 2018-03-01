@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  attr_accessor :vendor_user_key
+  attr_accessor :vendor_user_key_val
   has_many :demographics, dependent: :destroy
   has_many :transfers, dependent: :destroy
   has_one :vendor, through: :financial_institution
@@ -65,15 +65,15 @@ class User < ApplicationRecord
   end
 
   def vendor_user_key_with_no_user
-    if VendorUserKey.where(key: vendor_user_key).where("user_id is not null").present?
+    if VendorUserKey.where(key: vendor_user_key_val).where("user_id is not null").present?
       errors.add(:vendor_user_key, 'user has already been assigned to key')
-    elsif VendorUserKey.where(key: vendor_user_key, user_id: nil).empty?
+    elsif VendorUserKey.where(key: vendor_user_key_val, user_id: nil).empty?
       errors.add(:vendor_user_key, 'doesn\'t exist')
     end
   end
 
   def assign_user_to_vendor_user_key
-    vendor_user_key_obj = VendorUserKey.find_by(key: vendor_user_key, user_id: nil)
+    vendor_user_key_obj = VendorUserKey.find_by(key: vendor_user_key_val, user_id: nil)
     vendor_user_key_obj.update_attributes(user: self)
   end
 
