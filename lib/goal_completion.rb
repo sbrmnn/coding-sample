@@ -1,5 +1,5 @@
 class GoalCompletion
-  attr_reader :recurring_days, :algo_rate, :amount_left, :goal_id, :input_frequency, :input_repeats, :input_amount, :input_start_dt, :transfer_happend_today
+  attr_reader :recurring_days, :algo_rate, :amount_left, :goal_id, :input_frequency, :input_repeats, :input_amount, :input_start_dt
   
   def initialize(goal_id, frequency=nil, repeats=nil, amount=nil, start_dt=nil)
     validate_inputs(frequency, repeats, amount, start_dt)
@@ -12,7 +12,6 @@ class GoalCompletion
     @input_amount =    amount
     @input_start_dt =  start_dt
     @recurring_days = calculate_recurring_days
-    @transfer_happend_today = transfer_happend_today?
   end
 
 
@@ -24,7 +23,7 @@ class GoalCompletion
       elsif recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount.to_f >= amount_left
         if recurring_transfer_rule.start_dt.beginning_of_day.to_datetime > today
           return (recurring_transfer_rule.start_dt.beginning_of_day.to_datetime - today).to_i
-        elsif recurring_transfer_rule.start_dt.beginning_of_day.to_datetime == today && Transfer.where(rule_id: recurring_transfer_rule.id).where("created_at >= ? and created_at <= ?", today.beginning_of_day,  today.end_of_day).empty?
+        elsif recurring_transfer_rule.start_dt.beginning_of_day.to_datetime == today && !transfer_happend_today?
           return 0
         else
           return 'unavailable'
@@ -106,7 +105,7 @@ class GoalCompletion
   end
   
   def start_date
-    if transfer_happend_today
+    if transfer_happend_today?
       start_date = today + 1.day
     else
       start_date = today
