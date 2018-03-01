@@ -21,22 +21,21 @@ class GoalCompletion
     if algo_rate == 0.0
       if recurring_days == nil
         return 'unavailable'
+      elsif recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount >= amount_left
+        if recurring_transfer_rule.start_dt.beginning_of_day.to_datetime > today
+          return (recurring_transfer_rule.start_dt.beginning_of_day.to_datetime - today).to_i
+        elsif recurring_transfer_rule.start_dt.beginning_of_day.to_datetime == today && Transfer.where(rule_id: recurring_transfer_rule.id).where("created_at >= ? and created_at <= ?", today.beginning_of_day,  today.end_of_day).empty?
+          return 0
+        else
+          return 'unavailable'
+        end
+      elsif recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount < amount_left
+        return 'unavailable'
       else
          return sanitize_days(recurring_days) 
       end
     elsif recurring_days == nil
       return sanitize_days((amount_left/algo_rate).round(1).ceil)  
-    end
-    if recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount >= amount_left
-      if recurring_transfer_rule.start_dt.beginning_of_day.to_datetime > today
-        return (recurring_transfer_rule.start_dt.beginning_of_day.to_datetime - today).to_i
-      elsif recurring_transfer_rule.start_dt.beginning_of_day.to_datetime == today && Transfer.where(rule_id: recurring_transfer_rule.id).where("created_at >= ? and created_at <= ?", today.beginning_of_day,  today.end_of_day).empty?
-        return 0
-      else
-        return 'unavailable'
-      end
-    elsif recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount < amount_left
-      return 'unavailable'
     end
     algo_transfer_date_count = algo_transfer_dates.count
     if algo_transfer_date_count > max_days
