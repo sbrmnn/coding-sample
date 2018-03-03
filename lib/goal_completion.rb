@@ -19,17 +19,7 @@ class GoalCompletion
     return 0 if amount_left <= 0
     if algo_rate == 0.0
       if recurring_days == nil
-        return 'unavailable'
-      elsif recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount.to_f >= amount_left
-        if recurring_transfer_rule.start_dt.beginning_of_day.to_datetime > today
-          return (recurring_transfer_rule.start_dt.beginning_of_day.to_datetime - today).to_i
-        elsif recurring_transfer_rule.start_dt.beginning_of_day.to_datetime == today && !transfer_happend_today?
-          return 0
-        else
-          return 'unavailable'
-        end
-      elsif recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount.to_f < amount_left
-        return 'unavailable'
+         return 'unavailable'
       else
          return sanitize_days(recurring_days) 
       end
@@ -114,13 +104,38 @@ class GoalCompletion
 
   def calculate_recurring_days
     return nil if recurring_transfer_rule.blank?
+    if recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount.to_f >= amount_left
+      if recurring_transfer_rule.start_dt.beginning_of_day.to_datetime > today
+        return (recurring_transfer_rule.start_dt.beginning_of_day.to_datetime - today).to_i
+      elsif recurring_transfer_rule.start_dt.beginning_of_day.to_datetime == today && !transfer_happend_today?
+        return 0
+      else
+        return nil
+      end
+    elsif recurring_transfer_rule.repeats == 0 && recurring_transfer_rule.amount.to_f < amount_left
+      return nil 
+    end
     multiple = (amount_left/recurring_transfer_rule.amount.to_f).ceil
-    add_days = ((multiple*recurring_transfer_rule.repeats).send("#{recurring_transfer_rule.frequency.pluralize}"))
-    if start_date > recurring_start_dt
-      end_date = start_date + add_days
-      latest_recurring_transfer_date = ActiveRecord::Base.connection.execute("SELECT generate_series(timestamp '#{recurring_start_dt}', '#{start_date}', '#{recurring_transfer_rule.repeats} #{recurring_transfer_rule.frequency}') :: timestamp").map{|l| l}.map{|l| l["generate_series"].to_datetime}.last
-      days = (end_date - (start_date - latest_recurring_transfer_date).days - today).to_i
+    if today > recurring_start_dt
+      add_days = ((multiple*recurring_transfer_rule.repeats).send("#{recurring_transfer_rule.frequency.pluralize}"))
+      end_date = today + add_days
+      latest_recurring_transfer_date = ActiveRecord::Base.connection.execute("SELECT generate_series(timestamp '#{recurring_start_dt}', '#{today}', '#{recurring_transfer_rule.repeats} #{recurring_transfer_rule.frequency}') :: timestamp").map{|l| l}.map{|l| l["generate_series"].to_datetime}.last
+      if  transfer_happend_today?
+        days = ((end_date + add_days) - (today - latest_recurring_transfer_date).days - today).to_i
+      else
+        days = (end_date - (today - latest_recurring_transfer_date).days - today).to_i 
+      end
+    elsif today == recurring_start_dt
+      unless transfer_happend_today?
+        multiple = multiple - 1
+      end
+      add_days = ((multiple*recurring_transfer_rule.repeats).send("#{recurring_transfer_rule.frequency.pluralize}"))
+      latest_recurring_transfer_date = recurring_start_dt + add_days
+      days = (latest_recurring_transfer_date - today).to_i
+      return days
     else
+      multiple = multiple - 1
+      add_days = ((multiple*recurring_transfer_rule.repeats).send("#{recurring_transfer_rule.frequency.pluralize}"))
       latest_recurring_transfer_date = recurring_start_dt + add_days
       days = (latest_recurring_transfer_date - today).to_i
     end
