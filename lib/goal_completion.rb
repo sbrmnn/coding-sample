@@ -120,7 +120,7 @@ class GoalCompletion
       add_days = ((multiple*recurring_transfer_rule.repeats).send("#{recurring_transfer_rule.frequency.pluralize}"))
       end_date = today + add_days
       latest_recurring_transfer_date = ActiveRecord::Base.connection.execute("SELECT generate_series(timestamp '#{recurring_start_dt}', '#{today}', '#{recurring_transfer_rule.repeats} #{recurring_transfer_rule.frequency}') :: timestamp").map{|l| l}.map{|l| l["generate_series"].to_datetime}.last
-      if  transfer_happend_today?
+      if transfer_happend_today? && latest_recurring_transfer_date == today
         days = ((end_date + add_days) - (today - latest_recurring_transfer_date).days - today).to_i
       else
         days = (end_date - (today - latest_recurring_transfer_date).days - today).to_i 
