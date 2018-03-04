@@ -1,4 +1,5 @@
 class Vendors::Users::DashboardUrlsController < Vendors::ApplicationController
+  # TODO: cut down create action code and migrate code to lib/dasboard_url.rb
   def create
     begin
      errors = []
