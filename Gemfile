@@ -9,7 +9,6 @@ gem 'seed_dump'
 gem 'whenever'
 
 gem 'json-schema'
-gem 'dotiw'
 
 gem 'rack-cors', :require => 'rack/cors'
 

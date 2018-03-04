@@ -1,58 +1,43 @@
 class Vendors::Users::DashboardUrlsController < Vendors::ApplicationController
   def create
-    if JSON::Validator.validate(json_schema, params["dashboard_url"])
-     @financial_institution_id = FinancialInstitution.where(name: params["dashboard_url"]["FinancialInstitutionId"], vendor_id: current_vendor.id).first_or_create.id
-     @checking_accounts =  params["dashboard_url"]["Accounts"].map{|l| l["AccountNumber"] if l["AccountType"] == 'checking'}.compact
-     @savings_accounts  =  params["dashboard_url"]["Accounts"].map{|l| l["AccountNumber"] if l["AccountType"] == 'savings'}.compact
-     @bank_user_id      =  params["dashboard_url"]["CustomerId"]
+    begin
+     errors = []
      query_arr = []
-     @checking_accounts.map{|ca| query_arr << "checking[]=#{ca}"}
-     @savings_accounts.map{ |sa| query_arr << "savings[]=#{sa}"}
+     errors << "Financial Institution id must be present in json" if params["dashboard_url"]["FinancialInstitutionId"].blank?
+     @financial_institution_id = FinancialInstitution.where(name: params["dashboard_url"]["FinancialInstitutionId"], vendor_id: current_vendor.id).first_or_create.id
+     if params["dashboard_url"]["Accounts"].is_a? Array
+       @checking_accounts =  params["dashboard_url"]["Accounts"].map{|l| l["AccountNumber"] if l["AccountType"] == 'checking'}.compact
+       @savings_accounts  =  params["dashboard_url"]["Accounts"].map{|l| l["AccountNumber"] if l["AccountType"] == 'savings'}.compact
+       if @checking_accounts.present? && @savings_accounts.present?
+         @checking_accounts.map{|ca| query_arr << "checking[]=#{ca}"}
+         @savings_accounts.map{ |sa| query_arr << "savings[]=#{sa}"}
+       else
+        errors << "Checking account information must be present in json." if @checking_accounts.blank?
+        errors << "Savings account information must be present in json."   if @savings_accounts.blank?
+       end
+     else
+       errors << "Checking and Savings account information must be present in json."
+     end
+     @bank_user_id      =  params["dashboard_url"]["CustomerId"]
+     errors << "Customer id must be present in json." if @bank_user_id.blank?
      @vendor_user_key = User.where(bank_user_id: @bank_user_id).first.try(:vendor_user_key).try(:key)
      if @vendor_user_key.blank?
         @vendor_user_key = VendorUserKey.create(vendor_id: current_vendor.id).key
      end
-     query_arr << "financial_institution_id=#{@financial_institution_id}"
-     query_arr << "bank_user_id=#{@bank_user_id}"
-     query_string = query_arr.join("&")
-     resp = {url: "#{ENV['DASHBOARD_URL']}/#{@vendor_user_key}?#{query_string}"}
-     status = :ok
-   else
-    resp = {error: "JSON malformed."}
-    status = :bad_request
-   end
-    json_response(resp, status)
-  end
-
-  private
-
-  def json_schema
-    {
-      "CustomerId": "ucotest",
-      "FinancialInstitutionId": "bankjoy",
-      "CustomerType": "Consumer",
-      "FirstName": "Arun",
-      "LastName": "Test",
-      "Email": "arun@example.net",
-      "Accounts": [
-        {
-          "AccountNumber": "1234567890",
-          "AccountName": "My Share",
-          "AvailableAccountBalance": 299,
-          "RoutingNumber": "012345678",
-          "AccountOwnerType": "Personal",
-          "AccountType": "savings"
-        },
-        {
-          "AccountNumber": "0987654321",
-          "AccountName": "My other share",
-          "AvailableAccountBalance": 212,
-          "RoutingNumber": "012345678",
-          "AccountOwnerType": "Personal",
-          "AccountType": "checking"
-        }
-      ]
-    }
+     if errors.present?
+      raise RuntimeError.new(errors) 
+     else
+      query_arr << "financial_institution_id=#{@financial_institution_id}"
+      query_arr << "bank_user_id=#{@bank_user_id}"
+      query_string = query_arr.join("&")
+      status = :ok
+      resp = {url: "#{ENV['DASHBOARD_URL']}/#{@vendor_user_key}?#{query_string}"}
+     end
+    rescue RuntimeError => e
+     resp = {error: "JSON malformed.", reason: JSON.parse(e.to_s)}
+     status = :bad_request
+    end
+    json_response(resp, nil, status)
   end
 end
 

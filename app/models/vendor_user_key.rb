@@ -8,6 +8,10 @@ class VendorUserKey < ApplicationRecord
   private
 
   def generate_key
-    self.key = random_string = SecureRandom.hex
+  	token_length = 10
+  	self.key = SecureRandom.urlsafe_base64(token_length).downcase
+  	while VendorUserKey.exists?(:key => key) # Making sure key hasn't been assigned for another user.
+      self.key = SecureRandom.urlsafe_base64(token_length).downcase
+    end
   end
 end
