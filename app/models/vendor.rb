@@ -4,7 +4,7 @@ class Vendor < ApplicationRecord
   has_many :financial_institutions
   has_many :vendor_user_keys
   before_save :create_key
-  validates_presence_of :name, :location
+  validates_presence_of :name, :location, :email
   validates_uniqueness_of :email
 
 
