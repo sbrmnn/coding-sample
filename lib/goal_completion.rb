@@ -158,8 +158,8 @@ class GoalCompletion
   end
 
   def transfer_happend_today?
-    if @tr.nil?
-     @tr = Transfer.where(user: goal.user).where("created_at >= ? and created_at <= ?", today.beginning_of_day,  today.end_of_day).any?
+    if @tr.nil? && recurring_transfer_rule.try(:id).present?
+     @tr = Transfer.where(user: goal.user, rule_id: recurring_transfer_rule.id).where("created_at >= ? and created_at <= ?", today.beginning_of_day,  today.end_of_day).any?
     else
       @tr
     end
