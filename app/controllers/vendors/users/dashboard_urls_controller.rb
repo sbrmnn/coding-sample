@@ -31,7 +31,7 @@ class Vendors::Users::DashboardUrlsController < Vendors::ApplicationController
       query_arr << "bank_user_id=#{@bank_user_id}"
       query_string = query_arr.join("&")
       status = :ok
-      resp = {url: "#{ENV['DASHBOARD_URL']}/#{@vendor_user_key}?#{query_string}"}
+      resp = {url: "https://#{current_vendor.name}.monotto.com/#{@vendor_user_key}?#{query_string}"}
      end
     rescue RuntimeError => e
      resp = {error: "JSON malformed.", reason: JSON.parse(e.to_s)}
