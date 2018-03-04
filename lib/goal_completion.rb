@@ -34,9 +34,9 @@ class GoalCompletion
     end
     new_end_date = algo_end_date
     total = 0
-    i = 0
+    i = ArrayIterator.new(algo_transfer_dates)
     (algo_transfer_dates.count).times do
-      ad = algo_transfer_dates[i]
+      ad = i.item
       if recurring_transfer_dates.include?(ad)
         total = total + recurring_transfer_rule.amount.to_f + algo_rate
       else
@@ -46,7 +46,7 @@ class GoalCompletion
       if total >= amount_left    
        break
       end
-      i = i + 1
+      i.next_item
     end
     return sanitize_days((new_end_date - today).to_i)  
   end
@@ -158,7 +158,11 @@ class GoalCompletion
   end
 
   def transfer_happend_today?
-    Transfer.where(user: goal.user).where("created_at >= ? and created_at <= ?", today.beginning_of_day,  today.end_of_day).any?
+    if @tr.nil?
+     @tr = Transfer.where(user: goal.user).where("created_at >= ? and created_at <= ?", today.beginning_of_day,  today.end_of_day).any?
+    else
+      @tr
+    end
   end
 
   def calculate_algo_rate
