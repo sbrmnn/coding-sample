@@ -35,7 +35,9 @@ def send_offers_with_time_until_completion
     user_ids_who_havent_been_sent_offer = offer.financial_institution.users.pluck(:id) - offer.messages.pluck(:user_id)
     Goal.where(user_id: user_ids_who_havent_been_sent_offer, xref_goal_type_id: offer.xref_goal_type_id).each do |goal|
       time_until_completion = GoalCompletion.new(goal.id).calculate
-      if (time_until_completion.is_a? Float) && time_until_completion.method("#{offer.symbol}").(offer.value)
+      symbol = offer.symbol
+      symbol = "==" if symbol == "="
+      if (time_until_completion.is_a? Float) && time_until_completion.method("#{symbol}").(offer.value)
         offer.messages.create(user_id: goal.user_id)
       end
     end
