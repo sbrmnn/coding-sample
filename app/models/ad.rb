@@ -13,7 +13,7 @@ class Ad < ApplicationRecord
 
    def save_only_hostname_of_link
      uri = URI.parse(self.link)
-     self.link = uri.host if uri.host.present?
+     self.link = uri.host << uri.path if uri.host.present?
    end
 end
 
