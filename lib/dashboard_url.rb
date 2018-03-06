@@ -30,9 +30,9 @@ class DashboardUrl
   end
 
   def validate_inputs(vendor_id, bank_user_id, financial_institution_name, accounts)
-  	errors = []
+    errors = []
     errors << "Vendor doesn't exist" if vendor_id.blank?
-  	errors << "Financial Institution name must be present in json" if financial_institution_name.blank?
+    errors << "Financial Institution name must be present in json" if financial_institution_name.blank?
     if accounts.is_a? Array
       @checking_accounts ||=  accounts.map{|l| l["AccountNumber"]  if l["AccountType"] == 'checking'}.compact rescue nil
       @savings_accounts  ||=  accounts.map{|l| l["AccountNumber"]  if l["AccountType"] == 'savings'}.compact  rescue nil
