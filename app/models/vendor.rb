@@ -4,6 +4,7 @@ class Vendor < ApplicationRecord
   has_many :financial_institutions
   has_many :vendor_user_keys
   before_save :create_key
+  before_save :downcase_vendor_name
   validates_presence_of :name, :location, :email
   validates_uniqueness_of :email
 
@@ -12,7 +13,12 @@ class Vendor < ApplicationRecord
     self.name.try(:downcase) == 'bankjoy'
   end
 
+
   protected
+
+  def downcase_vendor_name
+    self.name = self.name.downcase
+  end
 
   def create_key
     if self.key.blank?
