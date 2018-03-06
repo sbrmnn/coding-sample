@@ -17,7 +17,7 @@ class Vendors::Dashboard::Users::SettingsController < Vendors::ApplicationContro
 
   def settings
     @settings = @user&.slice(:default_savings_account_identifier, :checking_account_identifier,
-                              :transfers_active, :safety_net_active, :max_transfer_amount)
+                              :transfers_active, :max_transfer_amount)
   end
   
   def user_params
@@ -25,7 +25,7 @@ class Vendors::Dashboard::Users::SettingsController < Vendors::ApplicationContro
      {}
     else
      params.require(:setting).permit(:default_savings_account_identifier, :checking_account_identifier,
-                                     :transfers_active, :safety_net_active, :max_transfer_amount)
+                                     :transfers_active, :max_transfer_amount)
     end
   end
 end

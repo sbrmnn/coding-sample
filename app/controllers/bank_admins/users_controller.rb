@@ -39,7 +39,7 @@ class BankAdmins::UsersController < BankAdmins::ApplicationController
       {}
     else
       params.require(:user).permit(:bank_user_id, :default_savings_account_identifier, :checking_account_identifier,
-                                  :transfers_active, :safety_net_active, :max_transfer_amount)
+                                  :transfers_active, :max_transfer_amount)
     end
    end
 end
