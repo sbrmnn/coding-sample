@@ -16,19 +16,6 @@ class DashboardUrl
     "https://#{vendor.name}.monotto.com/#{vendor_user_key}?#{query_string}"
   end
 
-  private
-
-  def validate
-    errors = []
-    errors << "Vendor id not provided." if vendor_id.blank?
-    errors << "Vendor doesn't exist."   if vendor_id.present? && vendor.blank? 
-    errors << "Checking accounts argument must be an array." unless checking_accounts.is_a? Array
-    errors << "Savings accounts argument must be an array."  unless savings_accounts.is_a? Array
-    errors << "Financial Institution name must be present in json" if  financial_institution_name.blank?
-    errors << "Customer id must be present in json." if bank_user_id.blank?
-    raise RuntimeError.new(errors) if errors.present?
-  end
-
   def vendor
     @vendor = Vendor.find_by(id: vendor_id)
   end
@@ -42,5 +29,18 @@ class DashboardUrl
     if @vendor_user_key.blank?
       @vendor_user_key = VendorUserKey.create(vendor: vendor).key
     end
+  end
+
+  private
+
+  def validate
+    errors = []
+    errors << "Vendor id not provided." if vendor_id.blank?
+    errors << "Vendor doesn't exist."   if vendor_id.present? && vendor.blank? 
+    errors << "Checking accounts argument must be an array." unless checking_accounts.is_a? Array
+    errors << "Savings accounts argument must be an array."  unless savings_accounts.is_a? Array
+    errors << "Financial Institution name must be present in json" if  financial_institution_name.blank?
+    errors << "Customer id must be present in json." if bank_user_id.blank?
+    raise RuntimeError.new(errors) if errors.present?
   end
 end
