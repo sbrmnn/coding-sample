@@ -1,7 +1,7 @@
 module UserJsonAdapter
   module Default
     def self.parse(json)
-      accounts = json["Accounts"]&.map{|a| a.permit("account_number", "account_type")}
+      accounts = json["Accounts"] 
       begin
         checking_accounts = accounts.map{|l| l["accounts"]  if l["type"] == 'checking'}.compact
       rescue NoMethodError
@@ -22,7 +22,7 @@ module UserJsonAdapter
   end
   module Bankjoy
     def self.parse(json)
-      accounts = json["Accounts"]&.map{|a| a.permit("AccountNumber", "AccountType")}
+      accounts = json["Accounts"] 
       begin
         checking_accounts = accounts.map{|l| l["AccountNumber"]  if l["AccountType"] == 'checking'}.compact
       rescue NoMethodError
