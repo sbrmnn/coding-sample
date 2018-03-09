@@ -2,7 +2,7 @@ class Vendors::Users::DashboardUrlsController < Vendors::ApplicationController
   # TODO: cut down create action code and migrate code to lib/dasboard_url.rb
   def create
     begin
-     url = DashboardUrl.new(current_vendor.id, bank_user_id, financial_institution_name, accounts).build
+     url = DashboardUrlBuilder.new(current_vendor.id).consume_json(params[:dashboard_url]).get
      resp = {url: url}
     rescue RuntimeError => e
      resp = {error: "JSON malformed.", reason: JSON.parse(e.to_s)}
