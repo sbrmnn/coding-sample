@@ -29,6 +29,7 @@ class DashboardUrl
     if @vendor_user_key.blank?
       @vendor_user_key = VendorUserKey.create(vendor: vendor).key
     end
+    @vendor_user_key
   end
 
   private
