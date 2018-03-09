@@ -38,24 +38,24 @@ class DashboardUrlBuilder
 
   def set_vendor(vendor_id)
     raise "Vendor doesn't exist" if vendor.blank?
-  	@dashboard_url.vendor_id = vendor.id
-  	self
+    @dashboard_url.vendor_id = vendor.id
+    self
   end
 
   def set_savings_accounts(accts=[])
-  	raise "argument must be an array" unless accts.is_a? Array
-  	@dashboard_url.savings_accounts = accts
-  	self
+    raise "argument must be an array" unless accts.is_a? Array
+    @dashboard_url.savings_accounts = accts
+    self
   end
 
   def set_checking_accounts(accts=[])
-  	raise "argument must be an array" unless accts.is_a? Array
-  	@dashboard_url.checking_accounts = accts
-  	self
+    raise "argument must be an array" unless accts.is_a? Array
+    @dashboard_url.checking_accounts = accts
+    self
   end
 
   def set_bank_user_id(bank_user_id)
-  	@dashboard_url.bank_user_id = bank_user_id
+    @dashboard_url.bank_user_id = bank_user_id
     self
   end
 
