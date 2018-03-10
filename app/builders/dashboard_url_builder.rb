@@ -7,8 +7,8 @@ class DashboardUrlBuilder
   end
 
   def adapter=(adapter)
-    if UserJsonAdapter.constants.include?(adapter.to_sym.capitalize)
-      @adapter = UserJsonAdapter.const_get(adapter.to_sym.capitalize)
+    if UserJsonAdapter.constants.include?(adapter.to_sym)
+      @adapter = UserJsonAdapter.const_get(adapter.to_sym)
     else
       @adapter =  UserJsonAdapter.const_get(:Default)
     end

@@ -24,7 +24,7 @@ module UserJsonAdapter
     end
   end
 
-  module Bankjoy
+  module BankJoy
     extend Default
     def self.parse(json)
       accounts = json["Accounts"]
