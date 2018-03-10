@@ -16,7 +16,7 @@ class DashboardUrlBuilder
 
   def adapter
     if @adapter.blank?
-      self.adapter= vendor.name
+      self.adapter = vendor.name
     end
     @adapter
   end

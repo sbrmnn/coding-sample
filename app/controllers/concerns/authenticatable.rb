@@ -31,9 +31,10 @@ module Authenticatable
 
   def third_party_login(user_obj)
     raise "Argument must be a user object." unless user_obj.is_a? User
-    case user_obj
-    when user_obj.bankjoy_user?
-      BankJoyService.user_login(@user.id)
+    adapter = user_obj.try(:vendor).try(:name)
+    return nil if adapter.blank?
+    if VendorUserLoginAdapter.constants.include?(adapter.to_sym)
+      @adapter = VendorUserLoginAdapter.const_get(adapter.to_sym).vendor_login(user_obj.id)
     end
   end
 
