@@ -41,8 +41,9 @@ class User < ApplicationRecord
   end
 
   def register_user_with_vendor
-    if VendorUserRegistrationAdapter.constants.include?(vendor.name.to_sym)
-      VendorUserRegistrationAdapter.const_get(self.vendor.name.to_sym).register(id)
+    constant = vendor.name.to_sym
+    if VendorUserRegistrationAdapter.constants.include?(constant)
+      VendorUserRegistrationAdapter.const_get(constant).register(id)
     else
       VendorUserRegistrationAdapter::Default.register(id)
     end
