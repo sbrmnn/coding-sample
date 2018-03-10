@@ -1,38 +1,35 @@
 module UserJsonAdapter
+
   module Default
     def self.parse(json)
-      accounts = json["Accounts"] 
-      begin
-        checking_accounts = accounts.map{|l| l["accounts"]  if l["type"] == 'checking'}.compact
-      rescue NoMethodError
-        checking_accounts = nil
-      end
-      begin
-        savings_acounts   = accounts.map{|l| l["accounts"]  if  l["type"] == 'savings'}.compact
-      rescue NoMethodError
-        savings_acounts = nil
-      end
+      accounts = json["Accounts"]
+      checking_accounts = accounts_type_array(accounts, 'checking')
+      savings_accounts  = accounts_type_array(accounts, 'savings')
       {
           bank_user_id: json["bank_user_id"],
           financial_institution_name: json["financial_institution_name"],
           checking_accounts: checking_accounts,
-          savings_accounts: savings_acounts
+          savings_accounts: savings_accounts
       }
     end
+
+    protected
+
+    def self.accounts_type_array(accounts, type)
+      begin
+        accounts.map{|l| l["accounts"]  if l["type"] == type}.compact
+      rescue NoMethodError
+        nil
+      end
+    end
   end
+
   module Bankjoy
+    extend Default
     def self.parse(json)
-      accounts = json["Accounts"] 
-      begin
-        checking_accounts = accounts.map{|l| l["AccountNumber"]  if l["AccountType"] == 'checking'}.compact
-      rescue NoMethodError
-        checking_accounts = nil
-      end
-      begin
-        savings_accounts = accounts.map{|l| l["AccountNumber"]  if l["AccountType"] == 'savings'}.compact
-      rescue NoMethodError
-        savings_accounts = nil
-      end
+      accounts = json["Accounts"]
+      checking_accounts = accounts_type_array(accounts, 'checking')
+      savings_accounts  = accounts_type_array(accounts, 'savings')
       {
           bank_user_id: json["CustomerId"],
           financial_institution_name: json["FinancialInstitutionId"],

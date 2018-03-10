@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  extend VendorUserRegistrationAdapter
   attr_accessor :vendor_user_key_val
   has_many :demographics, dependent: :destroy
   has_many :transfers, dependent: :destroy
@@ -19,7 +20,7 @@ class User < ApplicationRecord
   before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
   after_create :assign_user_to_vendor_user_key  
   after_update :change_savings_account_in_user_goals, if: lambda {default_savings_account_identifier_changed?}
-  after_commit :register_bankjoy_user, on: :create, if: lambda {bankjoy_user?}
+  after_commit :register_user_with_vendor, on: :create
   after_commit :insert_init_transfer_record, on: :create
   has_one :vendor_user_key, dependent: :destroy
 
@@ -40,27 +41,11 @@ class User < ApplicationRecord
               .update_all(savings_account_identifier: default_savings_account_identifier)
   end
 
-  def register_bankjoy_user
-    resp = BankJoyService.register_user(checking_account_identifier)
-    if resp["Status"] == 'Failure'
-      self.api_errors << ApiError.new(status: resp["Status"], response: resp["Reason"], service: :aws_lambda, function: :registration)
-    elsif resp["Status"] == 'Success'
-      savings_acct_balance = Goal.where(savings_account_identifier: default_savings_account_identifier, user_id: id).first.try(:savings_acct_balance).to_f
-      goal = Goal.new(tag: "Safety Net", xref_goal_name: "Other Goal", financial_institution: financial_institution, 
-                      priority: 1,  target_amount: resp["Result"]["safety_net"].to_f)
-      self.goals << goal
-      login_bankjoy_user
-      # Any previous errors associated with the registration should be removed if successful.
-      self.api_errors.where(service: :aws_lambda, function: :registration).destroy_all
-    end
-  end
-
-  def login_bankjoy_user
-    resp = BankJoyService.user_login(id)
-    if resp["Status"] == 'Failure'
-      self.api_errors << ApiError.new(status: resp["Status"], response: resp["Reason"], service: :aws_lambda, function: :login)
-    elsif resp["Status"] == 'Success'
-      self.api_errors.where(service: :aws_lambda, function: :login).destroy_all
+  def register_user_with_vendor
+    if User::VendorUserRegistrationAdapter.constants.include?(vendor.name.to_s.capitalize)
+      User::VendorUserRegistrationAdapter.const_get(self.vendor.name.to_s.capitalize).register(id)
+    else
+      User::VendorUserRegistrationAdapter::Default.register(id)
     end
   end
 

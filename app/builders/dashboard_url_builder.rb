@@ -1,6 +1,6 @@
 class DashboardUrlBuilder
   attr_reader :dashboard_url, :vendor
-  include UserJsonAdapter
+  extend UserJsonAdapter
 
   def initialize(vendor_id)
     get_vendor(vendor_id)
@@ -8,10 +8,10 @@ class DashboardUrlBuilder
   end
 
   def adapter=(adapter)
-    begin
-      @adapter = DashboardUrlBuilder.const_get(adapter.to_s.capitalize)
-    rescue NameError
-      @adapter =  DashboardUrlBuilder.const_get(:Default)
+    if DashboardUrlBuilder::UserJsonAdapter.constants.include?(adapter.to_s.capitalize)
+      @adapter = DashboardUrlBuilder::UserJsonAdapter.const_get(adapter.to_s.capitalize)
+    else
+      @adapter =  DashboardUrlBuilder::UserJsonAdapter.const_get(:Default)
     end
   end
 
