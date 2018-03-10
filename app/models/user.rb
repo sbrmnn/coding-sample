@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  extend VendorUserRegistrationAdapter
   attr_accessor :vendor_user_key_val
   has_many :demographics, dependent: :destroy
   has_many :transfers, dependent: :destroy
@@ -18,10 +17,10 @@ class User < ApplicationRecord
   validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present? && bank_user_id_changed?}
   has_many :api_errors
   before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
-  after_create :assign_user_to_vendor_user_key  
   after_update :change_savings_account_in_user_goals, if: lambda {default_savings_account_identifier_changed?}
   after_commit :register_user_with_vendor, on: :create
   after_commit :insert_init_transfer_record, on: :create
+  after_commit :assign_user_to_vendor_user_key, on: :create
   has_one :vendor_user_key, dependent: :destroy
 
   def bankjoy_user?
@@ -42,10 +41,10 @@ class User < ApplicationRecord
   end
 
   def register_user_with_vendor
-    if User::VendorUserRegistrationAdapter.constants.include?(vendor.name.to_s.capitalize)
-      User::VendorUserRegistrationAdapter.const_get(self.vendor.name.to_s.capitalize).register(id)
+    if VendorUserRegistrationAdapter.constants.include?(vendor.name.to_sym.capitalize)
+      VendorUserRegistrationAdapter.const_get(self.vendor.name.to_sym.capitalize).register(id)
     else
-      User::VendorUserRegistrationAdapter::Default.register(id)
+      VendorUserRegistrationAdapter::Default.register(id)
     end
   end
 
