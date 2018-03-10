@@ -10,7 +10,6 @@ class DashboardUrl
     query_arr << "financial_institution_id=#{financial_institution_id}"
     checking_accounts.map{|ca| query_arr << "checking[]=#{ca}"}
     savings_accounts.map{ |sa| query_arr << "savings[]=#{sa}"}  
-    query_arr << "financial_institution_id=#{financial_institution_id}"
     query_arr << "bank_user_id=#{bank_user_id}"
     query_string = query_arr.join("&")
     "https://#{vendor.name}.monotto.com/#{vendor_user_key}?#{query_string}"
