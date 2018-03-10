@@ -6,11 +6,13 @@ module VendorUserRegistrationAdapter
   
   module Default
     def self.register(user_id)
+=begin
       user = VendorUserRegistrationAdapter.set_user(user_id)
       goal = Goal.new(tag: "Safety Net", xref_goal_name: "Other Goal", financial_institution: user.financial_institution,
                     priority: 1,  target_amount: 25.to_f)
       user.goals << goal
     end
+=end
   end
 
   module BankJoy

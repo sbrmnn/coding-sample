@@ -819,8 +819,7 @@ CREATE TABLE vendors (
     token character varying,
     token_created_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    key character varying
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -1388,13 +1387,6 @@ CREATE UNIQUE INDEX index_vendors_on_email ON vendors USING btree (email);
 
 
 --
--- Name: index_vendors_on_key; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_vendors_on_key ON vendors USING btree (key);
-
-
---
 -- Name: index_vendors_on_token_and_token_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1614,6 +1606,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180228212924'),
 ('20180301025423'),
 ('20180306193501'),
-('20180309115031');
+('20180309115031'),
+('20180310182834');
 
 
