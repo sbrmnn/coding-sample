@@ -1,5 +1,5 @@
 module UserJsonAdapter
-
+  
   module Default
     def self.parse(json)
       accounts = json["Accounts"]
@@ -12,12 +12,9 @@ module UserJsonAdapter
           savings_accounts: savings_accounts
       }
     end
-
-    protected
-
     def self.accounts_type_array(accounts, type)
       begin
-        accounts.map{|l| l["accounts"]  if l["type"] == type}.compact
+        accounts.map{|l| l["number"]  if l["type"] == type}.compact
       rescue NoMethodError
         nil
       end
@@ -25,7 +22,6 @@ module UserJsonAdapter
   end
 
   module BankJoy
-    extend Default
     def self.parse(json)
       accounts = json["Accounts"]
       checking_accounts = accounts_type_array(accounts, 'checking')
@@ -36,6 +32,13 @@ module UserJsonAdapter
           checking_accounts: checking_accounts,
           savings_accounts: savings_accounts
       }
+    end
+    def self.accounts_type_array(accounts, type)
+      begin
+        accounts.map{|l| l["AccountNumber"]  if l["AccountType"] == type}.compact
+      rescue NoMethodError
+        nil
+      end
     end
   end
 end

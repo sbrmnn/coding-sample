@@ -9,24 +9,6 @@ class Vendors::Users::DashboardUrlsController < Vendors::ApplicationController
     end
     json_response(resp, nil, status)
   end
-
-  private
-
-  def bank_user_id
-    params["dashboard_url"]["CustomerId"]
-  end
-
-  def financial_institution_name
-    params["dashboard_url"]["FinancialInstitutionId"]
-  end
-
-  def accounts
-   if params["dashboard_url"]["Accounts"].is_a? Array
-     params["dashboard_url"]["Accounts"].map{|l| l.permit("AccountNumber", "AccountType")}
-   else
-     nil
-   end
-  end
 end
 
 
