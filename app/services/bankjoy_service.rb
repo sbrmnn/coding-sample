@@ -1,11 +1,11 @@
-class BankJoyService
+class BankjoyService
   def self.register_user(checking_account_identifier)
     payload = {"account_id": checking_account_identifier, "function": "registration"}
     lambda_response(payload)
   end
 
   def self.user_login(user_id)
-    return "Not a BankJoy user." unless User.find(user_id).bankjoy_user?
+    return "Not a Bankjoy user." unless User.find(user_id).bankjoy_user?
     payload = {"user_id": user_id, "function": "userlogin"}
     lambda_response(payload)
   end

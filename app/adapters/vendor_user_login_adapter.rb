@@ -1,8 +1,8 @@
 module VendorUserLoginAdapter
-  module BankJoy
+  module Bankjoy
     def self.vendor_login(user_id)
       user = User.find(user_id)
-      resp = BankJoyService.user_login(user.id)
+      resp = BankjoyService.user_login(user.id)
       if resp["Status"] == 'Failed'
         user.api_errors << ApiError.new(status: resp["Status"], response: resp["Reason"], service: :aws_lambda, function: :login)
       elsif resp["Status"] == 'Success'

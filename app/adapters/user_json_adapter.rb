@@ -21,7 +21,7 @@ module UserJsonAdapter
     end
   end
 
-  module BankJoy
+  module Bankjoy
     def self.parse(json)
       accounts = json["Accounts"]
       checking_accounts = accounts_type_array(accounts, 'checking')
