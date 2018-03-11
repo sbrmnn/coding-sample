@@ -49,8 +49,8 @@ RSpec.describe MonottoUsers::UsersController, type: :controller do
     end
     
     it "user sequence" do
-      put :update, params: {id: user.id, user: {sequence: "ASFADFGDFGKDFGMBKFDFG"}}
-      expect(JSON.parse(response.body)["sequence"]).to eq("ASFADFGDFGKDFGMBKFDFG")
+      put :update, params: {id: user.id, user: {default_savings_account_identifier: "ASFADFGDFGKDFGMBKFDFG"}}
+      expect(JSON.parse(response.body)["default_savings_account_identifier"]).to eq("ASFADFGDFGKDFGMBKFDFG")
     end
   end
 

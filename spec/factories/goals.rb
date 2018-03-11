@@ -6,6 +6,6 @@ FactoryGirl.define do
     balance 10
     priority 1
     tag "House"
-    xref_goal_name "Mortgage"
+    xref_goal_name "Car Goal"
   end
 end

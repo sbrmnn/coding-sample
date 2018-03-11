@@ -22,7 +22,7 @@ RSpec.describe User, type: :model do
      it "errors out" do
         user.max_transfer_amount = -1
         user.save
-        expect(user.errors[:max_transfer_amount][0]).to eq('must be greater than or equal to 0')
+        expect(user.errors[:max_transfer_amount][0]).to eq('must be greater than 0')
      end
     end
   end

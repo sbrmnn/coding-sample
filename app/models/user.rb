@@ -18,9 +18,9 @@ class User < ApplicationRecord
   has_many :api_errors
   before_save :verify_max_transfer_amount_for_user_is_equal_or_less_than_financial_institution_amount
   after_update :change_savings_account_in_user_goals, if: lambda {default_savings_account_identifier_changed?}
-  after_create :assign_user_to_vendor_user_key
+  after_create :assign_user_to_vendor_user_key, if: lambda {vendor.present?}
   after_commit :insert_init_transfer_record, on: :create
-  after_commit :register_user_with_vendor, on: :create
+  after_commit :register_user_with_vendor, on: :create, if: lambda {vendor.present?}
   has_one :vendor_user_key, dependent: :destroy
 
   def bankjoy_user?
@@ -59,7 +59,7 @@ class User < ApplicationRecord
 
   def assign_user_to_vendor_user_key
     vendor_user_key_obj = VendorUserKey.find_by(vendor: vendor, key: vendor_user_key_val, user_id: nil)
-    vendor_user_key_obj.update_attributes(user: self)
+    vendor_user_key_obj&.update_attributes(user: self)
   end
 
   def ensure_one_bank_user_id_per_vendor

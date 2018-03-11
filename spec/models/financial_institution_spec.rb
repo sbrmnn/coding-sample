@@ -22,7 +22,7 @@ RSpec.describe FinancialInstitution, type: :model do
      it "errors out" do
         financial_institution.max_transfer_amount = -1
         financial_institution.save
-        expect(financial_institution.errors[:max_transfer_amount][0]).to eq('must be greater than or equal to 0')
+        expect(financial_institution.errors[:max_transfer_amount][0]).to eq('must be greater than 0')
      end
    end
   end

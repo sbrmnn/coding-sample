@@ -23,7 +23,7 @@ class FinancialInstitution < ApplicationRecord
   before_save :cascade_down_max_transfer_price_to_users
   after_create :create_default_xref_goals
 
-  after_commit :create_historical_snapshot_if_none
+  after_commit :create_historical_snapshot_if_none, on: :create
 
   protected
 
