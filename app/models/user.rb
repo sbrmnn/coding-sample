@@ -41,7 +41,7 @@ class User < ApplicationRecord
   end
 
   def register_user_with_vendor
-    constant = vendor.name.to_sym
+    constant = vendor.name.capitalize
     if VendorUserRegistrationAdapter.constants.include?(constant)
       VendorUserRegistrationAdapter.const_get(constant).register(id)
     else
