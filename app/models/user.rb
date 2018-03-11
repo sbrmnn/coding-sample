@@ -7,6 +7,7 @@ class User < ApplicationRecord
   belongs_to :financial_institution
   has_many :messages, dependent: :destroy
   has_many :transactions, dependent: :destroy
+  before_validation :set_default_max_transfer_amount
   validates :max_transfer_amount, numericality: {greater_than: 0}
   validate :vendor_user_key_with_no_user, on: :create, if: lambda {vendor.present?}
   validates_presence_of :bank_user_id,
@@ -34,6 +35,12 @@ class User < ApplicationRecord
   end
 
   protected
+
+  def set_default_max_transfer_amount
+    if max_transfer_amount.to_i == 0
+      self.max_transfer_amount = DEFAULT_MAX_TRANSFER_AMOUNT
+    end
+  end
 
   def change_savings_account_in_user_goals
     self.goals.where(savings_account_identifier: default_savings_account_identifier_was)
