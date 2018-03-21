@@ -27,10 +27,12 @@ def VendorUserBuilder
 
    def set_financial_institution
      user.financial_institution = financial_institution
+     self
    end
 
    def set_bank_user_id
     user.bank_user_id = bank_user_id
+    self
    end
    
    def set_default_savings_account_identifier
