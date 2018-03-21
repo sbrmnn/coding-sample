@@ -1,4 +1,4 @@
-module UserJsonAdapter
+module DashboardUrlJsonAdapter
   
   module Default
     def self.parse(json)

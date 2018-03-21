@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   get "/" => redirect("https://monotto.com")
   resources :swaggers, :only => [:index]
   resource :monotto_users do
@@ -43,12 +44,7 @@ Rails.application.routes.draw do
           end
         end
       end
-      resource :me, only: :show, controller: :me
-      resources :financial_institutions
-      resources :users, param: :bank_user_id, only: [:index, :show, :update] do
-        
-      end
-      resource :user,  except: [:index, :create, :destroy, :show, :update] do
+      resource :user, only: [:create] do
         scope module: :users do
           resource :dashboard_urls, only: [:create]
         end
