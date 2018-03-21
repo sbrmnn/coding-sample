@@ -1,7 +1,7 @@
 class Vendors::Users::DashboardUrlsController < Vendors::ApplicationController
   def create
     begin
-     url = DashboardUrlBuilder.new(current_vendor.id).consume_json(params[:dashboard_url]).get
+     url = DashboardUrlBuilder.new(current_vendor.id, params[:dashboard_url]).build.get
      resp = {url: url}
     rescue RuntimeError => e
      resp = {error: "JSON malformed.", reason: JSON.parse(e.to_s)}

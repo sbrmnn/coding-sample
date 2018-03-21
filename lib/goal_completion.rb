@@ -167,7 +167,7 @@ class GoalCompletion
 
   def calculate_algo_rate
     rate = time_until_completion.avg_amount.to_f/time_until_completion.avg_days.to_f rescue 0.0
-    rate = 0.0 if rate.infinite? 
+    rate = 0.0 if rate.infinite? || rate.nan? 
     rate
   end
 
