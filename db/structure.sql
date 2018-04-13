@@ -508,7 +508,7 @@ CREATE VIEW next_recurring_transfers AS
             WHEN (l.last_dt IS NULL) THEN a.start_dt
             WHEN (l.last_dt > a.start_dt) THEN l.last_dt
             ELSE a.start_dt
-        END + ((a.repeats || (a.frequency)::text))::interval) AS next_trasnfer
+        END + ((a.repeats || (a.frequency)::text))::interval) AS next_transfer
    FROM (all_rules a
      LEFT JOIN last_dt_table l ON ((l.rule_id = a.id)));
 
@@ -1607,6 +1607,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180301025423'),
 ('20180306193501'),
 ('20180309115031'),
-('20180310182834');
+('20180310182834'),
+('20180413212425');
 
 
