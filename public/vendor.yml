@@ -582,10 +582,6 @@ paths:
           required: true
           type: integer
           minimum: 1
-        - name: token
-          description: "Token for the user."
-          in: path
-          required: true
           type: integer
         - name: Content-Type
           default: application/json
@@ -643,11 +639,6 @@ paths:
           required: true
           type: integer
           minimum: 1
-        - name: token
-          description: "Token for user."
-          in: path
-          required: true
-          type: integer
         - name: goal
           in: body
           required: true
@@ -724,10 +715,6 @@ paths:
           required: true
           type: integer
           minimum: 1
-        - name: token
-          in: path
-          required: true
-          type: integer
         - name: Content-Type
           default: application/json
           description: application/json
@@ -957,11 +944,6 @@ paths:
       tags:
         - Vendor
       parameters:
-        - name: token
-          description: Token for the user.
-          in: path
-          required: true
-          type: string
         - name: Content-Type
           default: application/json
           description: application/json
