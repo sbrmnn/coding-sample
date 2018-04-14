@@ -1,4 +1,4 @@
-def VendorUserBuilder
+class VendorUserBuilder
    attr_reader :vendor_id, :bank_user_id, :default_savings_account_identifier, :checking_account_identifier,
                :transfers_active, :max_transfer_amount, :financial_institution_name
 

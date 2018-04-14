@@ -44,11 +44,12 @@ Rails.application.routes.draw do
           end
         end
       end
-      resource :user, only: [:create] do
+      resource :user, except: [:index, :create, :destroy, :show, :update] do
         scope module: :users do
           resource :dashboard_urls, only: [:create]
         end
       end
+      resources :users, only: [:index, :create]
     end
   end
 

@@ -1,0 +1,1027 @@
+swagger: '2.0'
+info:
+  title: API V1
+  version: v1
+schemes: ['https']
+host: api-us.monotto.com
+x-explorer-enabled: false
+paths:
+  '/vendors/login':
+    post:
+      summary: Login endpoint to get authentication token.
+      tags:
+        - Vendor
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: login
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+            - email
+            - password
+            properties:
+              email:
+                type: string
+                description: Vendor email.
+              password:
+                type: string
+                description: Vendor password.
+      responses:
+        '200':
+          description: Authorized.
+          examples:
+             application/json:
+               {
+                 token: "TOKEN"
+               }
+          schema:
+            type: object
+            properties:
+              token: 
+                type: string
+                description: Authorization token. Expires in 24 hrs.
+        '401':
+          description: Unauthorized.
+  '/vendors/logout':
+    delete:
+      summary: Logout endpoint to delete authentication token.
+      tags:
+        - Vendor
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK.
+        '401':
+          description: Unauthorized.
+  '/vendors/users':
+    get:
+      summary: Gets all user data belonging to vendor.
+      tags:
+        - Vendor
+      parameters:
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: An array of user data.
+          examples:
+             application/json:
+               [
+                 {
+                    "bank_user_id":"10020102002306194",
+                    "default_savings_account_identifier":"123a46b75n432i",
+                    "checking_account_identifier":"123t456t543y",
+                    "transfers_active":true,
+                    "safety_net_active":true,
+                    "max_transfer_amount":70.00,
+                    "created_at":"2017-04-09T04:22:28.106Z",
+                    "updated_at":"2017-04-09T04:22:28.106Z"
+                 }
+               ]
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                bank_user_id: 
+                  type: string
+                  description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+                default_savings_account_identifier:
+                  type: string
+                  description: System Id for Savings account that user will be moving money to.
+                checking_account_identifier:
+                  type: string
+                  description: System Id for Checking account that user will be moving money from.
+                transfers_active:
+                  type: boolean
+                  description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+                safety_net_active:
+                  type: boolean
+                  description: Flag for activating safety net goal. Default on user creation is TRUE. FALSE will remove the safety net goal from the goals array.
+                max_transfer_amount:
+                   type: number
+                   description: Max amount that user's can transfer funds to their savings accounts.
+        '400':
+          description: Not found.
+    post:
+      summary: Creates a user record.
+      tags:
+        - Vendor
+      parameters:
+        - name: financial_institution_name
+          description: financial_institution that the user is associated with.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          required: true
+          type: string
+        - name: user
+          description: "Key/value pair to create user record."
+          required: true
+          in: body
+          schema:
+            type: object
+            required:
+            - user[bank_user_id]
+            - user[checking_account_identifier]
+            - user[default_savings_account_identifier]
+            properties:
+              user[bank_user_id]: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              user[financial_institution_name]: 
+                type: string
+                description: Financial Institution that the user is associated with.
+              user[default_savings_account_identifier]:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              user[checking_account_identifier]:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              user[transfers_active]:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              user[safety_net_active]:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              user[max_transfer_amount]:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+      responses:
+        '200':
+          description: OK.
+          examples:
+             application/json:
+               {
+                  "bank_user_id":"10020102002306194",
+                  "default_savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active":true,
+                  "safety_net_active":true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+                }
+          schema:
+            type: object
+            properties:
+              bank_user_id: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              default_savings_account_identifier:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+        '400':
+          description: Not found.
+  '/vendors/dashboard/users':
+    get:
+      summary: Gets user info.
+      tags:
+        - Vendor
+      parameters:
+        - name: token
+          description: Token for the user.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          required: true
+          type: string
+        - name: offer
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+            - vendor_key
+            properties:
+              vendor_key:
+                type: string
+                description: Vendor Key for user.
+      responses:
+        '200':
+          description: User info returned.
+          examples:
+             application/json:
+               {
+                  "bank_user_id":"10020102002306194",
+                  "default_savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active": true,
+                  "safety_net_active": true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+                }
+          schema:
+            type: object
+            properties:
+              bank_user_id: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              default_savings_account_identifier:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+    patch:
+      summary: Updates user record.
+      tags:
+        - Vendor
+      parameters:
+        - name: token
+          description: Token for the user.
+          in: path
+          required: true
+          type: string
+        - name: user
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              bank_user_id: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              default_savings_account_identifier:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User updated.
+          examples:
+             application/json:
+               {
+                  "bank_user_id":"10020102002306194",
+                  "default_savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active":true,
+                  "safety_net_active":true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+               }
+          schema:
+            type: object
+            properties:
+              bank_user_id: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              default_savings_account_identifier:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+    delete:
+      summary: Deletes user entry.
+      tags:
+        - Vendor
+      parameters:
+        - name: token
+          description: Token for the user.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User deleted.
+          examples:
+             application/json:
+               {
+                  "bank_user_id":"10020102002306194",
+                  "default_savings_account_identifier":"123a46b75n432i",
+                  "checking_account_identifier":"123t456t543y",
+                  "transfers_active":true,
+                  "safety_net_active":true,
+                  "max_transfer_amount":70.00,
+                  "created_at":"2017-04-09T04:22:28.106Z",
+                  "updated_at":"2017-04-09T04:22:28.106Z"
+               }
+          schema:
+            type: object
+            properties:
+              bank_user_id: 
+                type: string
+                description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
+              default_savings_account_identifier:
+                type: string
+                description: System Id for Savings account that user will be moving money to.
+              checking_account_identifier:
+                type: string
+                description: System Id for Checking account that user will be moving money from.
+              transfers_active:
+                type: boolean
+                description: Flag for turning RoboSave transfers on and off. Default is TRUE on create. FALSE will disable the API from submitting transfers or requesting transaction history.
+              safety_net_active:
+                type: boolean
+                description: Flag for activating safety net goal. Default on user creation is TRUE, FALSE will remove the safety net goal from the goals array.
+              max_transfer_amount:
+                type: number
+                description: Max amount that user's can transfer funds to their savings accounts.
+  '/vendors/users/{token}/goals':
+    get:
+      summary: Gets all user goal data.
+      tags:
+        - Vendor
+      parameters:
+        - name: token
+          description: "Token for user."
+          in: path
+          required: true
+          type: integer
+        - name: goal
+          description: "Filter user goals by valid key/value pairs."
+          in: body
+          schema:
+            type: object
+            properties:
+              goal[xref_goal_name]:
+                type: string
+                description: Name of goal.
+              goal[tag]:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              goal[target_amount]:
+                type: number
+                description: Total amount to save for goal.
+              goal[balance]:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              goal[priority]:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: An array of user goal data.
+          examples:
+             application/json:
+               [
+                 {
+                    "id": 1,
+                    "tag": "Other",
+                    "priority": 10,
+                    "created_at": "2017-11-04T05:25:39.248Z",
+                    "updated_at": "2017-11-04T05:25:39.248Z",
+                    "target_amount": "7.0",
+                    "balance": "6.0"
+                 }
+               ]
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id: 
+                  type: integer
+                  description: Id of goal record.
+                tag:
+                  type: string
+                  description: Customizable value which can be used to group different goals.
+                target_amount:
+                  type: number
+                  description: Total amount to save for goal.
+                balance:
+                  type: number
+                  description: Total amount saved by the user towards the goal.
+                priority:
+                  type: integer
+                  description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+        '400':
+          description: Not found
+    post:
+      summary: Creates a user goal record.
+      tags:
+        - Vendor
+      consumes:
+        - application/json
+      parameters:
+        - name: token
+          description: "Token for user."
+          in: path
+          required: true
+          type: integer
+        - name: goal
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+            - goal[xref_goal_name]
+            - goal[target_amount]
+            - goal[balance]
+            - goal[priority]
+            properties:
+              goal[xref_goal_name]:
+                type: string
+                description: Name of goal.
+              goal[tag]:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              goal[target_amount]:
+                type: number
+                description: Total amount to save for goal.
+              goal[balance]:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              goal[priority]:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Goal entry created.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+               }
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of goal record.
+              tag:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              target_amount:
+                type: number
+                description: Total amount to save for goal.
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              priority:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+        '422':
+          description: unprocessable entity
+  '/vendors/users/{token}/goals/{id}':
+    get:
+      summary: Gets user goal.
+      tags:
+        - Vendor
+      parameters:
+        - name: id
+          description: Id of goal record for user.
+          in: path
+          required: true
+          type: integer
+          minimum: 1
+        - name: token
+          description: "Token for the user."
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User goal info returned.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+
+               }
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of goal record.
+              tag:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              target_amount:
+                type: number
+                description: Total amount to save for goal.
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              priority:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+    patch:
+      summary: Updates user goal record.
+      tags:
+        - Vendor
+      parameters:
+        - name: id
+          description: Id of goal record for user.
+          in: path
+          required: true
+          type: integer
+          minimum: 1
+        - name: token
+          description: "Token for user."
+          in: path
+          required: true
+          type: integer
+        - name: goal
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              goal[xref_goal_name]:
+                type: string
+                description: Name of goal.
+              goal[tag]:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              goal[target_amount]:
+                type: number
+                description: Total amount to save for goal.
+              goal[balance]:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              goal[priority]:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          default: Token token={TOKEN_VALUE}
+          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User goal updated.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+
+               }
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of goal record.
+              tag:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              target_amount:
+                type: number
+                description: Total amount to save for goal.
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              priority:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+    delete:
+      summary: Deletes user goal entry.
+      tags:
+        - Vendor
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+          minimum: 1
+        - name: token
+          in: path
+          required: true
+          type: integer
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: Authorization
+          default: Token token={TOKEN_VALUE}
+          in: header
+          description: "Token authentication header"
+          required: true
+          type: string
+      responses:
+        '200':
+          description: User goal deleted.
+          examples:
+             application/json:
+               {
+                  "id": 1,
+                  "tag": "Other",
+                  "priority": 10,
+                  "created_at": "2017-11-04T05:25:39.248Z",
+                  "updated_at": "2017-11-04T05:25:39.248Z",
+                  "target_amount": "7.0",
+                  "balance": "6.0"
+
+               }
+          schema:
+            type: object
+            properties:
+              id: 
+                type: integer
+                description: Id of goal record.
+              tag:
+                type: string
+                description: Customizable value which can be used to group different goals.
+              target_amount:
+                type: number
+                description: Total amount to save for goal.
+              balance:
+                type: number
+                description: Total amount saved by the user towards the goal.
+              priority:
+                type: integer
+                description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
+  '/vendors/users/{token}/transfers':
+    get:
+      summary: Gets all successful transfers for user.
+      tags:
+        - Vendor
+      parameters:
+        - name: token
+          description: Token for the user.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: balance
+          in: body
+          schema:
+            type: object
+            properties:
+              vendor_key:
+                type: string
+                description: Vendor Key for user.
+      responses:
+        '200':
+          description: User transfer info returned.
+          examples:
+             application/json:
+              [
+                  {
+                      "id": 6,
+                      "user_id": 3,
+                      "origin_account": "0015107002-S10131",
+                      "destination_account": "0015107002-S10125",
+                      "amount": "9.0",
+                      "created_at": "2018-01-09T22:05:01.434Z",
+                      "updated_at": "2018-01-13T15:16:41.564Z",
+                      "transfer_amount_attempted": null,
+                      "next_transfer_date": "2018-01-13",
+                      "status": "successful",
+                      "end_date": "2017-12-31T00:00:00.000Z"
+                  },
+                  {
+                      "id": 5,
+                      "user_id": 3,
+                      "origin_account": "0015107002-S10131",
+                      "destination_account": "0015107002-S10125",
+                      "amount": "0.97",
+                      "created_at": "2018-01-09T00:00:00.000Z",
+                      "updated_at": "2018-01-16T19:50:39.684Z",
+                      "transfer_amount_attempted": null,
+                      "next_transfer_date": "2018-01-13",
+                      "status": "successful",
+                      "end_date": "2017-12-31T00:00:00.000Z"
+                  }
+              ]
+          schema:
+            type: object
+            properties:
+              origin_account:
+                type: string
+                description: Account where money was taken out of.
+              destination_account:
+                type: string
+                description: Account where money was transfered into.
+              amount:
+                type: number
+                description: Amount of money transfered.
+              next_transfer_date:
+                type: string
+                description: Date of next transfer.
+              end_date:
+                type: string
+                description: Date of transfer completion.
+  '/vendors/users/{token}/offers':
+    get:
+      summary: Gets all offers for user.
+      tags:
+        - Vendor
+      parameters:
+        - name: token
+          description: Token for the user.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: balance
+          in: body
+          schema:
+            type: object
+            properties:
+              vendor_key:
+                type: string
+                description: Vendor Key for user.
+      responses:
+        '200':
+          description: User offer info returned.
+          examples:
+             application/json:
+              [
+                  {
+                      "id": 12,
+                      "xref_goal_type_id": 66,
+                      "financial_institution_id": 3,
+                      "ad_id": 14,
+                      "condition": "percentage_complete",
+                      "symbol": ">=",
+                      "value": "60.0",
+                      "created_at": "2018-01-16T06:57:52.102Z",
+                      "updated_at": "2018-01-19T21:57:56.153Z",
+                      "product_id": 57,
+                      "ad": {
+                          "id": 14,
+                          "financial_institution_id": 3,
+                          "header": "Over 60% Complete!",
+                          "body": "Wow, congrats on being over 60% of the way done with your house goal! \r\nClick \"Apply\" to begin the process of getting a mortgage!",
+                          "link": "www.mortgageclick.org",
+                          "image": {
+                              "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/14/green_house_icon_312519.jpg"
+                          },
+                          "created_at": "2018-01-16T06:57:50.205Z",
+                          "updated_at": "2018-01-19T19:13:37.459Z",
+                          "name": "60% Complete"
+                      },
+                      "xref_goal_type": {
+                          "id": 66,
+                          "code": "HOUSE",
+                          "name": "House Goal",
+                          "department": null,
+                          "created_at": "2018-01-03T00:17:36.000Z",
+                          "updated_at": "2018-01-03T00:17:36.000Z",
+                          "financial_institution_id": 3
+                      }
+                  },
+                  {
+                      "id": 4,
+                      "xref_goal_type_id": 66,
+                      "financial_institution_id": 3,
+                      "ad_id": 5,
+                      "condition": "percentage_complete",
+                      "symbol": ">",
+                      "value": "50.0",
+                      "created_at": "2018-01-08T14:53:31.279Z",
+                      "updated_at": "2018-01-19T21:57:47.974Z",
+                      "product_id": 57,
+                      "ad": {
+                          "id": 5,
+                          "financial_institution_id": 3,
+                          "header": "Halfway There!",
+                          "body": "Wow, you are already halfway done with you house goal!\r\n\r\nClick apply to start your application for a mortgage!\r\n\r\n",
+                          "link": "www.wffcu.org",
+                          "image": {
+                              "url": "https://monotto-images.s3.amazonaws.com/uploads/ad/image/5/green_house_icon_312519.jpg"
+                          },
+                          "created_at": "2018-01-08T14:52:41.652Z",
+                          "updated_at": "2018-01-18T04:04:41.656Z",
+                          "name": "50% Complete"
+                      },
+                      "xref_goal_type": {
+                          "id": 66,
+                          "code": "HOUSE",
+                          "name": "House Goal",
+                          "department": null,
+                          "created_at": "2018-01-03T00:17:36.000Z",
+                          "updated_at": "2018-01-03T00:17:36.000Z",
+                          "financial_institution_id": 3
+                      }
+                  }
+              ]
+          schema:
+            type: object
+            properties:
+              condition:
+                type: string
+                description: Condition applied to the user’s goal to send offer.
+              symbol:
+                type: string
+                description: "[ '=', '>', '<', '>=', '<=' ]."
+              value:
+                type: string
+                description: Value of the condition.
+  '/vendors/users/{token}/balances':
+    get:
+      summary: Gets user savings account balance.
+      tags:
+        - Vendor
+      parameters:
+        - name: token
+          description: Token for the user.
+          in: path
+          required: true
+          type: string
+        - name: Content-Type
+          default: application/json
+          description: application/json
+          in: header
+          required: true
+          type: string
+        - name: balance
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              vendor_key:
+                type: string
+                description: Vendor Key for user.
+      responses:
+        '200':
+          description: User balance info returned.
+          examples:
+             application/json:
+               {
+                 savings_balance: 5.00
+               }
+          schema:
+            type: object
+            properties:
+              savings_balance: 
+                type: string
+                description: Amount user has in their savings account.
