@@ -68,7 +68,7 @@ paths:
           description: Unauthorized.
   '/vendors/users':
     get:
-      summary: All Users.
+      summary: All Users
       tags:
         - Vendor
       parameters:
@@ -127,7 +127,7 @@ paths:
         '400':
           description: Not found.
     post:
-      summary: Create User.
+      summary: Create user
       tags:
         - Vendor
       parameters:
@@ -216,7 +216,7 @@ paths:
           description: Not found.
   '/vendors/dashboard/users':
     get:
-      summary: Show User
+      summary: Show user
       tags:
         - Vendor
       parameters:
@@ -280,7 +280,7 @@ paths:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
     patch:
-      summary: Update User
+      summary: Update user
       tags:
         - Vendor
       parameters:
@@ -357,7 +357,7 @@ paths:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
     delete:
-      summary: Delete User
+      summary: Delete user
       tags:
         - Vendor
       parameters:
@@ -411,7 +411,7 @@ paths:
                 description: Max amount that user's can transfer funds to their savings accounts.
   '/vendors/dashboard/users/goals':
     get:
-      summary: Show all user goals.
+      summary: All user goals
       tags:
         - Vendor
       parameters:
@@ -487,7 +487,7 @@ paths:
         '400':
           description: Not found
     post:
-      summary: Create user goal.
+      summary: Create user goal
       tags:
         - Vendor
       consumes:
@@ -567,7 +567,7 @@ paths:
           description: unprocessable entity
   '/vendors/dashboard/users/goals/{id}':
     get:
-      summary: Show user goal.
+      summary: Show user goal
       tags:
         - Vendor
       parameters:
@@ -623,7 +623,7 @@ paths:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
     patch:
-      summary: Update user goal.
+      summary: Update user goal
       tags:
         - Vendor
       parameters:
@@ -700,7 +700,7 @@ paths:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
     delete:
-      summary: Delete user goal.
+      summary: Delete user goal
       tags:
         - Vendor
       parameters:
@@ -756,7 +756,7 @@ paths:
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
   '/vendors/dashboard/users/transfers':
     get:
-      summary: Gets all user transfers.
+      summary: All user transfers
       tags:
         - Vendor
       parameters:
@@ -827,7 +827,7 @@ paths:
                 description: Date of transfer completion.
   '/vendors/dashboard/users/offers':
     get:
-      summary: Gets all user offers.
+      summary: All user offers
       tags:
         - Vendor
       parameters:
@@ -934,7 +934,7 @@ paths:
                 description: Value of the condition.
   '/vendors/dashboard/users/balances':
     get:
-      summary: Show user savings account balance.
+      summary: Show user savings balance
       tags:
         - Vendor
       parameters:
