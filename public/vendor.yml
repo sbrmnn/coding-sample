@@ -8,7 +8,7 @@ x-explorer-enabled: false
 paths:
   '/vendors/login':
     post:
-      summary: Login endpoint to get authentication token.
+      summary: Login
       tags:
         - Vendor
       parameters:
@@ -51,7 +51,7 @@ paths:
           description: Unauthorized.
   '/vendors/logout':
     delete:
-      summary: Logout endpoint to delete authentication token.
+      summary: Logout
       tags:
         - Vendor
       parameters:
@@ -68,7 +68,7 @@ paths:
           description: Unauthorized.
   '/vendors/users':
     get:
-      summary: Gets all user data belonging to vendor.
+      summary: All Users.
       tags:
         - Vendor
       parameters:
@@ -127,7 +127,7 @@ paths:
         '400':
           description: Not found.
     post:
-      summary: Creates a user record.
+      summary: Create User.
       tags:
         - Vendor
       parameters:
@@ -216,7 +216,7 @@ paths:
           description: Not found.
   '/vendors/dashboard/users':
     get:
-      summary: Gets user info.
+      summary: Show User
       tags:
         - Vendor
       parameters:
@@ -280,7 +280,7 @@ paths:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
     patch:
-      summary: Updates user record.
+      summary: Update User
       tags:
         - Vendor
       parameters:
@@ -357,7 +357,7 @@ paths:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
     delete:
-      summary: Deletes user entry.
+      summary: Delete User
       tags:
         - Vendor
       parameters:
@@ -411,7 +411,7 @@ paths:
                 description: Max amount that user's can transfer funds to their savings accounts.
   '/vendors/dashboard/users/goals':
     get:
-      summary: Gets all user goal data.
+      summary: Show all user goals.
       tags:
         - Vendor
       parameters:
@@ -487,7 +487,7 @@ paths:
         '400':
           description: Not found
     post:
-      summary: Creates a user goal record.
+      summary: Create user goal.
       tags:
         - Vendor
       consumes:
@@ -567,7 +567,7 @@ paths:
           description: unprocessable entity
   '/vendors/dashboard/users/goals/{id}':
     get:
-      summary: Gets user goal.
+      summary: Show user goal.
       tags:
         - Vendor
       parameters:
@@ -623,7 +623,7 @@ paths:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
     patch:
-      summary: Updates user goal record.
+      summary: Update user goal.
       tags:
         - Vendor
       parameters:
@@ -700,7 +700,7 @@ paths:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
     delete:
-      summary: Deletes user goal entry.
+      summary: Delete user goal.
       tags:
         - Vendor
       parameters:
@@ -754,9 +754,9 @@ paths:
               priority:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
-  '/vendors/users/transfers':
+  '/vendors/dashboard/users/transfers':
     get:
-      summary: Gets all successful transfers for user.
+      summary: Gets all user transfers.
       tags:
         - Vendor
       parameters:
@@ -827,7 +827,7 @@ paths:
                 description: Date of transfer completion.
   '/vendors/dashboard/users/offers':
     get:
-      summary: Gets all offers for user.
+      summary: Gets all user offers.
       tags:
         - Vendor
       parameters:
@@ -934,7 +934,7 @@ paths:
                 description: Value of the condition.
   '/vendors/dashboard/users/balances':
     get:
-      summary: Gets user savings account balance.
+      summary: Show user savings account balance.
       tags:
         - Vendor
       parameters:
