@@ -582,7 +582,6 @@ paths:
           required: true
           type: integer
           minimum: 1
-          type: integer
         - name: Content-Type
           default: application/json
           description: application/json
