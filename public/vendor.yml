@@ -131,11 +131,6 @@ paths:
       tags:
         - Vendor
       parameters:
-        - name: financial_institution_name
-          description: financial_institution that the user is associated with.
-          in: path
-          required: true
-          type: string
         - name: Content-Type
           default: application/json
           description: application/json
@@ -158,6 +153,7 @@ paths:
             - user[bank_user_id]
             - user[checking_account_identifier]
             - user[default_savings_account_identifier]
+            - user[financial_institution_name]
             properties:
               user[bank_user_id]: 
                 type: string
