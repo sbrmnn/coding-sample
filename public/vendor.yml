@@ -493,11 +493,6 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: token
-          description: "Token for user."
-          in: path
-          required: true
-          type: integer
         - name: goal
           in: body
           required: true
