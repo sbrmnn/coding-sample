@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
-  title: API V1
-  version: v1
+  title: API v2.0
+  version: v2.0
 schemes: ['https']
 host: api-us.monotto.com
 x-explorer-enabled: false
@@ -497,7 +497,7 @@ paths:
               priority:
                 type: integer
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
-  '/vendors/users/{token}/goals':
+  '/vendors/dashboard/users/goals':
     get:
       summary: Gets all user goal data.
       tags:
@@ -663,7 +663,7 @@ paths:
                 description: Priority of user's goal. Higher integer value equates to a higher priority. Valid values (1 to 10).
         '422':
           description: unprocessable entity
-  '/vendors/users/{token}/goals/{id}':
+  '/vendors/dashboard/users/goals/{id}':
     get:
       summary: Gets user goal.
       tags:
@@ -1209,17 +1209,12 @@ paths:
               max_transfer_amount:
                 type: number
                 description: Max amount that user's can transfer funds to their savings accounts.
-  '/vendors/users/{token}/balances':
+  '/vendors/dashboard/users/balances':
     get:
       summary: Gets user savings account balance.
       tags:
         - Vendor
       parameters:
-        - name: token
-          description: Token for the user.
-          in: path
-          required: true
-          type: string
         - name: Content-Type
           default: application/json
           description: application/json
