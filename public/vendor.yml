@@ -10,7 +10,7 @@ paths:
     post:
       summary: Login
       tags:
-        - Vendor
+        - Authorization
       parameters:
         - name: Content-Type
           default: application/json
@@ -53,7 +53,7 @@ paths:
     delete:
       summary: Logout
       tags:
-        - Vendor
+        - Authorization
       parameters:
         - name: Content-Type
           default: application/json
@@ -70,7 +70,7 @@ paths:
     get:
       summary: All Users
       tags:
-        - Vendor
+        - Users
       parameters:
         - name: Content-Type
           default: application/json
@@ -129,7 +129,7 @@ paths:
     post:
       summary: Create user
       tags:
-        - Vendor
+        - Users
       parameters:
         - name: Content-Type
           default: application/json
@@ -218,18 +218,12 @@ paths:
     get:
       summary: Show user
       tags:
-        - Vendor
+        - Users
       parameters:
         - name: Content-Type
           default: application/json
           description: application/json
           in: header
-          required: true
-          type: string
-        - name: Authorization
-          in: header
-          default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
           required: true
           type: string
         - name: offer
@@ -238,11 +232,11 @@ paths:
           schema:
             type: object
             required:
-            - vendor_key
+            - vendor_user_key
             properties:
-              vendor_key:
+              vendor_user_key:
                 type: string
-                description: Vendor Key for user.
+                description: Key that identifies the user.
       responses:
         '200':
           description: User info returned.
@@ -282,14 +276,19 @@ paths:
     patch:
       summary: Update user
       tags:
-        - Vendor
+        - Users
       parameters:
         - name: user
           in: body
           required: true
           schema:
             type: object
+            required:
+            - vendor_user_key
             properties:
+              vendor_user_key:
+                type: string
+                description: Key that identifies the user.
               bank_user_id: 
                 type: string
                 description: Unique System Id for User from Bank. This id should be analogous to the unique customer id that the bank already uses to identify users.
@@ -312,12 +311,6 @@ paths:
           default: application/json
           description: application/json
           in: header
-          required: true
-          type: string
-        - name: Authorization
-          in: header
-          default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
           required: true
           type: string
       responses:
@@ -359,7 +352,7 @@ paths:
     delete:
       summary: Delete user
       tags:
-        - Vendor
+        - Users
       parameters:
         - name: Content-Type
           default: application/json
@@ -367,12 +360,17 @@ paths:
           in: header
           required: true
           type: string
-        - name: Authorization
-          default: Token token={TOKEN_VALUE}
-          in: header
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /vendors/login call."
+        - name: user
+          in: body
           required: true
-          type: string
+          schema:
+            type: object
+            required:
+            - vendor_user_key
+            properties:
+              vendor_user_key:
+                type: string
+                description: Key that identifies the user.
       responses:
         '200':
           description: User deleted.
@@ -413,14 +411,19 @@ paths:
     get:
       summary: All user goals
       tags:
-        - Vendor
+        - User Goals
       parameters:
         - name: goal
           description: "Filter user goals by valid key/value pairs."
           in: body
           schema:
             type: object
+            required:
+            - vendor_user_key
             properties:
+              vendor_user_key:
+                type: string
+                description: Key that identifies the user.
               goal[xref_goal_name]:
                 type: string
                 description: Name of goal.
@@ -440,12 +443,6 @@ paths:
           default: application/json
           description: application/json
           in: header
-          required: true
-          type: string
-        - name: Authorization
-          in: header
-          default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
@@ -489,7 +486,7 @@ paths:
     post:
       summary: Create user goal
       tags:
-        - Vendor
+        - User Goals
       consumes:
         - application/json
       parameters:
@@ -499,11 +496,15 @@ paths:
           schema:
             type: object
             required:
+            - vendor_user_key
             - goal[xref_goal_name]
             - goal[target_amount]
             - goal[balance]
             - goal[priority]
             properties:
+              vendor_user_key:
+                type: string
+                description: Key that identifies the user.
               goal[xref_goal_name]:
                 type: string
                 description: Name of goal.
@@ -523,12 +524,6 @@ paths:
           default: application/json
           description: application/json
           in: header
-          required: true
-          type: string
-        - name: Authorization
-          in: header
-          default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
@@ -569,7 +564,7 @@ paths:
     get:
       summary: Show user goal
       tags:
-        - Vendor
+        - User Goals
       parameters:
         - name: id
           description: Id of goal record for user.
@@ -583,12 +578,17 @@ paths:
           in: header
           required: true
           type: string
-        - name: Authorization
-          in: header
-          default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
+        - name: goal
+          in: body
           required: true
-          type: string
+          schema:
+            type: object
+            required:
+            - vendor_user_key
+            properties:
+              vendor_user_key:
+                type: string
+                description: Key that identifies the user.
       responses:
         '200':
           description: User goal info returned.
@@ -625,7 +625,7 @@ paths:
     patch:
       summary: Update user goal
       tags:
-        - Vendor
+        - User Goals
       parameters:
         - name: id
           description: Id of goal record for user.
@@ -638,7 +638,12 @@ paths:
           required: true
           schema:
             type: object
+            required:
+            - vendor_user_key
             properties:
+              vendor_user_key:
+                type: string
+                description: Key that identifies the user.
               goal[xref_goal_name]:
                 type: string
                 description: Name of goal.
@@ -658,12 +663,6 @@ paths:
           default: application/json
           description: application/json
           in: header
-          required: true
-          type: string
-        - name: Authorization
-          in: header
-          default: Token token={TOKEN_VALUE}
-          description: "Token authentication header. Replace {TOKEN_VALUE} with your token from the /login call."
           required: true
           type: string
       responses:
@@ -702,7 +701,7 @@ paths:
     delete:
       summary: Delete user goal
       tags:
-        - Vendor
+        - User Goals
       parameters:
         - name: id
           in: path
@@ -721,6 +720,17 @@ paths:
           description: "Token authentication header"
           required: true
           type: string
+        - name: goal
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+            - vendor_user_key
+            properties:
+              vendor_user_key:
+                type: string
+                description: Key that identifies the user.
       responses:
         '200':
           description: User goal deleted.
@@ -758,7 +768,7 @@ paths:
     get:
       summary: All user transfers
       tags:
-        - Vendor
+        - User Transfers
       parameters:
         - name: Content-Type
           default: application/json
@@ -770,10 +780,12 @@ paths:
           in: body
           schema:
             type: object
+            required:
+            - vendor_user_key
             properties:
-              vendor_key:
+              vendor_user_key:
                 type: string
-                description: Vendor Key for user.
+                description: Key that identifies the user.
       responses:
         '200':
           description: User transfer info returned.
@@ -829,7 +841,7 @@ paths:
     get:
       summary: All user offers
       tags:
-        - Vendor
+        - User Offers
       parameters:
         - name: Content-Type
           default: application/json
@@ -841,10 +853,12 @@ paths:
           in: body
           schema:
             type: object
+            required:
+            - vendor_user_key
             properties:
-              vendor_key:
+              vendor_user_key:
                 type: string
-                description: Vendor Key for user.
+                description: Key that identifies the user.
       responses:
         '200':
           description: User offer info returned.
@@ -936,7 +950,7 @@ paths:
     get:
       summary: Show user savings balance
       tags:
-        - Vendor
+        - User Balance
       parameters:
         - name: Content-Type
           default: application/json
@@ -949,10 +963,12 @@ paths:
           required: true
           schema:
             type: object
+            required:
+            - vendor_user_key
             properties:
-              vendor_key:
+              vendor_user_key:
                 type: string
-                description: Vendor Key for user.
+                description: Key that identifies the user.
       responses:
         '200':
           description: User balance info returned.
