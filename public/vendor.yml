@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: API v2.0
+  title: Vendor API v2.0
   version: v2.0
 schemes: ['https']
 host: api-us.monotto.com
