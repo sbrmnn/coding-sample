@@ -329,7 +329,8 @@ CREATE TABLE users (
     transfers_active boolean DEFAULT true,
     max_transfer_amount numeric(10,2) DEFAULT 25 NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    vendor_access_token character varying
 );
 
 
@@ -1608,6 +1609,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180306193501'),
 ('20180309115031'),
 ('20180310182834'),
-('20180413212425');
+('20180413212425'),
+('20180502202014');
 
 

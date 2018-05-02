@@ -18,7 +18,7 @@ class Vendors::UsersController < Vendors::ApplicationController
       {}
     else
       params.require(:user).permit(:bank_user_id, :default_savings_account_identifier, :checking_account_identifier,
-                                   :transfers_active, :max_transfer_amount, :financial_institution_name)
+                                   :transfers_active, :max_transfer_amount, :financial_institution_name, :vendor_access_token)
     end
   end
 end

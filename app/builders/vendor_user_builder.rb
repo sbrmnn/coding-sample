@@ -1,6 +1,6 @@
 class VendorUserBuilder
    attr_reader :vendor_id, :bank_user_id, :default_savings_account_identifier, :checking_account_identifier,
-               :transfers_active, :max_transfer_amount, :financial_institution_name
+               :transfers_active, :max_transfer_amount, :financial_institution_name, :vendor_access_token
 
    def initialize(vendor_id, user_json)
      @vendor_id = vendor_id
@@ -10,6 +10,7 @@ class VendorUserBuilder
      @transfers_active = user_json[:transfers_active]
      @max_transfer_amount = user_json[:max_transfer_amount]
      @financial_institution_name = user_json[:financial_institution_name]
+     @vendor_access_token = user_json[:vendor_access_token]
    end
 
    def build
@@ -20,7 +21,7 @@ class VendorUserBuilder
         .set_transfers_active
         .set_max_transfer_amount
         .set_vendor_user_key
-        .user
+        .set_vendor_access_token
    end
 
    protected
@@ -32,6 +33,11 @@ class VendorUserBuilder
 
    def set_bank_user_id
     user.bank_user_id = bank_user_id
+    self
+   end
+
+   def set_vendor_access_token
+    user.vendor_access_token = vendor_access_token
     self
    end
    
