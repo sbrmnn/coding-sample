@@ -30,7 +30,8 @@ module DashboardUrlJsonAdapter
           bank_user_id: json["CustomerId"],
           financial_institution_name: json["FinancialInstitutionId"],
           checking_accounts: checking_accounts,
-          savings_accounts: savings_accounts
+          savings_accounts: savings_accounts,
+          vendor_access_token: json["VendorAccessToken"]
       }
     end
     def self.accounts_type_array(accounts, type)

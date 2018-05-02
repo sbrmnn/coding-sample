@@ -1,5 +1,5 @@
 class DashboardUrl
-  attr_accessor :bank_user_id, :financial_institution_name, :checking_accounts, :savings_accounts, :vendor_id
+  attr_accessor :bank_user_id, :financial_institution_name, :checking_accounts, :savings_accounts, :vendor_id, :vendor_access_token
   
   def initialize
   end
@@ -8,6 +8,7 @@ class DashboardUrl
     validate
     query_arr = []
     query_arr << "financial_institution_id=#{financial_institution_id}"
+    query_arr << "vendor_access_token=#{vendor_access_token}" if vendor_access_token.present?
     checking_accounts.map{|ca| query_arr << "checking[]=#{ca}"}
     savings_accounts.map{ |sa| query_arr << "savings[]=#{sa}"}  
     query_arr << "bank_user_id=#{bank_user_id}"

@@ -13,6 +13,7 @@ class DashboardUrlBuilder
         .set_checking_accounts
         .set_savings_accounts
         .set_vendor
+        .set_vendor_access_token
         .dashboard_url
   end
 
@@ -40,6 +41,11 @@ class DashboardUrlBuilder
 
   def dashboard_url 
     @dashboard_url ||= DashboardUrl.new
+  end
+
+  def set_vendor_access_token
+    dashboard_url.vendor_access_token = json_values[:vendor_access_token]
+    self
   end
 
   def set_financial_institution_name
