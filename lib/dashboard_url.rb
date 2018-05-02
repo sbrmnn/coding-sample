@@ -18,7 +18,6 @@ class DashboardUrl
 
   def vendor
     @vendor = Vendor.find_by(id: vendor_id)
-    raise "Vendor must exist for user to generate dashbord url" if @vendor.blank?
   end
 
   def financial_institution_id
