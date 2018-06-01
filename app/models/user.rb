@@ -12,7 +12,6 @@ class User < ApplicationRecord
   validate :vendor_user_key_with_no_user, on: :create, if: lambda {vendor.present?}
   validates_presence_of :bank_user_id,
                         :default_savings_account_identifier, :checking_account_identifier
-  
   validates_uniqueness_of :bank_user_id, scope: [:financial_institution_id], unless: lambda {vendor.present?}
   validates_uniqueness_of :checking_account_identifier, scope: [:financial_institution_id], :message => "Please select another checking account."
   validate :ensure_one_bank_user_id_per_vendor,  if: lambda {vendor.present? && bank_user_id_changed?}
@@ -48,7 +47,7 @@ class User < ApplicationRecord
   end
 
   def register_user_with_vendor
-    constant = vendor.name.capitalize
+    constant = vendor.name.capitalize.to_sym
     if VendorUserRegistrationAdapter.constants.include?(constant)
       VendorUserRegistrationAdapter.const_get(constant).register(id)
     else
