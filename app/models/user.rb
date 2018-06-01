@@ -29,7 +29,7 @@ class User < ApplicationRecord
 
   def insert_init_transfer_record
     if self.api_errors.blank?
-      Transfer.where(user: self, next_transfer_date: nil, amount: 0, end_date: 'infinity', status: :successful, origin_account: checking_account_identifier, destination_account: default_savings_account_identifier).first_or_create
+      Transfer.where(user: self, next_transfer_date: nil, amount: nil, end_date: 'infinity', status: :successful, origin_account: checking_account_identifier, destination_account: default_savings_account_identifier).first_or_create
     end
   end
 
