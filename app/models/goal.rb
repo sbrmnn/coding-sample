@@ -18,7 +18,7 @@ class Goal < ApplicationRecord
   before_save :set_savings_account_balance
   before_save :rearrange_priority_on_save, if: lambda {priority_changed? && no_callback.blank?}
 
-  after_destroy { |record| rearrange_priority_on_destroy(record.user_id, record.priority)}
+  after_destroy { |record| rearrange_priority_on_destroy(record.user_id, record.priority) }
   after_destroy :recalculate_goal_balance_for_destroy_goal
   before_create :recalculate_goal_balance_for_new_goal
   before_update :recalculate_goal_balance_for_updated_goal, if: lambda {target_amount_changed?}
@@ -92,8 +92,10 @@ class Goal < ApplicationRecord
       sum_balance_of_goals = goals.sum(:balance)
       savings_acct_balance = goals.pluck(:savings_account_identifier, :savings_acct_balance).uniq.map{|r| r[1]}.sum
       leftover = savings_acct_balance - sum_balance_of_goals
-      self.update_attribute(:balance,  target_amount) if ((balance + leftover) >= target_amount) 
-      self.increment(:balance,  leftover) if ((balance + leftover) < target_amount) 
+      if leftover > 0
+       self.update_attribute(:balance,  target_amount) if ((balance + leftover) >= target_amount)
+       self.increment(:balance,  leftover) if ((balance + leftover) < target_amount)
+      end
     end
   end
 
