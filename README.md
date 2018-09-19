@@ -1,6 +1,5 @@
 ### Documentation of public endpoints:
-  https://docs.google.com/document/d/1A0gzjv_jt8BhEMogqynpRmkxbJVIzkMY5kz5yN-RPgY/edit?usp=sharing
-
+  https://docs.monotto.com/reference
 ### Documentation of private endpoints begins here (monotto admin use only!):
 Login
 -----

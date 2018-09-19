@@ -32,13 +32,13 @@ class VendorUserBuilder
    end
 
    def set_bank_user_id
-    user.bank_user_id = bank_user_id
-    self
+     user.bank_user_id = bank_user_id
+     self
    end
 
    def set_vendor_access_token
-    user.vendor_access_token = vendor_access_token
-    self
+     user.vendor_access_token = vendor_access_token
+     self
    end
    
    def set_default_savings_account_identifier

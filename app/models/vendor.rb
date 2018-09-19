@@ -5,8 +5,7 @@ class Vendor < ApplicationRecord
   has_many :vendor_user_keys
   validates_presence_of :name, :location, :email
   validates_uniqueness_of :email
-
-
+   
   def bankjoy_vendor?
     self.name.try(:downcase) == 'bankjoy'
   end

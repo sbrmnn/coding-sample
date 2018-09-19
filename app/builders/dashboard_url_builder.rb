@@ -3,7 +3,7 @@ class DashboardUrlBuilder
   
   def initialize(vendor_id, user_json)
     @vendor_id = vendor_id
-    self.adapter = vendor_name
+    self.adapter = vendor_name if @adapter.blank?
     @json_values = consume_json(user_json)
   end
 
@@ -17,14 +17,12 @@ class DashboardUrlBuilder
         .dashboard_url
   end
 
-  protected
-
   def adapter=(adapter)
     capitalized_adapter = adapter.capitalize.to_sym
     if DashboardUrlJsonAdapter.constants.include?(capitalized_adapter)
       @adapter = DashboardUrlJsonAdapter.const_get(capitalized_adapter)
     else
-      @adapter =  DashboardUrlJsonAdapter.const_get(:Default)
+      @adapter = DashboardUrlJsonAdapter.const_get(:Default)
     end
   end
 

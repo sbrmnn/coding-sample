@@ -9,7 +9,7 @@ class AwsLambdaService
   end
 
   def response
-    resp_payload = JSON.parse(call.payload.string)   
+    JSON.parse(call.payload.string)
   end
 
   private
