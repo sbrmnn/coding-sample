@@ -636,7 +636,7 @@ GEM
       activerecord (>= 4.0, < 5.2)
     pg (0.20.0)
     public_suffix (3.0.2)
-    rack (2.0.1)
+    rack (2.2.3)
     rack-attack (5.0.1)
       rack
     rack-cors (1.0.2)
