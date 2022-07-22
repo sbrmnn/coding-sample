@@ -723,7 +723,7 @@ GEM
       activerecord (> 4.0)
       factory_girl (~> 4.5)
       ruby2ruby
-    tzinfo (1.2.2)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     useragent (0.16.8)
     wannabe_bool (0.7.0)
